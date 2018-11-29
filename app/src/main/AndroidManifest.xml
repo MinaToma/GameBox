@@ -16,10 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Difficulty">
-
-
-        </activity>
+        <activity android:name=".SolitairDifficultyActivity"></activity>
     </application>
 
 </manifest>
