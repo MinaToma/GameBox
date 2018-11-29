@@ -59,14 +59,15 @@
         </RelativeLayout>
 
     </RelativeLayout>
-<!--
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:id="@+id/playCardRelativeView"
         android:layout_below="@+id/finishedAndStackCardsRelativeLayout"
         android:layout_alignParentStart="true"
         android:layout_marginTop="7dp">
-
+<!--
         <ImageButton
             android:id="@+id/playStackOne"
             android:layout_width="55dp"
@@ -107,8 +108,9 @@
             android:layout_width="55dp"
             android:layout_height="match_parent"
             android:layout_toRightOf="@+id/playStackSix" />
-    </RelativeLayout>
 -->
+    </RelativeLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"

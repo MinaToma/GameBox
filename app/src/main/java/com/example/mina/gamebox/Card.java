@@ -1,27 +1,36 @@
 package com.example.mina.gamebox;
 
 import android.content.Context;
+import android.util.TypedValue;
+import android.view.ViewGroup;
 
 public class Card extends android.support.v7.widget.AppCompatImageButton {
 
-    private String type , number , name;
+    private int pictureId;
 
-    public String getType() {
-        return type;
+    public int getPictureId() {
+        return pictureId;
     }
 
-    public String getNumber() {
-        return number;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public Card(Context context , String type , String number) {
+    public Card(Context context , String name , int width , int height) {
         super(context);
-        name = type + number;
-        int pictureId = getResources().getIdentifier(name , "drawable" , context.getPackageName());
+        pictureId = getResources().getIdentifier(name , "drawable" , context.getPackageName());
         setImageResource(pictureId);
+
+        setLayoutParams(new ViewGroup.LayoutParams((int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                width,
+                context.getResources().getDisplayMetrics()
+        ) , (int)TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                height ,
+                context.getResources().getDisplayMetrics()
+        ) ) );
+    }
+
+    public void setPosition(int x , int y)
+    {
+        setX(x);
+        setY(y);
     }
 }
