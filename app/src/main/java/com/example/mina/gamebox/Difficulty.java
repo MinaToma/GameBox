@@ -15,11 +15,13 @@ public class Difficulty extends AppCompatActivity implements AdapterView.OnItemS
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_difficulty);
+
         Spinner difficultySpinner = findViewById(R.id.selectDifficultyLevel);
         ArrayAdapter<CharSequence> difficultyAdapter = ArrayAdapter.createFromResource(this,R.array.difficultyLevel,android.R.layout.simple_spinner_item);
         difficultyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
         difficultySpinner.setAdapter(difficultyAdapter);
         difficultySpinner.setOnItemSelectedListener(this);
+
     }
 
     public void backButton(View view) {

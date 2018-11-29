@@ -41,7 +41,6 @@
         android:layout_marginBottom="8dp"
         android:background="@android:color/background_light"
         android:fontFamily="casual"
-        android:onClick="playNowButton"
         android:text="Play Now"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         android:textSize="36sp"

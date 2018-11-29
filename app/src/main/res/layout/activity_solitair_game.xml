@@ -1,18 +1,143 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SolitairGameActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <RelativeLayout
+        android:id="@+id/finishedAndStackCardsRelativeLayout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
 
-</android.support.constraint.ConstraintLayout>
+        <RelativeLayout
+            android:layout_width="220dp"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/heartFinished"
+                android:layout_width="55dp"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:layout_toRightOf="@+id/heartFinished"
+                android:id="@+id/diamondFinished"
+                android:layout_width="55dp"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:layout_toRightOf="@+id/diamondFinished"
+                android:id="@+id/spadeFinished"
+                android:layout_width="55dp"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:layout_toRightOf="@+id/spadeFinished"
+                android:id="@+id/cludeFinished"
+                android:layout_width="55dp"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="110dp"
+            android:layout_alignParentRight="true"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/drawnStack"
+                android:layout_toLeftOf="@id/drawStack"
+                android:layout_width="55dp"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:layout_alignParentRight="true"
+                android:id="@+id/drawStack"
+                android:layout_width="55dp"
+                android:layout_height="match_parent" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+<!--
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/finishedAndStackCardsRelativeLayout"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="7dp">
+
+        <ImageButton
+            android:id="@+id/playStackOne"
+            android:layout_width="55dp"
+            android:layout_height="match_parent" />
+
+        <ImageButton
+            android:id="@+id/playStackTwo"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/playStackOne" />
+
+        <ImageButton
+            android:id="@+id/playStackThree"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/playStackTwo" />
+
+        <Button
+            android:id="@+id/playStackFour"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/playStackThree" />
+
+        <Button
+            android:id="@+id/playStackFive"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/playStackFour" />
+
+        <Button
+            android:id="@+id/playStackSix"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/playStackFive" />
+
+        <Button
+            android:id="@+id/playStackSeven"
+            android:layout_width="55dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/playStackSix" />
+    </RelativeLayout>
+-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="100dp">
+
+        <Button
+            android:id="@+id/newGameButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+        <Button
+            android:id="@+id/hintButton"
+            android:layout_toRightOf="@id/newGameButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+        <Button
+            android:id="@+id/undoButton"
+            android:layout_toRightOf="@id/hintButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+
+        <Button
+            android:id="@+id/exitButton"
+            android:layout_toRightOf="@+id/undoButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
