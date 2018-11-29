@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/back1"
-    tools:context=".Difficulty">
+    tools:context=".SolitairDifficultyActivity">
 
     <Button
         android:id="@+id/backButton"
@@ -18,7 +18,7 @@
         android:layout_marginBottom="8dp"
         android:background="@android:color/background_light"
         android:fontFamily="casual"
-        android:onClick="backButton"
+        android:onClick="backButtonOnClickListener"
         android:text="Back"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         android:textSize="36sp"
@@ -41,6 +41,7 @@
         android:layout_marginBottom="8dp"
         android:background="@android:color/background_light"
         android:fontFamily="casual"
+        android:onClick="playNowButtonOnClickListener"
         android:text="Play Now"
         android:textAppearance="@style/TextAppearance.AppCompat.Button"
         android:textSize="36sp"
@@ -71,7 +72,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:textAlignment="center" />
-
-
 
 </android.support.constraint.ConstraintLayout>
