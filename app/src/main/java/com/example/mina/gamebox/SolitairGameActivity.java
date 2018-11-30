@@ -40,11 +40,11 @@ public class SolitairGameActivity extends AppCompatActivity {
         playCardStack = new ArrayList<Stack<Card>>();
         finishedCard = new ArrayList<Stack<Card>>();
 
+        initializeFinishedCardPosition();
         initializeCards();
         initializeDrawStack();
         initializeDrawnStackPosition();
         initializePlayCardPosition();
-        initializeFinishedCardPosition();
     }
 
 
@@ -198,7 +198,27 @@ public class SolitairGameActivity extends AppCompatActivity {
         {
             Log.i("min" ,Integer.toString(i));
             playCardPostion.add(new Pair<Float, Float>(x , y));
-            Card card = new Card(getBaseContext() , R.drawable.clubs1 , baseImageButton.getLayoutParams());
+            Card card;
+            if(i % 4 == 0){
+
+                card = new Card(getBaseContext() , R.drawable.hearts1 , baseImageButton.getLayoutParams());
+            }
+            else if(i % 4 == 1) {
+
+                card = new Card(getBaseContext(), R.drawable.clubs1, baseImageButton.getLayoutParams());
+            }
+            else if(i % 4 == 2)
+            {
+
+                card = new Card(getBaseContext() , R.drawable.spades1, baseImageButton.getLayoutParams());
+            }
+
+            else{
+
+                card = new Card(getBaseContext() , R.drawable.diamonds1 , baseImageButton.getLayoutParams());
+            }
+
+
             card.setPosition(playCardPostion.get(i));
             card.setPlay(true);
             card.setPlayPosition(i);
@@ -226,14 +246,19 @@ public class SolitairGameActivity extends AppCompatActivity {
             finishedCard.add(new Stack<Card>());
             Log.i("min" ,Integer.toString(i));
             finishedCardPosition.add(new Pair<Float, Float>(x , y));
-            Card card = new Card(getBaseContext() , R.drawable.clubs1 , baseImageButton.getLayoutParams());
-            card.setPosition(playCardPostion.get(i));
-            finisehedCardRelativeView.addView(card);
+            //Card card = new Card(getBaseContext() , R.drawable.clubs1 , baseImageButton.getLayoutParams());
+            //card.setPosition(playCardPostion.get(i));
+            //finisehedCardRelativeView.addView(card);
+            Log.i("min" , "ana " + Float.toString(finishedCardPosition.get(i).first) + " " + Float.toString(finishedCardPosition.get(i).second));
             x += cardWidth;
         }
     }
 
     private Card cardForFinished(int pos , Card card){
+        Log.i("min" , card.getName() + " " + Integer.toString(card.getNumber()) + " " + Integer.toString(pos));
+        Log.i("min" , Float.toString(finishedCardPosition.get(pos).first) + Float.toString(finishedCardPosition.get(pos).second));
+        card.setPosition(finishedCardPosition.get(pos));
+        finishedCard.get(pos).push(card);
 
         return card;
     }
@@ -259,8 +284,8 @@ public class SolitairGameActivity extends AppCompatActivity {
             Card card = ((Card) v);
 
             RelativeLayout finishedRelativeLayout = (RelativeLayout) findViewById(R.id.finishedCardsRelativeLayout);
-            int lastNumber = -1 , pos = 0;
-            Log.i("min" , card.getName());
+            int lastNumber = 0 , pos = -1;
+            Log.i("min" , card.getName() + " " + Integer.toString(card.getNumber()));
             switch(card.getName())
             {
                 case "hearts":
@@ -305,8 +330,8 @@ public class SolitairGameActivity extends AppCompatActivity {
             if(pos != -1){
                 RelativeLayout parentRelativeLayout = (RelativeLayout) card.getParent();
                 parentRelativeLayout.removeView(card);
-                card = cardForFinished(pos , card);
                 finishedRelativeLayout.addView(card);
+                card = cardForFinished(pos , card);
             }
         }
     };

@@ -31,8 +31,8 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
         if(name.contains("clubs")) {
             name = "clubs";
         }
-        else if(name.contains("diamond")) {
-            name = "diamond";
+        else if(name.contains("diamonds")) {
+            name = "diamonds";
         }
         else if(name.contains("hearts")) {
             name = "hearts";
