@@ -6,12 +6,13 @@
     tools:context=".SolitairGameActivity">
 
     <RelativeLayout
-        android:id="@+id/finishedAndStackCardsRelativeLayout"
+        android:id="@+id/finishedAndDrawStackCardsRelativeLayout"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="100dp">
 
         <RelativeLayout
+            android:id="@+id/finishedCardsRelativeLayout"
             android:layout_width="220dp"
             android:layout_height="match_parent">
 
@@ -40,11 +41,12 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:id="@+id/drawRelativeLayout"
             android:layout_width="110dp"
             android:layout_alignParentRight="true"
             android:layout_height="match_parent">
 
-            <Button
+            <ImageButton
                 android:id="@+id/drawnStack"
                 android:layout_toLeftOf="@id/drawStack"
                 android:layout_width="55dp"
@@ -64,7 +66,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:id="@+id/playCardRelativeView"
-        android:layout_below="@+id/finishedAndStackCardsRelativeLayout"
+        android:layout_below="@+id/finishedAndDrawStackCardsRelativeLayout"
         android:layout_alignParentStart="true"
         android:layout_marginTop="7dp">
 <!--
