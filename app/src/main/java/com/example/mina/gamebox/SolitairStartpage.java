@@ -15,17 +15,17 @@ public class SolitairStartpage extends AppCompatActivity {
 
 
         Button StartButton = (Button) findViewById(R.id.StartButton);
-       // StartButton.setOnClickListener(
-                //new Button.OnClickListener() {
-                 //   @Override
-                  //  public void onClick(View v) {
-                       // Intent intent = new Intent(SolitairStartpage.this, SolitairDifficultyActivity.class);
+       StartButton.setOnClickListener(
+                new Button.OnClickListener() {
+                    @Override
+                   public void onClick(View v) {
+                       Intent intent = new Intent(SolitairStartpage.this, SolitairDifficultyActivity.class);
                         //startActivity(intent);
                     }
-//                }
+               }
 
-        //);
-    //}
+        );
+    }
 
 
 }
