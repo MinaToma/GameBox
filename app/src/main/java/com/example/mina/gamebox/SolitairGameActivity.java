@@ -207,6 +207,7 @@ public class SolitairGameActivity extends AppCompatActivity {
         for(int i = 0 ; i < 7 ; i++)
         {
             playCardPostion.add(new Pair<Float, Float>(x , y));
+            playCardStack.add(new Stack<Card>());
 
             String cardName = cardType.get(i % 4);
             cardName += Integer.toString(i%4 + 1);
@@ -218,6 +219,7 @@ public class SolitairGameActivity extends AppCompatActivity {
             card.setPlay(true);
             card.setPlayPosition(i);
             card.setOnClickListener(cardOnClickListner);
+            playCardStack.get(i).push(card);
             playRelativeLayout.addView(card);
             x += cardWidth;
         }
