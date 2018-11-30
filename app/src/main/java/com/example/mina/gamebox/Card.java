@@ -10,20 +10,15 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
     private int pictureId , playPosition , finishedPosition;
     private Boolean isPlay , isFinished;
 
-    public Card(Context context , String name , int width , int height) {
+    public Card(Context context , int pictureId , ViewGroup.LayoutParams layoutParams) {
         super(context);
-        pictureId = getResources().getIdentifier(name , "drawable" , context.getPackageName());
+        this.pictureId = pictureId;
         setImageResource(pictureId);
 
-        setLayoutParams(new ViewGroup.LayoutParams((int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                width,
-                context.getResources().getDisplayMetrics()
-        ) , (int)TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                height ,
-                context.getResources().getDisplayMetrics()
-        ) ) );
+        playPosition = finishedPosition = 0;
+        isPlay = isFinished = false;
+
+        setLayoutParams(layoutParams);
     }
 
     public int getPictureId() {
@@ -60,6 +55,12 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
 
     public Boolean getFinished() {
         return isFinished;
+    }
+
+    public void setPosition(Float x , Float y)
+    {
+        setX(x);
+        setY(y);
     }
 
     public void setPosition(Pair<Float, Float> position)
