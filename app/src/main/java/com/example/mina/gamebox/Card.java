@@ -1,19 +1,47 @@
 package com.example.mina.gamebox;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.ViewGroup;
 
 public class Card extends android.support.v7.widget.AppCompatImageButton {
 
-    private int pictureId , playPosition , finishedPosition;
+    private int pictureId , playPosition , finishedPosition , number;
+    private String name;
     private Boolean isPlay , isFinished;
 
     public Card(Context context , int pictureId , ViewGroup.LayoutParams layoutParams) {
         super(context);
         this.pictureId = pictureId;
         setImageResource(pictureId);
+
+        name = context.getResources().getResourceName(pictureId);
+
+        if(Character.isDigit(name.codePointAt(name.length()-2))){
+            number = name.charAt(name.length()-2) - '0';
+            number*=10;
+            number += name.charAt(name.length()-1) - '0';
+        }
+        else{
+            number = name.charAt(name.length()-1) - '0';
+        }
+
+        if(name.contains("clubs")) {
+            name = "clubs";
+        }
+        else if(name.contains("diamond")) {
+            name = "diamond";
+        }
+        else if(name.contains("hearts")) {
+            name = "hearts";
+        }
+        else if(name.contains("spades")) {
+            name = "spades";
+        }
+
+        Log.i("min" , name + " " + Integer.toString(number));
 
         playPosition = finishedPosition = 0;
         isPlay = isFinished = false;
@@ -23,6 +51,14 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
 
     public int getPictureId() {
         return pictureId;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public String getName() {
+        return name;
     }
 
     public int getPlayPosition() {
@@ -61,6 +97,11 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
     {
         setX(x);
         setY(y);
+    }
+
+    public Pair<Float , Float> getPosition()
+    {
+        return  new Pair<Float,Float>(getX() , getY());
     }
 
     public void setPosition(Pair<Float, Float> position)

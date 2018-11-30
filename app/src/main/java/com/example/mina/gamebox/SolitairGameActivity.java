@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -61,26 +62,16 @@ public class SolitairGameActivity extends AppCompatActivity {
     private void initializeDrawnStackPosition() {
         RelativeLayout drawRelativeLayout = (RelativeLayout) findViewById(R.id.drawRelativeLayout);
         drawnCardPosition = new Pair<Float, Float>(drawRelativeLayout.getX() , drawRelativeLayout.getY());
-        Log.i("min" ,  "Gzra " + Float.toString(drawCardPosition.first) + " " + Float.toString(drawnCardPosition.second));
-
     }
 
     private Card cardForDrawn(Card card)
     {
-        /*if(!drawnCardStack.empty()) {
-            Card temp = drawnCardStack.peek();
-            drawnCardStack.pop();
-            temp.setOnClickListener(null);
-            temp.setOnDragListener(null);
-            drawnCardStack.push(temp);
-        }*/
-
-        //card.setOnClickListener(cardOnClickListner);
+        card.setOnClickListener(cardOnClickListner);
 
 
         //card.setOnDragListener();
-        Log.i("min" ,  "Gzra2 " + Float.toString(drawCardPosition.first) + " " + Float.toString(drawnCardPosition.second));
         card.setPosition(drawnCardPosition);
+        Log.i("min" ,  "inside " + Float.toString(card.getX()) + " " + Float.toString(card.getY()));
         card.setImageResource(card.getPictureId());
 
         return card;
@@ -96,8 +87,11 @@ public class SolitairGameActivity extends AppCompatActivity {
         RelativeLayout drawRelativeLayout = (RelativeLayout) findViewById(R.id.drawRelativeLayout);
 
         drawCardPosition = new Pair<Float , Float>(drawRelativeLayout.getX() +  cardWidth , drawRelativeLayout.getY());
-
-        //disable below cards' clickListener
+        Card emptyCard = new Card(getBaseContext() ,  R.drawable.diamonds2 , baseImageButton.getLayoutParams());
+        emptyCard = cardForDraw(emptyCard);
+        emptyCard.setImageResource(emptyCard.getPictureId());
+        drawRelativeLayout.addView(emptyCard);
+        drawCardStack.add(emptyCard);
 
         for(int i = 0 ; i < 4 ; i++)
         {
@@ -107,24 +101,20 @@ public class SolitairGameActivity extends AppCompatActivity {
             drawRelativeLayout.addView(drawCardStack.peek());
         }
 
+
+        drawCardPosition = drawCardStack.peek().getPosition();
+
         //test
         Card card = new Card(getBaseContext() , R.drawable.clubs1 , baseImageButton.getLayoutParams());
         card.setPosition(drawRelativeLayout.getX() , drawRelativeLayout.getY());
         drawnCardStack.push(card);
+        drawnCardPosition = drawnCardStack.peek().getPosition();
         drawRelativeLayout.addView(card);
         //test
     }
 
     private Card cardForDraw(Card card)
     {
-        /*if(!drawCardStack.empty()) {
-            Card temp = drawCardStack.peek();
-            drawCardStack.pop();
-            temp.setOnClickListener(null);
-            temp.setOnDragListener(null);
-            drawCardStack.push(temp);
-        }*/
-
         card.setOnClickListener(drawCardOnClickListener);
         card.setOnDragListener(null);
         card.setPosition(drawCardPosition);
@@ -137,15 +127,21 @@ public class SolitairGameActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            if(drawCardStack.empty())
+            if(drawCardStack.size() == 1)
             {
                 refillDrawCardStack();
             }
             else {
+                RelativeLayout drawRelativeLayout = (RelativeLayout) findViewById(R.id.drawRelativeLayout);
+
                 Log.i("min" , "ana hna");
                 Card card = drawCardStack.peek();
+                drawRelativeLayout.removeView(card);
                 drawCardStack.pop();
+                Log.i("min" ,  "before " + Float.toString(card.getX()) + " " + Float.toString(card.getY()));
                 card = cardForDrawn(card);
+                drawRelativeLayout.addView(card);
+                Log.i("min" ,  "after " + Float.toString(card.getX()) + " " + Float.toString(card.getY()));
                 drawnCardStack.push(card);
             }
         }
@@ -204,6 +200,9 @@ public class SolitairGameActivity extends AppCompatActivity {
             playCardPostion.add(new Pair<Float, Float>(x , y));
             Card card = new Card(getBaseContext() , R.drawable.clubs1 , baseImageButton.getLayoutParams());
             card.setPosition(playCardPostion.get(i));
+            card.setPlay(true);
+            card.setPlayPosition(i);
+            card.setOnClickListener(cardOnClickListner);
             playRelativeLayout.addView(card);
             x += cardWidth;
         }
@@ -215,31 +214,6 @@ public class SolitairGameActivity extends AppCompatActivity {
 
     /*--------------------------------------------  Finished Card ----------------------------------------------*/
 
-    private Card cardForFinished(int idx , Card card)
-    {
-        if(!finishedCard.get(idx).empty())
-        {
-            Card temp = finishedCard.get(idx).peek();
-            finishedCard.get(idx).pop();
-            temp .setOnClickListener(null);
-            temp.setOnDragListener(null);
-            finishedCard.get(idx).push(temp);
-        }
-
-        remainingCards--;
-        card.setPlay(false);
-        card.setFinishedPosition(idx);
-        card.setFinished(true);
-        card.setPosition(new Pair<Float, Float>(finishedCardPosition.get(idx).first , finishedCardPosition.get(idx).second));
-
-        if(isWin())
-        {
-            Toast.makeText(getBaseContext() , (String)"Al3b yla",
-                    Toast.LENGTH_LONG).show();
-        }
-
-        return card;
-    }
 
     private void initializeFinishedCardPosition()
     {
@@ -249,6 +223,7 @@ public class SolitairGameActivity extends AppCompatActivity {
 
         for(int i = 0 ; i < 4 ; i++)
         {
+            finishedCard.add(new Stack<Card>());
             Log.i("min" ,Integer.toString(i));
             finishedCardPosition.add(new Pair<Float, Float>(x , y));
             Card card = new Card(getBaseContext() , R.drawable.clubs1 , baseImageButton.getLayoutParams());
@@ -256,6 +231,11 @@ public class SolitairGameActivity extends AppCompatActivity {
             finisehedCardRelativeView.addView(card);
             x += cardWidth;
         }
+    }
+
+    private Card cardForFinished(int pos , Card card){
+
+        return card;
     }
 
 
@@ -276,8 +256,58 @@ public class SolitairGameActivity extends AppCompatActivity {
     private View.OnClickListener cardOnClickListner = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            Card card = ((Card) v);
 
+            RelativeLayout finishedRelativeLayout = (RelativeLayout) findViewById(R.id.finishedCardsRelativeLayout);
+            int lastNumber = -1 , pos = 0;
+            Log.i("min" , card.getName());
+            switch(card.getName())
+            {
+                case "hearts":
+                    if(finishedCard.get(1).size() != 0){
+                        lastNumber = finishedCard.get(1).peek().getNumber();
+                    }
+                    if(lastNumber == card.getNumber() - 1){
+                        pos = 1;
+                    }
+                    break;
+                case"diamonds":
+                    if(finishedCard.get(2).size() != 0){
+                        lastNumber = finishedCard.get(2).peek().getNumber();
+                    }
+                    if(lastNumber == card.getNumber() - 1) {
+                        pos = 2;
+                    }
+                    break;
+                case "clubs":
+                    if(finishedCard.get(3).size() != 0){
+                        lastNumber = finishedCard.get(3).peek().getNumber();
+                        Log.i("min" , Integer.toString(lastNumber));
+                    }
 
+                    Log.i("min" , Integer.toString(lastNumber) + " "  + Integer.toString(card.getNumber()));
+                    if(lastNumber == card.getNumber() - 1) {
+                    Log.i("min" , Integer.toString(lastNumber));
+
+                        pos = 3;
+                    }
+                    break;
+                case "spades":
+                    if(finishedCard.get(0).size() != 0){
+                        lastNumber = finishedCard.get(0).peek().getNumber();
+                    }
+                    if(lastNumber == card.getNumber() - 1) {
+                        pos = 0;
+                    }
+                    break;
+            }
+
+            if(pos != -1){
+                RelativeLayout parentRelativeLayout = (RelativeLayout) card.getParent();
+                parentRelativeLayout.removeView(card);
+                card = cardForFinished(pos , card);
+                finishedRelativeLayout.addView(card);
+            }
         }
     };
 

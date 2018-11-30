@@ -13,18 +13,18 @@ public class SolitairStartpage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_solitair_startpage);
 
-
+/*
         Button StartButton = (Button) findViewById(R.id.StartButton);
        StartButton.setOnClickListener(
                 new Button.OnClickListener() {
                     @Override
                    public void onClick(View v) {
-                       Intent intent = new Intent(SolitairStartpage.this, SolitairDifficultyActivity.class);
+                       Intent intent = new Intent(solitairStartpage.this, SolitairDifficultyActivity.class);
                         //startActivity(intent);
                     }
                }
 
-        );
+        );*/
     }
 
 
