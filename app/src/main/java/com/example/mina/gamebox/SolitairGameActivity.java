@@ -22,6 +22,7 @@ public class SolitairGameActivity extends AppCompatActivity {
     ArrayList<Stack<Card>> playCardStack , finishedCard;
     Pair<Float,Float> drawCardPosition , drawnCardPosition;
     ArrayList<Pair<Float , Float>> playCardPostion , finishedCardPosition;
+    ArrayList<String> cardType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +40,22 @@ public class SolitairGameActivity extends AppCompatActivity {
         drawnCardStack = new Stack<Card>();
         playCardStack = new ArrayList<Stack<Card>>();
         finishedCard = new ArrayList<Stack<Card>>();
+        cardType = new ArrayList<String>();
 
-        initializeFinishedCardPosition();
+        initializeCardType();
         initializeCards();
         initializeDrawStack();
         initializeDrawnStackPosition();
         initializePlayCardPosition();
+        initializeFinishedCardPosition();
     }
 
+    private void initializeCardType() {
+        cardType.add(new String("hearts"));
+        cardType.add(new String("diamonds"));
+        cardType.add(new String("clubs"));
+        cardType.add(new String("spades"));
+    }
 
     private void initializeCards() {
         for(int i = 0 ; i < 52 ; i++)
@@ -194,42 +203,16 @@ public class SolitairGameActivity extends AppCompatActivity {
         Float x = playRelativeLayout.getX() , y = playRelativeLayout.getY();
         playCardPostion = new ArrayList<Pair<Float, Float>>();
 
+        Log.i("min", "CARASDKASJFKLASHK");
         for(int i = 0 ; i < 7 ; i++)
         {
-            Log.i("min" ,Integer.toString(i));
             playCardPostion.add(new Pair<Float, Float>(x , y));
-            Card card;
-            if(i == 0){
 
-                card = new Card(getBaseContext() , R.drawable.hearts1 , baseImageButton.getLayoutParams());
-            }
-            else if(i == 1) {
+            String cardName = cardType.get(i % 4);
+            cardName += Integer.toString(i%4 + 1);
 
-                card = new Card(getBaseContext(), R.drawable.clubs1, baseImageButton.getLayoutParams());
-            }
-            else if(i == 2)
-            {
-
-                card = new Card(getBaseContext() , R.drawable.spades1, baseImageButton.getLayoutParams());
-            }
-
-            else if(i == 3){
-
-                card = new Card(getBaseContext() , R.drawable.diamonds1 , baseImageButton.getLayoutParams());
-            }
-            else if(i == 4){
-
-                card = new Card(getBaseContext() , R.drawable.clubs2 , baseImageButton.getLayoutParams());
-            }
-            else if(i == 5){
-
-                card = new Card(getBaseContext() , R.drawable.diamonds2 , baseImageButton.getLayoutParams());
-            }
-            else {
-
-                card = new Card(getBaseContext() , R.drawable.hearts2 , baseImageButton.getLayoutParams());
-            }
-
+            int pictureId = getBaseContext().getResources().getIdentifier(cardName , "drawable" , getBaseContext().getPackageName());
+            Card card = new Card(getBaseContext() , pictureId , baseImageButton.getLayoutParams());
 
             card.setPosition(playCardPostion.get(i));
             card.setPlay(true);
