@@ -199,23 +199,35 @@ public class SolitairGameActivity extends AppCompatActivity {
             Log.i("min" ,Integer.toString(i));
             playCardPostion.add(new Pair<Float, Float>(x , y));
             Card card;
-            if(i % 4 == 0){
+            if(i == 0){
 
                 card = new Card(getBaseContext() , R.drawable.hearts1 , baseImageButton.getLayoutParams());
             }
-            else if(i % 4 == 1) {
+            else if(i == 1) {
 
                 card = new Card(getBaseContext(), R.drawable.clubs1, baseImageButton.getLayoutParams());
             }
-            else if(i % 4 == 2)
+            else if(i == 2)
             {
 
                 card = new Card(getBaseContext() , R.drawable.spades1, baseImageButton.getLayoutParams());
             }
 
-            else{
+            else if(i == 3){
 
                 card = new Card(getBaseContext() , R.drawable.diamonds1 , baseImageButton.getLayoutParams());
+            }
+            else if(i == 4){
+
+                card = new Card(getBaseContext() , R.drawable.clubs2 , baseImageButton.getLayoutParams());
+            }
+            else if(i == 5){
+
+                card = new Card(getBaseContext() , R.drawable.diamonds2 , baseImageButton.getLayoutParams());
+            }
+            else {
+
+                card = new Card(getBaseContext() , R.drawable.hearts2 , baseImageButton.getLayoutParams());
             }
 
 
