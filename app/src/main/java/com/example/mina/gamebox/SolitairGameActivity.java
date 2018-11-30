@@ -325,6 +325,16 @@ public class SolitairGameActivity extends AppCompatActivity {
             if(pos != -1){
                 RelativeLayout parentRelativeLayout = (RelativeLayout) card.getParent();
                 parentRelativeLayout.removeView(card);
+
+                if (parentRelativeLayout.getId() == R.id.drawRelativeLayout) {
+                    drawnCardStack.pop();
+                }
+                else {
+                    playCardStack.get(card.getPlayPosition()).pop();
+                    card.setPlay(false);
+                }
+                card.setFinished(true);
+                card.setFinishedPosition(pos);
                 finishedRelativeLayout.addView(card);
                 card = cardForFinished(pos , card);
             }
