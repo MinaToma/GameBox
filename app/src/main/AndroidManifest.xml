@@ -9,14 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SolitairGameActivity" android:screenOrientation="portrait">
+        <activity
+            android:name=".SolitairGameActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SolitairDifficultyActivity"></activity>
+        <activity android:name=".SolitairDifficultyActivity" />
+        <activity android:name=".SolitairStartpage"></activity>
     </application>
 
 </manifest>
