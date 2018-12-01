@@ -9,7 +9,7 @@ import android.widget.ImageButton;
 
 public class Card extends android.support.v7.widget.AppCompatImageButton {
 
-    private int pictureId , playPosition , finishedPosition , number , inPlayPosittion;
+    private int pictureId , playPosition , finishedPosition , number , inPlayPosition;
     private String name;
     private Boolean isPlay , isFinished;
 
@@ -55,12 +55,20 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
         setLayoutParams(newLayout);
     }
 
-    public int getInPlayPosittion() {
-        return inPlayPosittion;
+    public int getinPlayPosition() {
+        return inPlayPosition;
     }
 
-    public void setInPlayPosittion(int inPlayPosittion) {
-        this.inPlayPosittion = inPlayPosittion;
+    public int getInPlayPosition() {
+        return inPlayPosition;
+    }
+
+    public void setInPlayPosition(int inPlayPosition) {
+        this.inPlayPosition = inPlayPosition;
+    }
+
+    public void setinPlayPosition(int inPlayPosition) {
+        this.inPlayPosition = inPlayPosition;
     }
 
     public int getPictureId() {

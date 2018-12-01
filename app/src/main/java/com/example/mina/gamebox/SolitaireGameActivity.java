@@ -23,7 +23,8 @@ import java.util.Stack;
 
 public class SolitaireGameActivity extends AppCompatActivity {
 
-    int remainingCards, cardWidth, cardHeight;
+    int remainingCards;
+    float cardWidth, cardHeight , margin;
     ImageButton baseImageButton;
     ArrayList<Card> cards;
     Stack<Card> drawCardStack, drawnCardStack;
@@ -43,6 +44,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
     }
 
     private void initializeAll() {
+        margin = 7f;
         RelativeLayout drawRelativeView = (RelativeLayout) findViewById(R.id.drawRelativeLayout);
 
         baseImageButton = (ImageButton) findViewById(R.id.baseImageButton);
@@ -68,7 +70,6 @@ public class SolitaireGameActivity extends AppCompatActivity {
         testing(3);
         testing(2);
         testing(1);
-
     }
 
     private void testing(int x) {
@@ -81,11 +82,11 @@ public class SolitaireGameActivity extends AppCompatActivity {
             int pictureId = getApplicationContext().getResources().getIdentifier(cardName, "drawable", getApplicationContext().getPackageName());
             Card card = new Card(getApplicationContext(), pictureId , baseImageButton.getLayoutParams());
 
-            card.setPosition(playCardPostion.get(j).first , playCardPostion.get(j).second + ((6 - x) * 70) );
+            card.setPosition(playCardPostion.get(j).first + margin , playCardPostion.get(j).second + ((6 - x) * 70) );
             card.setPlay(true);
             card.setPlayPosition(j);
             card.setOnTouchListener(onCardTouch);
-            card.setInPlayPosittion(playCardArrayList.get(j).size());
+            card.setInPlayPosition(playCardArrayList.get(j).size());
             card.setOnClickListener(cardOnClickListner);
             playCardArrayList.get(j).add(card);
             playRelativeLayout.addView(card);
@@ -117,7 +118,6 @@ public class SolitaireGameActivity extends AppCompatActivity {
     private Card cardForDrawn(Card card) {
         card.setOnClickListener(cardOnClickListner);
 
-
         //card.setOnDragListener();
         card.setPosition(drawnCardPosition);
         Log.i("min", "inside " + Float.toString(card.getX()) + " " + Float.toString(card.getY()));
@@ -135,8 +135,8 @@ public class SolitaireGameActivity extends AppCompatActivity {
     private void initializeDrawStack() {
         RelativeLayout drawRelativeLayout = (RelativeLayout) findViewById(R.id.drawRelativeLayout);
 
-        drawCardPosition = new Pair<Float, Float>(drawRelativeLayout.getX() + cardWidth, drawRelativeLayout.getY());
-        Card emptyCard = new Card(getApplicationContext(), R.drawable.diamonds2, baseImageButton.getLayoutParams());
+        drawCardPosition = new Pair<Float, Float>(drawRelativeLayout.getX() + cardWidth + margin, drawRelativeLayout.getY());
+        Card emptyCard = new Card(getApplicationContext(), R.drawable.empty, baseImageButton.getLayoutParams());
         emptyCard = cardForDraw(emptyCard);
         emptyCard.setImageResource(emptyCard.getPictureId());
         drawRelativeLayout.addView(emptyCard);
@@ -212,7 +212,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
     private Card cardForPlay(int idx, Card card) {
         card.setPlay(true);
         card.setPlayPosition(idx);
-        card.setInPlayPosittion(playCardArrayList.get(idx).size()-1);
+        card.setInPlayPosition(playCardArrayList.get(idx).size()-1);
         card.setFinished(false);
         card.setPosition(new Pair<Float, Float>(playCardPostion.get(idx).first, playCardPostion.get(idx).second));
 
@@ -270,7 +270,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
             playCardStack.get(i).push(card);
             playRelativeLayout.addView(card);
             */
-            x += cardWidth;
+            x += cardWidth + margin;
         }
     }
 
@@ -376,7 +376,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
                 if (parentRelativeLayout.getId() == R.id.drawRelativeLayout) {
                     drawnCardStack.pop();
                 } else {
-                    if(card.getInPlayPosittion() != playCardArrayList.get(card.getPlayPosition()).size() - 1) return;
+                    if(card.getInPlayPosition() != playCardArrayList.get(card.getPlayPosition()).size() - 1) return;
 
                     playCardArrayList.get(card.getPlayPosition()).remove(playCardArrayList.get(card.getPlayPosition()).size()-1);
                     card.setPlay(false);
@@ -394,7 +394,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
     private  Boolean canPickCard(Card card){
         boolean canPick = true;
         int lastNumber = card.getNumber();
-        for(int i = card.getInPlayPosittion() + 1 ; i < playCardArrayList.get(card.getPlayPosition()).size() ; i++){
+        for(int i = card.getInPlayPosition() + 1 ; i < playCardArrayList.get(card.getPlayPosition()).size() ; i++){
             Log.i("min" , "gaeasdhfkjadshkfh" + " " + Integer.toString(playCardArrayList.get(card.getPlayPosition()).get(i).getNumber()) + " " + Integer.toString(lastNumber) + " " + Integer.toString(i));
             if(playCardArrayList.get(card.getPlayPosition()).get(i).getNumber() != lastNumber - 1 ){
                 canPick = false;
@@ -428,10 +428,10 @@ public class SolitaireGameActivity extends AppCompatActivity {
                // parentLayout.removeView(playRelativeArray.get(card.getPlayPosition()));
 
                 int add = 0;
-                for(int i = card.getInPlayPosittion() ; i < playCardArrayList.get(card.getPlayPosition()).size(); i++){
+                for(int i = card.getInPlayPosition() ; i < playCardArrayList.get(card.getPlayPosition()).size(); i++){
                     Card t = playCardArrayList.get(card.getPlayPosition()).get(i);
                     parentLayout.removeView(t);
-                    Log.i("min"  ,"ahhhhhhhhhhhhhhhhhhhhhhh" + " " + Integer.toString(t.getNumber()) + " " + Integer.toString(t.getInPlayPosittion()));
+                    Log.i("min"  ,"ahhhhhhhhhhhhhhhhhhhhhhh" + " " + Integer.toString(t.getNumber()) + " " + Integer.toString(t.getInPlayPosition()));
                     t.setPosition(0f,0f + add);
                     add += 50;
                     playRelativeArray.get(card.getPlayPosition()).removeView(t);
@@ -450,7 +450,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
             Card card = ((Card) v);
             playRelativeArray.get(card.getPlayPosition()).removeAllViews();
             /*Card card = ((Card) v);
-            for(int i = card.getInPlayPosittion() ; i < playCardArrayList.get(card.getPlayPosition()).size(); i++){
+            for(int i = card.getInPlayPosition() ; i < playCardArrayList.get(card.getPlayPosition()).size(); i++){
                 Card t = playCardArrayList.get(card.getPlayPosition()).get(i);
 
                 playRelativeArray.get(card.getPlayPosition()).removeAllViews(t);
