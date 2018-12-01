@@ -244,14 +244,14 @@ public class SolitaireGameActivity extends AppCompatActivity {
                     ViewGroup.LayoutParams.MATCH_PARENT));
             tempRelativeLayout.setX(playCardPostion.get(i).first);
             tempRelativeLayout.setY(playCardPostion.get(i).second);
-            if(i % 2 == 1){
+            /*if(i % 2 == 1){
 
                 tempRelativeLayout.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.colorPrimary));
             }
             else {
                 tempRelativeLayout.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.colorAccent));
 
-            }
+            }*/
             playRelativeArray.add(tempRelativeLayout);
             playRelativeLayout.addView(tempRelativeLayout);
 
@@ -445,10 +445,16 @@ public class SolitaireGameActivity extends AppCompatActivity {
                 ClipData data = ClipData.newPlainText("", "");
                 RelativeLayout.DragShadowBuilder shadowBuilder = new RelativeLayout.DragShadowBuilder(tv);
                 tv.startDrag(data, shadowBuilder, tv , 0);
-                return true;
-            } else {
-                return false;
             }
+
+           /* Card card = ((Card) v);
+            for(int i = card.getInPlayPosittion() ; i < playCardArrayList.get(card.getPlayPosition()).size(); i++){
+                Card t = playCardArrayList.get(card.getPlayPosition()).get(i);
+
+                playRelativeArray.get(card.getPlayPosition()).addView(t);
+            }*/
+
+            return false;
         }
     };
 

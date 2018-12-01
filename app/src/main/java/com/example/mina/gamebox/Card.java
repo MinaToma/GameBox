@@ -5,6 +5,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 public class Card extends android.support.v7.widget.AppCompatImageButton {
 
@@ -50,7 +51,8 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
         playPosition = finishedPosition = 0;
         isPlay = isFinished = false;
 
-        setLayoutParams(layoutParams);
+        ViewGroup.LayoutParams newLayout = new ViewGroup.LayoutParams(layoutParams);
+        setLayoutParams(newLayout);
     }
 
     public int getInPlayPosittion() {
