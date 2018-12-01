@@ -64,21 +64,20 @@ public class SolitaireGameActivity extends AppCompatActivity {
         initializeDrawnStackPosition();
         initializePlayCardPosition();
         initializeFinishedCardPosition();
-        testing(6);
-        testing(5);
-        testing(4);
-        testing(3);
-        testing(2);
         testing(1);
+        testing(5);
+
+        testing(6);
+
     }
 
     private void testing(int x) {
 
         RelativeLayout playRelativeLayout = (RelativeLayout) findViewById(R.id.playCardRelativeView);
-
         for(int j = 0 ; j <7 ; j++){
             String cardName = cardType.get(j%4);
             cardName += Integer.toString(x);
+            Log.i("min" , "heokasidhgljskh" +  cardName);
             int pictureId = getApplicationContext().getResources().getIdentifier(cardName, "drawable", getApplicationContext().getPackageName());
             Card card = new Card(getApplicationContext(), pictureId , baseImageButton.getLayoutParams());
 
@@ -127,7 +126,6 @@ public class SolitaireGameActivity extends AppCompatActivity {
     }
 
     /*----------------------------------------------------------------------------------------------------*/
-
 
 
     /*---------------------------------------------- Draw Stack ------------------------------------------*/
@@ -232,7 +230,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
 
     private void initializePlayCardPosition() {
         RelativeLayout playRelativeLayout = (RelativeLayout) findViewById(R.id.playCardRelativeView);
-        Float x = playRelativeLayout.getX(), y = playRelativeLayout.getY();
+        Float x = playRelativeLayout.getX() + margin , y = playRelativeLayout.getY();
         playCardPostion = new ArrayList<Pair<Float, Float>>();
 
         Log.i("min", "CARASDKASJFKLASHK");
@@ -413,12 +411,10 @@ public class SolitaireGameActivity extends AppCompatActivity {
 
 
                 Log.i("min" , "gere");
-                Card temp = ((Card) v);
-                /*if(!canPickCard(temp)) {
-                    return false;
-                }*/
-
                 Card card = ((Card) v);
+                if(!canPickCard(card)) {
+                    return false;
+                }
 
                 Log.i("min" , "gere2");
 
