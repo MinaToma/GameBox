@@ -8,9 +8,13 @@ import android.view.ViewGroup;
 
 public class Card extends android.support.v7.widget.AppCompatImageButton {
 
-    private int pictureId , playPosition , finishedPosition , number;
+    private int pictureId , playPosition , finishedPosition , number , inPlayPosittion;
     private String name;
     private Boolean isPlay , isFinished;
+
+    public Card(Context context) {
+        super(context);
+    };
 
     public Card(Context context , int pictureId , ViewGroup.LayoutParams layoutParams) {
         super(context);
@@ -47,6 +51,14 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
         isPlay = isFinished = false;
 
         setLayoutParams(layoutParams);
+    }
+
+    public int getInPlayPosittion() {
+        return inPlayPosittion;
+    }
+
+    public void setInPlayPosittion(int inPlayPosittion) {
+        this.inPlayPosittion = inPlayPosittion;
     }
 
     public int getPictureId() {

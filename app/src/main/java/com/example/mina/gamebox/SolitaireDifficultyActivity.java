@@ -9,12 +9,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class SolitairDifficultyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class SolitaireDifficultyActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_solitair_difficulty);
+        setContentView(R.layout.activity_solitaire_difficulty);
+
         Spinner difficultySpinner = findViewById(R.id.selectDifficultyLevel);
         ArrayAdapter<CharSequence> difficultyAdapter = ArrayAdapter.createFromResource(this,R.array.solitairDifficultyLevel,android.R.layout.simple_spinner_item);
         difficultyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
@@ -23,11 +24,9 @@ public class SolitairDifficultyActivity extends AppCompatActivity implements Ada
     }
 
     public void backButtonOnClickListener(View view) {
-        Intent intent= new Intent(this,SolitairGameActivity.class);
+        Intent intent= new Intent(this,SolitaireStartpage.class);
         startActivity(intent);
-
     }
-
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -41,7 +40,8 @@ public class SolitairDifficultyActivity extends AppCompatActivity implements Ada
     }
 
     public void playNowButtonOnClickListener(View view) {
-
+        Intent intent = new Intent(this , SolitaireGameActivity.class);
+        startActivity(intent)   ;
     }
 }
 /*

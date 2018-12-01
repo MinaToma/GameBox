@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SolitairGameActivity"
+            android:name=".SolitaireGameActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,8 +18,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SolitairDifficultyActivity" />
-        <activity android:name=".SolitairStartpage"></activity>
+        <activity
+            android:name=".SolitaireDifficultyActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <activity
+            android:name=".SolitaireStartpage"
+            android:screenOrientation="portrait">
+
+        </activity>
     </application>
 
 </manifest>
