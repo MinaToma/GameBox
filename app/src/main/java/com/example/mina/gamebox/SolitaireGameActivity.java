@@ -1,9 +1,6 @@
 package com.example.mina.gamebox;
 
 import android.content.ClipData;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,24 +12,27 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Random;
 import java.util.Stack;
 
 public class SolitaireGameActivity extends AppCompatActivity {
 
     int remainingCards;
-    float cardWidth, cardHeight , margin;
+    float cardWidth, cardHeight, margin;
     ImageButton baseImageButton;
     ArrayList<Card> cards;
     Stack<Card> drawCardStack, drawnCardStack;
+    //4 places suits
     ArrayList<Stack<Card>> finishedCard;
+    //7 stacks on tableau
     ArrayList<ArrayList<Card>> playCardArrayList;
+    //dragging
     ArrayList<RelativeLayout> playRelativeArray;
+    //positioning all cards
     Pair<Float, Float> drawCardPosition, drawnCardPosition;
     ArrayList<Pair<Float, Float>> playCardPostion, finishedCardPosition;
+    //names of suits to load images
     ArrayList<String> cardType;
 
     @Override
@@ -44,7 +44,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
     }
 
     private void initializeAll() {
-        margin = 7f;
+        margin = 8f;
         RelativeLayout drawRelativeView = (RelativeLayout) findViewById(R.id.drawRelativeLayout);
 
         baseImageButton = (ImageButton) findViewById(R.id.baseImageButton);
@@ -79,8 +79,8 @@ public class SolitaireGameActivity extends AppCompatActivity {
         for(int j = 0 ; j <7 ; j++){
             String cardName = cardType.get(j%4);
             cardName += Integer.toString(x);
-            int pictureId = getApplicationContext().getResources().getIdentifier(cardName, "drawable", getApplicationContext().getPackageName());
-            Card card = new Card(getApplicationContext(), pictureId , baseImageButton.getLayoutParams());
+            int pictureID = getApplicationContext().getResources().getIdentifier(cardName, "drawable", getApplicationContext().getPackageName());
+            Card card = new Card(getApplicationContext(), pictureID , baseImageButton.getLayoutParams());
 
             card.setPosition(playCardPostion.get(j).first + margin , playCardPostion.get(j).second + ((6 - x) * 70) );
             card.setPlay(true);
@@ -121,7 +121,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
         //card.setOnDragListener();
         card.setPosition(drawnCardPosition);
         Log.i("min", "inside " + Float.toString(card.getX()) + " " + Float.toString(card.getY()));
-        card.setImageResource(card.getPictureId());
+        card.setImageResource(card.getPictureID());
 
         return card;
     }
@@ -138,7 +138,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
         drawCardPosition = new Pair<Float, Float>(drawRelativeLayout.getX() + cardWidth + margin, drawRelativeLayout.getY());
         Card emptyCard = new Card(getApplicationContext(), R.drawable.empty, baseImageButton.getLayoutParams());
         emptyCard = cardForDraw(emptyCard);
-        emptyCard.setImageResource(emptyCard.getPictureId());
+        emptyCard.setImageResource(emptyCard.getPictureID());
         drawRelativeLayout.addView(emptyCard);
         drawCardStack.add(emptyCard);
 
@@ -232,7 +232,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
 
     private void initializePlayCardPosition() {
         RelativeLayout playRelativeLayout = (RelativeLayout) findViewById(R.id.playCardRelativeView);
-        Float x = playRelativeLayout.getX(), y = playRelativeLayout.getY();
+        Float x = playRelativeLayout.getX() + margin , y = playRelativeLayout.getY();
         playCardPostion = new ArrayList<Pair<Float, Float>>();
 
         Log.i("min", "CARASDKASJFKLASHK");

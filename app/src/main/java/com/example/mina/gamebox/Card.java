@@ -3,26 +3,24 @@ package com.example.mina.gamebox;
 import android.content.Context;
 import android.util.Log;
 import android.util.Pair;
-import android.util.TypedValue;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 public class Card extends android.support.v7.widget.AppCompatImageButton {
 
-    private int pictureId , playPosition , finishedPosition , number , inPlayPosition;
+    private int pictureID, playPosition , finishedPosition , number , inPlayPosition;
     private String name;
     private Boolean isPlay , isFinished;
 
     public Card(Context context) {
         super(context);
-    };
+    }
 
-    public Card(Context context , int pictureId , ViewGroup.LayoutParams layoutParams) {
+    public Card(Context context , int pictureID, ViewGroup.LayoutParams layoutParams) {
         super(context);
-        this.pictureId = pictureId;
-        setImageResource(pictureId);
+        this.pictureID = pictureID;
+        setImageResource(pictureID);
 
-        name = context.getResources().getResourceName(pictureId);
+        name = context.getResources().getResourceName(pictureID);
 
         if(Character.isDigit(name.codePointAt(name.length()-2))){
             number = name.charAt(name.length()-2) - '0';
@@ -71,8 +69,8 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
         this.inPlayPosition = inPlayPosition;
     }
 
-    public int getPictureId() {
-        return pictureId;
+    public int getPictureID() {
+        return pictureID;
     }
 
     public int getNumber() {
