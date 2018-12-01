@@ -447,11 +447,13 @@ public class SolitaireGameActivity extends AppCompatActivity {
                 tv.startDrag(data, shadowBuilder, tv , 0);
             }
 
-           /* Card card = ((Card) v);
+            Card card = ((Card) v);
+            playRelativeArray.get(card.getPlayPosition()).removeAllViews();
+            /*Card card = ((Card) v);
             for(int i = card.getInPlayPosittion() ; i < playCardArrayList.get(card.getPlayPosition()).size(); i++){
                 Card t = playCardArrayList.get(card.getPlayPosition()).get(i);
 
-                playRelativeArray.get(card.getPlayPosition()).addView(t);
+                playRelativeArray.get(card.getPlayPosition()).removeAllViews(t);
             }*/
 
             return false;
