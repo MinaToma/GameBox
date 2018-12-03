@@ -123,7 +123,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
         //card.setOnDragListener();
         card.setPosition(drawnCardPosition);
         Log.i("min", "inside " + Float.toString(card.getX()) + " " + Float.toString(card.getY()));
-        card.setImageResource(card.getPictureId());
+        card.setImageResource(card.getPictureID());
 
         return card;
     }
@@ -139,7 +139,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
         drawCardPosition = new Pair<Float, Float>(drawRelativeLayout.getX() + cardWidth + margin, drawRelativeLayout.getY());
         Card emptyCard = new Card(getApplicationContext(), R.drawable.empty, baseImageButton.getLayoutParams());
         emptyCard = cardForDraw(emptyCard);
-        emptyCard.setImageResource(emptyCard.getPictureId());
+        emptyCard.setImageResource(emptyCard.getPictureID());
         drawRelativeLayout.addView(emptyCard);
         drawCardStack.add(emptyCard);
 
