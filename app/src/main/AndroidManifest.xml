@@ -11,22 +11,21 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".SolitaireGameActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".SolitaireDifficultyActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+        </activity>
         <activity
             android:name=".SolitaireStartpage"
             android:screenOrientation="portrait">
-
         </activity>
         <activity android:name=".Klondike">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
     </application>
 
