@@ -2,6 +2,7 @@ package com.example.mina.gamebox;
 
 import android.content.ClipData;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
@@ -64,10 +65,12 @@ public class SolitaireGameActivity extends AppCompatActivity {
         initializeDrawnStackPosition();
         initializePlayCardPosition();
         initializeFinishedCardPosition();
-        testing(1);
-        testing(5);
-
         testing(6);
+        testing(5);
+        testing(4);
+        testing(3);
+        testing(2);
+        testing(1);
 
     }
 
@@ -250,6 +253,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
                 tempRelativeLayout.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.colorAccent));
 
             }*/
+
             playRelativeArray.add(tempRelativeLayout);
             playRelativeLayout.addView(tempRelativeLayout);
 
@@ -434,12 +438,16 @@ public class SolitaireGameActivity extends AppCompatActivity {
                     playRelativeArray.get(card.getPlayPosition()).addView(t );
                 }
 
-
                 //parentLayout.addView(playRelativeArray.get(card.getPlayPosition()));
 
                 RelativeLayout tv = playRelativeArray.get(card.getPlayPosition());
+                Log.i("pos" , Float.toString(playCardPostion.get(card.getPlayPosition()).second) + " " + Float.toString(tv.getY()));
+                tv.setY(300);
                 ClipData data = ClipData.newPlainText("", "");
                 RelativeLayout.DragShadowBuilder shadowBuilder = new RelativeLayout.DragShadowBuilder(tv);
+                shadowBuilder.onProvideShadowMetrics(new Point(shadowBuilder.getView().getLayoutParams().width ,
+                        shadowBuilder.getView().getLayoutParams().height) ,
+                        new Point(-500 , 0));
                 tv.startDrag(data, shadowBuilder, tv , 0);
             }
 
@@ -455,7 +463,6 @@ public class SolitaireGameActivity extends AppCompatActivity {
             return false;
         }
     };
-
 
     private View.OnDragListener onCardDrag = new View.OnDragListener() {
         @Override
@@ -480,5 +487,4 @@ public class SolitaireGameActivity extends AppCompatActivity {
     };
 
     /*----------------------------------------------------------------------------------------------------*/
-
 }
