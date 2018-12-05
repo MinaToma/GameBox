@@ -1,17 +1,11 @@
 package com.example.mina.gamebox;
 
 import android.content.Context;
-import android.graphics.LightingColorFilter;
-import android.graphics.Paint;
 import android.support.constraint.ConstraintLayout;
-import android.support.constraint.Placeholder;
-import android.util.Log;
 import android.util.Pair;
-import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -81,6 +75,7 @@ public class Game {
 
                 card.toPlayArea(i-1 , playArea.get(i-1).size() , new Pair<Float, Float>(playAreaPosition.get(i-1).first ,
                         playAreaPosition.get(i-1).second + card.getLayoutParams().height / 4 * playArea.get(i-1).size()));
+                card.setLastPosition(card.getPosition());
                 playArea.get(i-1).add(card);
 
                 addCardToConstraint(card);
@@ -94,7 +89,7 @@ public class Game {
     }
 
     private void fillDeck() {
-        Card card = new Card(context , emptyDeckID , coverCardID , cardParams , onTouchListener , onDragListener , constraintLayout , onClickListener);
+        Card card = new Card(context , emptyDeckID , coverCardID , cardParams , onTouchListener , constraintLayout);
         card.toDeck(deckPosition);
         card.showCard();
         deck.add(card);
@@ -126,13 +121,11 @@ public class Game {
                 String name = cardType.get(i) + Integer.toString(j);
                 int id = context.getResources().getIdentifier(name , "drawable" ,  context.getPackageName());
 
-                Card card = new Card(context , id , coverCardID , cardParams , onTouchListener , onDragListener , constraintLayout , onClickListener);
+                Card card = new Card(context , id , coverCardID , cardParams , onTouchListener , constraintLayout );
                 card.setPosition(deckPosition);
-
                 allCards.add(card);
             }
             suitIdx.put(cardType.get(i) , i);
-
         }
     }
 
@@ -196,31 +189,6 @@ public class Game {
         return  target.getRed() != dragged.getRed() && target.getNumber() == dragged.getNumber() + 1;
     }
 
-    View.OnClickListener onClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Card card = ((Card) v);
-            if(card.getFaceUp() && !card.getDeck()){
-                int lastCardNumber = 0;
-                if(!suitsCard.get(suitIdx.get(card.getName())).empty()){
-                    lastCardNumber = suitsCard.get(suitIdx.get(card.getName())).peek().getNumber();
-                }
-                Log.i("PlayArea" , "Clicked" + " " + Integer.toString(lastCardNumber) + " " + Integer.toString(card.getNumber()));
-                if(card.getNumber() == lastCardNumber + 1){
-                    cardToSuits(suitIdx.get(card.getName()) , card);
-                }
-            }
-            else if(card.getDeck()){
-                if(deck.size() == 1){
-                    reFillDeck();
-                }
-                else {
-                    cardToHand(card);
-                }
-            }
-        }
-    };
-
     View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View view, MotionEvent event) {
 
@@ -262,7 +230,6 @@ public class Game {
                     break;
                 }
                 case MotionEvent.ACTION_UP: {
-                    Log.i("PlayArea" , "outer");
                     if (card.getPosition().equals(card.getLastPosition())) {
 
                         switch (card.getNewState()) {
@@ -281,8 +248,6 @@ public class Game {
                     }
                     else
                     {
-                        Log.i("PlayArea" , "inner");
-
                         int playIdx = -1;
                         for(int i = 0 ; i < 7 ; i++){
                             if(playArea.get(i).isEmpty()){
@@ -294,8 +259,6 @@ public class Game {
                                 }
                             }
                             else{
-                                //Log.i("position" , Float.toString(event.getRawX()) + " "+ Float.toString(event.getRawY()) + " "+ Float.toString(playAreaPosition.get(i).first) + " "+  + " " + )
-                                Log.i("position" , Boolean.toString(canLand(card , playArea.get(i).get(playArea.get(i).size()-1)) ));
                                 if(canLand(card , playArea.get(i).get(playArea.get(i).size()-1)) && checkIfInside(event.getRawX() , event.getRawY() , playAreaPosition.get(i).first ,
                                         playAreaPosition.get(i).first + cardParams.width, playAreaPosition.get(i).second + (playArea.get(i).size() - 1) * cardParams.height / 4
                                         , playAreaPosition.get(i).second + cardParams.height + (playArea.get(i).size() - 1) * cardParams.height / 4)){
@@ -307,7 +270,6 @@ public class Game {
 
                         if (playIdx == -1){
                             if(card.getPlay()){
-                                Log.i("positoin" , Integer.toString(playIdx) + " " + card.getName() + " " + Integer.toString(card.getNumber()));
                                 for(int i = card.getInPlayIdx() ; i < playArea.get(card.getPlayIdx()).size() ; i++){
                                     card = playArea.get(card.getPlayIdx()).get(i);
                                     card.setPosition(card.getLastPosition());
@@ -317,7 +279,7 @@ public class Game {
                                 card.setPosition(card.getLastPosition());
                             }
                         }
-                        else{
+                        else {
                             cardToPlay(playIdx , card);
                         }
                     }
@@ -350,18 +312,17 @@ public class Game {
 
         int currIdx = card.getPlayIdx();
         int cardInPlayIdx = card.getInPlayIdx();
-        boolean isPlay = card.getPlay();
-        boolean isFinish = card.getFinished();
-        boolean isHand = card.getHand();
-
-        for(int i = cardInPlayIdx ; i < playArea.get(currIdx).size() ; i++){
-            card = playArea.get(currIdx).get(i);
-            card.toPlayArea(targetIdx , playArea.get(targetIdx).size() , new Pair<Float, Float>(playAreaPosition.get(targetIdx).first ,
-                    playAreaPosition.get(targetIdx).second + playArea.get(targetIdx).size() * cardParams.height / 4));
-            playArea.get(targetIdx).add(card);
-        }
+        Boolean isPlay = card.getPlay();
+        Boolean isFinish = card.getFinished();
+        Boolean isHand = card.getHand();
 
         if(isPlay){
+            for(int i = cardInPlayIdx ; i < playArea.get(currIdx).size() ; i++){
+                card = playArea.get(currIdx).get(i);
+                 card.toPlayArea(targetIdx , playArea.get(targetIdx).size() , new Pair<Float, Float>(playAreaPosition.get(targetIdx).first ,
+                       playAreaPosition.get(targetIdx).second + playArea.get(targetIdx).size() * cardParams.height / 4));
+                playArea.get(targetIdx).add(card);
+            }
             for(int i = playArea.get(currIdx).size() - 1 ; i >= cardInPlayIdx ; i--){
                 playArea.get(currIdx).remove(i);
             }
@@ -372,9 +333,15 @@ public class Game {
             }
         }
         else if(isHand){
+            card.toPlayArea(targetIdx , playArea.get(targetIdx).size() , new Pair<Float, Float>(playAreaPosition.get(targetIdx).first ,
+                    playAreaPosition.get(targetIdx).second + playArea.get(targetIdx).size() * cardParams.height / 4));
+            playArea.get(targetIdx).add(card);
             hand.pop();
         }
         else if(isFinish){
+            card.toPlayArea(targetIdx , playArea.get(targetIdx).size() , new Pair<Float, Float>(playAreaPosition.get(targetIdx).first ,
+                    playAreaPosition.get(targetIdx).second + playArea.get(targetIdx).size() * cardParams.height / 4));
+            playArea.get(targetIdx).add(card);
             suitsCard.get(suitIdx.get(card.getName())).pop();
         }
     }
@@ -392,38 +359,4 @@ public class Game {
         card.toSuits(idx , suitsPosition.get(idx));
         suitsCard.get(idx).add(card);
     }
-
-
-    private View.OnDragListener onDragListener = new View.OnDragListener() {
-        @Override
-        public boolean onDrag(View v , DragEvent event) {
-            Log.i("PlayArea" , "hi");
-            switch (event.getAction()) {
-                case DragEvent.ACTION_DROP:
-                    Card draggedCard = (Card) event.getLocalState();
-                    Card targetCard = ((Card) v);
-
-                    if(targetCard.getPlay()){
-                        if(targetCard.getNumber() == draggedCard.getNumber() && draggedCard.getRed() != targetCard.getRed()){
-                            if(draggedCard.getPlay()){
-                                for(int i = draggedCard.getInPlayIdx() ; i < playArea.get(draggedCard.getPlayIdx()).size() ; i++){
-                                    draggedCard = playArea.get(draggedCard.getPlayIdx()).get(i);
-
-                           //         cardToPlay(targetCard.getPlayIdx() , draggedCard);
-                                }
-                            }
-                            else if(draggedCard.getFinished()){
-                           //     cardToPlay(targetCard.getPlayIdx() , draggedCard);
-                            }
-                            else if(draggedCard.getHand()){
-                             //   cardToPlay(targetCard.getPlayIdx() , draggedCard);
-                            }
-                        }
-                    }
-
-                    break;
-            }
-            return true;
-        }
-    };
 }

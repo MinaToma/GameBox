@@ -19,7 +19,7 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
     }
 
     public Card(Context context , int pictureID, int coverCardID , ViewGroup.LayoutParams layoutParams ,
-                OnTouchListener onTouchListener , OnDragListener onDragListener , ConstraintLayout constraintLayout , OnClickListener onClickListener) {
+                OnTouchListener onTouchListener , ConstraintLayout constraintLayout ) {
 
         super(context);
 
@@ -64,10 +64,7 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
 
         ViewGroup.LayoutParams newLayout = new ViewGroup.LayoutParams(layoutParams);
         setLayoutParams(newLayout);
-
         setOnTouchListener(onTouchListener);
-        //setOnClickListener(onClickListener);
-        //setOnDragListener(onDragListener);
     }
 
     public Boolean getFaceUp() {
@@ -88,6 +85,10 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
 
     public String getName() {
         return name;
+    }
+
+    public void setLastPosition(Pair<Float, Float> lastPosition) {
+        this.lastPosition = lastPosition;
     }
 
     public int getPlayIdx() {
@@ -211,7 +212,7 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
 
     public Pair<Float , Float> getPosition()
     {
-        return  new Pair<Float,Float>(getX() , getY());
+        return  new     Pair<Float,Float>(getX() , getY());
     }
 
     public void setPosition(Pair<Float, Float> position)
