@@ -48,7 +48,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
         margin = 7f;
         RelativeLayout drawRelativeView = (RelativeLayout) findViewById(R.id.drawRelativeLayout);
 
-        baseImageButton = (ImageButton) findViewById(R.id.baseImageButton);
+  /*      baseImageButton = (ImageButton) findViewById(R.id.baseImageButton);
         cardWidth = baseImageButton.getLayoutParams().width;
         cardHeight = baseImageButton.getLayoutParams().height;
         cards = new ArrayList<Card>();
@@ -71,9 +71,9 @@ public class SolitaireGameActivity extends AppCompatActivity {
         testing(3);
         testing(2);
         testing(1);
-
+*/
     }
-
+/*
     private void testing(int x) {
 
         RelativeLayout playRelativeLayout = (RelativeLayout) findViewById(R.id.playCardRelativeView);
@@ -86,9 +86,9 @@ public class SolitaireGameActivity extends AppCompatActivity {
 
             card.setPosition(playCardPostion.get(j).first + margin , playCardPostion.get(j).second + ((6 - x) * 70) );
             card.setPlay(true);
-            card.setPlayPosition(j);
+          //  card.setPlayPosition(j);
             card.setOnTouchListener(onCardTouch);
-            card.setInPlayPosition(playCardArrayList.get(j).size());
+          //  card.setInPlayPosition(playCardArrayList.get(j).size());
             card.setOnClickListener(cardOnClickListner);
             playCardArrayList.get(j).add(card);
             playRelativeLayout.addView(card);
@@ -110,7 +110,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
     }
 
 
-    /*---------------------------------------------- Drawn Stack ------------------------------------------*/
+    /*---------------------------------------------- Drawn Stack ------------------------------------------
 
     private void initializeDrawnStackPosition() {
         RelativeLayout drawRelativeLayout = (RelativeLayout) findViewById(R.id.drawRelativeLayout);
@@ -128,10 +128,10 @@ public class SolitaireGameActivity extends AppCompatActivity {
         return card;
     }
 
-    /*----------------------------------------------------------------------------------------------------*/
+    /*----------------------------------------------------------------------------------------------------
 
 
-    /*---------------------------------------------- Draw Stack ------------------------------------------*/
+    /*---------------------------------------------- Draw Stack ------------------------------------------
 
     private void initializeDrawStack() {
         RelativeLayout drawRelativeLayout = (RelativeLayout) findViewById(R.id.drawRelativeLayout);
@@ -208,12 +208,12 @@ public class SolitaireGameActivity extends AppCompatActivity {
 
 
 
-    /*--------------------------------------------  Play Card ----------------------------------------------*/
+    /*--------------------------------------------  Play Card ----------------------------------------------
 
     private Card cardForPlay(int idx, Card card) {
         card.setPlay(true);
-        card.setPlayPosition(idx);
-        card.setInPlayPosition(playCardArrayList.get(idx).size()-1);
+       // card.setPlayPosition(idx);
+       // card.setInPlayPosition(playCardArrayList.get(idx).size()-1);
         card.setFinished(false);
         card.setPosition(new Pair<Float, Float>(playCardPostion.get(idx).first, playCardPostion.get(idx).second));
 
@@ -252,10 +252,10 @@ public class SolitaireGameActivity extends AppCompatActivity {
             else {
                 tempRelativeLayout.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.colorAccent));
 
-            }*/
+            }
 
-            playRelativeArray.add(tempRelativeLayout);
-            playRelativeLayout.addView(tempRelativeLayout);
+            //playRelativeArray.add(tempRelativeLayout);
+            //playRelativeLayout.addView(tempRelativeLayout);
 
             playCardArrayList.add(new ArrayList<Card>());
 
@@ -271,7 +271,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
             card.setOnClickListener(cardOnClickListner);
             playCardStack.get(i).push(card);
             playRelativeLayout.addView(card);
-            */
+
             x += cardWidth + margin;
         }
     }
@@ -280,7 +280,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
 
 
 
-    /*--------------------------------------------  Finished Card ----------------------------------------------*/
+    /*--------------------------------------------  Finished Card ----------------------------------------------
 
 
     private void initializeFinishedCardPosition() {
@@ -315,7 +315,7 @@ public class SolitaireGameActivity extends AppCompatActivity {
 
 
 
-    /*--------------------------------------------  General ----------------------------------------------*/
+    /*--------------------------------------------  General ----------------------------------------------
 
 
     private Boolean isWin() {
@@ -378,15 +378,15 @@ public class SolitaireGameActivity extends AppCompatActivity {
                 if (parentRelativeLayout.getId() == R.id.drawRelativeLayout) {
                     drawnCardStack.pop();
                 } else {
-                    if(card.getInPlayPosition() != playCardArrayList.get(card.getPlayPosition()).size() - 1) return;
+         //           if(card.getInPlayPosition() != playCardArrayList.get(card.getPlayPosition()).size() - 1) return;
 
-                    playCardArrayList.get(card.getPlayPosition()).remove(playCardArrayList.get(card.getPlayPosition()).size()-1);
+           //         playCardArrayList.get(card.getPlayPosition()).remove(playCardArrayList.get(card.getPlayPosition()).size()-1);
                     card.setPlay(false);
                 }
 
                 parentRelativeLayout.removeView(card);
                 card.setFinished(true);
-                card.setFinishedPosition(pos);
+             //   card.setFinishedPosition(pos);
                 finishedRelativeLayout.addView(card);
                 card = cardForFinished(pos, card);
             }
@@ -396,16 +396,16 @@ public class SolitaireGameActivity extends AppCompatActivity {
     private  Boolean canPickCard(Card card){
         boolean canPick = true;
         int lastNumber = card.getNumber();
-        for(int i = card.getInPlayPosition() + 1 ; i < playCardArrayList.get(card.getPlayPosition()).size() ; i++){
-            Log.i("min" , "gaeasdhfkjadshkfh" + " " + Integer.toString(playCardArrayList.get(card.getPlayPosition()).get(i).getNumber()) + " " + Integer.toString(lastNumber) + " " + Integer.toString(i));
-            if(playCardArrayList.get(card.getPlayPosition()).get(i).getNumber() != lastNumber - 1 ){
+       // for(int i = card.getInPlayPosition() + 1 ; i < playCardArrayList.get(card.getPlayPosition()).size() ; i++){
+           // Log.i("min" , "gaeasdhfkjadshkfh" + " " + Integer.toString(playCardArrayList.get(card.getPlayPosition()).get(i).getNumber()) + " " + Integer.toString(lastNumber) + " " + Integer.toString(i));
+         //   if(playCardArrayList.get(card.getPlayPosition()).get(i).getNumber() != lastNumber - 1 ){
                 canPick = false;
-                break;
+           //     break;
             }
-            lastNumber = playCardArrayList.get(card.getPlayPosition()).get(i).getNumber();
+           // lastNumber = playCardArrayList.get(card.getPlayPosition()).get(i).getNumber();
         }
 
-        return canPick;
+    //    return canPick;
     }
 
     private View.OnTouchListener onCardTouch = new View.OnTouchListener() {
@@ -453,12 +453,12 @@ public class SolitaireGameActivity extends AppCompatActivity {
 
             Card card = ((Card) v);
             playRelativeArray.get(card.getPlayPosition()).removeAllViews();
-            /*Card card = ((Card) v);
+            Card card = ((Card) v);
             for(int i = card.getInPlayPosition() ; i < playCardArrayList.get(card.getPlayPosition()).size(); i++){
                 Card t = playCardArrayList.get(card.getPlayPosition()).get(i);
 
                 playRelativeArray.get(card.getPlayPosition()).removeAllViews(t);
-            }*/
+            }
 
             return false;
         }
@@ -485,6 +485,6 @@ public class SolitaireGameActivity extends AppCompatActivity {
             return true;
         }
     };
-
+*/
     /*----------------------------------------------------------------------------------------------------*/
 }

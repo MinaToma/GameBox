@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:id="@+id/mainConstraint"
     android:background="@color/colorPrimaryDark"
     android:layout_height="match_parent"
     tools:context=".Klondike">
 
-
     <ImageButton
-        android:id="@+id/imageButton14"
+        android:visibility="invisible"
+        android:id="@+id/handCard"
         android:layout_width="46.75dp"
         android:layout_height="70.2dp"
-        android:src="@drawable/clubs3"
         android:scaleType="fitCenter"
         android:padding="2.9dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,7 +24,8 @@
         />
 
     <ImageButton
-        android:id="@+id/drawStackButton"
+        android:visibility="invisible"
+        android:id="@+id/deckCard"
         android:layout_width="46.75dp"
         android:layout_height="70.2dp"
         android:src="@drawable/cardcover"
@@ -39,12 +40,13 @@
          />
 
     <ImageButton
-        android:id="@+id/imageButton12"
+        android:visibility="invisible"
+        android:id="@+id/suitHearts"
         android:layout_width="46.75dp"
         android:layout_height="70.2dp"
         android:src="@drawable/hearts1"
         android:scaleType="fitCenter"
-        android:padding="3.5dp"
+        android:padding="2.9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.176"
@@ -54,12 +56,13 @@
     />
 
     <ImageButton
-        android:id="@+id/imageButton11"
+        android:visibility="invisible"
+        android:id="@+id/suitDiamonds"
         android:layout_width="46.75dp"
         android:layout_height="70.2dp"
         android:src="@drawable/diamonds1"
         android:scaleType="fitCenter"
-        android:padding="3.5dp"
+        android:padding="2.9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0176"
@@ -68,12 +71,13 @@
         app:layout_constraintVertical_bias="0.05" />
 
     <ImageButton
-        android:id="@+id/imageButton10"
+        android:visibility="invisible"
+        android:id="@+id/suitSpades"
         android:layout_width="46.75dp"
         android:layout_height="70.2dp"
         android:src="@drawable/spades1"
         android:scaleType="fitCenter"
-        android:padding="3.5dp"
+        android:padding="2.9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.335"
@@ -82,13 +86,13 @@
         app:layout_constraintVertical_bias="0.05"/>
 
     <ImageButton
-        android:id="@+id/imageButton9"
+        android:id="@+id/suitClubs"
         android:layout_width="46.75dp"
         android:layout_height="70.2dp"
         android:src="@drawable/clubs1"
         android:scaleType="fitCenter"
-        android:padding="3.5dp"
-
+        android:visibility="invisible"
+        android:padding="2.9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
@@ -98,12 +102,13 @@
          />
 
     <ImageButton
-        android:id="@+id/playArea0"
+            android:id="@+id/playArea0"
         android:layout_width="46.75dp"
         android:layout_height="70.2dp"
         android:src="@drawable/clubs2"
+        android:visibility="invisible"
         android:scaleType="fitCenter"
-        android:padding="3.5dp"
+        android:padding="2.9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.017"
@@ -112,12 +117,13 @@
         app:layout_constraintVertical_bias="0.232" />
 
     <ImageButton
+        android:visibility="invisible"
         android:id="@+id/playArea1"
         android:layout_width="46.75dp"
         android:layout_height="70.2dp"
         android:src="@drawable/hearts11"
         android:scaleType="fitCenter"
-        android:padding="3.5dp"
+        android:padding="2.9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.176"
@@ -126,12 +132,13 @@
         app:layout_constraintVertical_bias="0.232" />
 
     <ImageButton
+        android:visibility="invisible"
         android:id="@+id/playArea2"
         android:layout_width="46.75dp"
         android:layout_height="70.2dp"
         android:src="@drawable/spades5"
         android:scaleType="fitCenter"
-        android:padding="3.5dp"
+        android:padding="2.9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.335"
@@ -140,12 +147,13 @@
         app:layout_constraintVertical_bias="0.232" />
 
     <ImageButton
+        android:visibility="invisible"
         android:id="@+id/playArea3"
         android:layout_width="46.75dp"
         android:layout_height="70.2dp"
         android:src="@drawable/diamonds2"
         android:scaleType="fitCenter"
-        android:padding="3.5dp"
+        android:padding="2.9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.494"
@@ -154,12 +162,13 @@
         app:layout_constraintVertical_bias="0.232" />
 
     <ImageButton
+        android:visibility="invisible"
         android:id="@+id/playArea4"
         android:layout_width="46.75dp"
         android:layout_height="70.2dp"
         android:src="@drawable/hearts4"
         android:scaleType="fitCenter"
-        android:padding="3.5dp"
+        android:padding="2.9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.653"
@@ -168,12 +177,13 @@
         app:layout_constraintVertical_bias="0.232" />
 
     <ImageButton
+        android:visibility="invisible"
         android:id="@+id/playArea5"
         android:layout_width="46.75dp"
         android:layout_height="70.2dp"
         android:src="@drawable/clubs7"
         android:scaleType="fitCenter"
-        android:padding="3.5dp"
+        android:padding="2.9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.812"
@@ -182,12 +192,13 @@
         app:layout_constraintVertical_bias="0.232" />
 
     <ImageButton
+        android:visibility="invisible"
         android:id="@+id/playArea6"
         android:layout_width="46.75dp"
         android:layout_height="70.2dp"
         android:src="@drawable/clubs12"
         android:scaleType="fitCenter"
-        android:padding="3.5dp"
+        android:padding="2.9dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.971"

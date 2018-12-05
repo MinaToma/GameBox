@@ -18,16 +18,20 @@
         <activity
             android:name=".SolitaireStartpage"
             android:screenOrientation="portrait" />
-        <activity android:name=".Klondike" />
-        <activity android:name=".FlappyBirdGame">
+        <activity android:name=".Klondike">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+       <!-- <activity android:name=".FlappyBirdGame">
+            <intent-filter>
+
+            </intent-filter>
+        </activity>
         <activity android:name=".startFlappyBirdGame" />
-        <activity android:name=".flappyBirdGameView"></activity>
+        <activity android:name=".flappyBirdGameView"></activity>-->
     </application>
 
 </manifest>
