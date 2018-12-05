@@ -40,7 +40,7 @@ public class SolitaireDifficultyActivity extends AppCompatActivity implements Ad
     }
 
     public void playNowButtonOnClickListener(View view) {
-        Intent intent = new Intent(this , SolitaireGameActivity.class);
+        Intent intent = new Intent(this , Klondike.class);
         startActivity(intent)   ;
     }
 }

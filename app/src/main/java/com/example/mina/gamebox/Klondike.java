@@ -12,6 +12,7 @@ public class Klondike extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_klondike);
+        game = null;
     }
 
     @Override
@@ -19,7 +20,7 @@ public class Klondike extends AppCompatActivity {
 
         super.onWindowFocusChanged(hasFocus);
 
-        if(hasFocus) {
+        if(hasFocus && game == null) {
             ConstraintLayout mainConstraintLayout = (ConstraintLayout) findViewById(R.id.mainConstraint);
             game = new Game(getBaseContext() , mainConstraintLayout );
         }

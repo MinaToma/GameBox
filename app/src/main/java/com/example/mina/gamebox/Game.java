@@ -196,7 +196,7 @@ public class Game {
 
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN: {
-                    if (card.getFaceUp() && !card.getDeck()) {
+                    if (card.getHand()) {
                         int lastCardNumber = 0;
                         if (!suitsCard.get(suitIdx.get(card.getName())).empty()) {
                             lastCardNumber = suitsCard.get(suitIdx.get(card.getName())).peek().getNumber();
@@ -209,6 +209,17 @@ public class Game {
                             reFillDeck();
                         } else {
                             card.setNewState("Hand");
+                        }
+                    }
+                    else if(card.getPlay()){
+                        if(card.getInPlayIdx() == playArea.get(card.getPlayIdx()).size() - 1){
+                            int lastCardNumber = 0;
+                            if (!suitsCard.get(suitIdx.get(card.getName())).empty()) {
+                                lastCardNumber = suitsCard.get(suitIdx.get(card.getName())).peek().getNumber();
+                            }
+                            if (card.getNumber() == lastCardNumber + 1) {
+                                card.setNewState("Suit");
+                            }
                         }
                     }
                     break;
