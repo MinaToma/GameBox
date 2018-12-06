@@ -18,8 +18,6 @@ import java.util.Random;
 
 public class flappyBirdGameView extends View {
 
-
-
     // this is our custom view class
 
     Handler handler ; // Handler is required to schedule  a  runnable after some delay
@@ -103,7 +101,6 @@ public class flappyBirdGameView extends View {
         if(birdFram == 0)
         {
             birdFram =1;
-
         }
         else if(birdFram ==1)
         {
