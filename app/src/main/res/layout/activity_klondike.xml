@@ -86,36 +86,6 @@
         app:layout_constraintVertical_bias="0.05"/>
 
     <ImageButton
-        android:id="@+id/suitSpades5"
-        android:layout_width="46.75dp"
-        android:layout_height="70.2dp"
-        android:padding="2.9dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/spades2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.569"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.653" />
-
-    <ImageButton
-        android:id="@+id/suitSpades4"
-        android:layout_width="46.75dp"
-        android:layout_height="70.2dp"
-        android:padding="2.9dp"
-        android:scaleType="fitCenter"
-        app:layout_constraintHorizontal_weight="44"
-        app:layout_constraintVertical_weight="4"
-        android:src="@drawable/spades1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.569"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.597" />
-
-    <ImageButton
         android:id="@+id/suitClubs"
         android:layout_width="46.75dp"
         android:layout_height="70.2dp"

@@ -1,6 +1,8 @@
 package com.example.mina.gamebox;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.util.Pair;
 import android.view.MotionEvent;
@@ -11,6 +13,7 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.Stack;
 
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class Game {
 
     private Random random;
@@ -195,13 +198,16 @@ public class Game {
     }
 
     View.OnTouchListener onTouchListener = new View.OnTouchListener() {
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         public boolean onTouch(View view, MotionEvent event) {
 
             Card card = ((Card) view);
-
+            float elevation = 1;
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN: {
+
                     if (card.getHand()) {
+                        card.setElevation(elevation);
                         int lastCardNumber = 0;
                         if (!suitsCard.get(suitIdx.get(card.getName())).empty()) {
                             lastCardNumber = suitsCard.get(suitIdx.get(card.getName())).peek().getNumber();
@@ -210,6 +216,7 @@ public class Game {
                             card.setNewState("Suit");
                         }
                     } else if (card.getDeck()) {
+                        card.setElevation(elevation);
                         if (deck.size() == 1) {
                             reFillDeck();
                         } else {
@@ -218,6 +225,7 @@ public class Game {
                     }
                     else if(card.getPlay()){
                         if(card.getInPlayIdx() == playArea.get(card.getPlayIdx()).size() - 1){
+                            card.setElevation(elevation);
                             int lastCardNumber = 0;
                             if (!suitsCard.get(suitIdx.get(card.getName())).empty()) {
                                 lastCardNumber = suitsCard.get(suitIdx.get(card.getName())).peek().getNumber();
@@ -237,9 +245,11 @@ public class Game {
                                 card = playArea.get(card.getPlayIdx()).get(i);
                                 card.setPosition(event.getRawX() - card.getLayoutParams().width / 2,
                                         event.getRawY() - card.getLayoutParams().height / 2 + card.getLayoutParams().height / 4 * (i - mainCardIdx));
+                                card.setElevation(elevation++);
                             }
                         }
                     } else if (card.getFinished() || card.getHand()) {
+                        card.setElevation(elevation);
                         card.setPosition(event.getRawX() - card.getLayoutParams().width / 2,
                                 event.getRawY() - card.getLayoutParams().height / 2);
                     }
@@ -247,7 +257,7 @@ public class Game {
                 }
                 case MotionEvent.ACTION_UP: {
                     if (card.getPosition().equals(card.getLastPosition())) {
-
+                        card.setElevation(0f);
                         switch (card.getNewState()) {
                             case "Hand":
                             {
@@ -259,7 +269,6 @@ public class Game {
                                 cardToSuits(suitIdx.get(card.getName()), card);
                                 break;
                             }
-
                         }
                     }
                     else
