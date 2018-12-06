@@ -1,5 +1,6 @@
 package com.example.mina.gamebox;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -7,7 +8,6 @@ import android.support.constraint.ConstraintLayout;
 import android.util.Pair;
 import android.view.ViewGroup;
 
-@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class Card extends android.support.v7.widget.AppCompatImageButton {
 
     private int pictureID , coverCardID , playIdx , finishedIdx , number , inPlayIdx;
@@ -31,6 +31,9 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
         this.constraintLayout = constraintLayout;
         setImageResource(pictureID);
 
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            setPadding(7 , 7 ,7, 7);
+        }
         name = context.getResources().getResourceName(pictureID);
 
         if(Character.isDigit(name.codePointAt(name.length()-2))){
@@ -220,7 +223,9 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
 
     public void setPosition(Pair<Float, Float> position)
     {
-        setElevation(0f);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            setElevation(0f);
+        }
         setX(position.first);
         setY(position.second);
     }
