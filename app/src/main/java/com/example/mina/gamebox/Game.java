@@ -20,7 +20,7 @@ public class Game {
     private ViewGroup.LayoutParams cardParams;
     private ConstraintLayout constraintLayout;
 
-    private Stack<Card> deck , hand;
+    private Stack<Card> deck , hand , storeForDelete;
     private Pair<Float , Float> deckPosition , handPosition;
 
     private ArrayList<Pair<Float , Float>> suitsPosition , playAreaPosition;
@@ -28,7 +28,7 @@ public class Game {
     private ArrayList<ArrayList<Card>> playArea;
 
     private HashMap<String , Integer> suitIdx;
-    private ArrayList<Card> allCards;
+    private ArrayList<Card> allCards ;
     private int coverCardID , emptyDeckID;
     private ArrayList<String> cardType;
 
@@ -40,7 +40,7 @@ public class Game {
         initializeGame();
     }
 
-    private void initializeGame() {
+    public void initializeGame() {
         allCards = new ArrayList<Card>(52);
 
         initializeRandom();
@@ -51,6 +51,33 @@ public class Game {
         initializePlayArea();
         initializeAllCards();
         distributeCards();
+        initializeEmptySuitCell();
+    }
+
+    private void initializeEmptySuitCell() {
+
+        int emptySpades = context.getResources().getIdentifier("spadesbg" , "drawable" ,  context.getPackageName());
+        int emptyHearts = context.getResources().getIdentifier("heartsbg" , "drawable" ,  context.getPackageName());
+        int emptyClubs = context.getResources().getIdentifier("clubsbg" , "drawable" ,  context.getPackageName());
+        int emptyDiamonds = context.getResources().getIdentifier("diamondsbg" , "drawable" ,  context.getPackageName());
+
+        Card emptySpadesCard = new Card(context , emptySpades , coverCardID , cardParams , onTouchListener , constraintLayout);
+        Card emptyHeartsCard = new Card(context , emptyHearts , coverCardID , cardParams , onTouchListener , constraintLayout);
+        Card emptyClubsCard = new Card(context , emptyClubs , coverCardID , cardParams , onTouchListener , constraintLayout);
+        Card emptyDiamondsCard = new Card(context , emptyDiamonds , coverCardID , cardParams , onTouchListener , constraintLayout);
+
+
+        emptySpadesCard.setPosition(suitsPosition.get(0));
+        emptyHeartsCard.setPosition(suitsPosition.get(1));
+        emptyClubsCard.setPosition(suitsPosition.get(2));
+        emptyDiamondsCard.setPosition(suitsPosition.get(3));
+
+        constraintLayout.addView(emptySpadesCard);
+        constraintLayout.addView(emptyHeartsCard);
+        constraintLayout.addView(emptyClubsCard);
+        constraintLayout.addView(emptyDiamondsCard);
+
+
     }
 
     private void initializeRandom() {
@@ -110,6 +137,7 @@ public class Game {
 
     private void initializeAllCards() {
         allCards = new ArrayList<Card>();
+        storeForDelete = new Stack<Card>();
         cardType = new ArrayList<String>();
         suitIdx = new HashMap<String, Integer>();
         cardType.add("spades");
@@ -127,9 +155,11 @@ public class Game {
                 Card card = new Card(context , id , coverCardID , cardParams , onTouchListener , constraintLayout );
                 card.setPosition(deckPosition);
                 allCards.add(card);
+                storeForDelete.add(card);
             }
             suitIdx.put(cardType.get(i) , i);
         }
+
     }
 
     private void initializeCardLayoutParams() {
@@ -154,13 +184,13 @@ public class Game {
         suitsPosition = new ArrayList<Pair<Float, Float>>();
         suitsCard = new ArrayList<Stack<Card>>(4);
 
-        suitsPosition.add(new Pair<Float , Float>(constraintLayout.findViewById(R.id.suitDiamonds).getX() ,
+        suitsPosition.add(new Pair<Float , Float>(constraintLayout.findViewById(R.id.suitSpades).getX() ,
                 constraintLayout.findViewById(R.id.handCard).getY()));
         suitsPosition.add(new Pair<Float , Float>(constraintLayout.findViewById(R.id.suitHearts).getX() ,
                 constraintLayout.findViewById(R.id.handCard).getY()));
-        suitsPosition.add(new Pair<Float , Float>(constraintLayout.findViewById(R.id.suitSpades).getX() ,
-                constraintLayout.findViewById(R.id.handCard).getY()));
         suitsPosition.add(new Pair<Float , Float>(constraintLayout.findViewById(R.id.suitClubs).getX() ,
+                constraintLayout.findViewById(R.id.handCard).getY()));
+        suitsPosition.add(new Pair<Float , Float>(constraintLayout.findViewById(R.id.suitDiamonds).getX() ,
                 constraintLayout.findViewById(R.id.handCard).getY()));
 
         for(int i = 0 ; i < 4 ; i++)
@@ -436,4 +466,13 @@ public class Game {
         card.toSuits(idx , suitsPosition.get(idx));
         suitsCard.get(idx).add(card);
     }
+
+    public void disposeGame()
+    {
+        while(!storeForDelete.isEmpty()){
+            constraintLayout.removeView(storeForDelete.peek());
+            storeForDelete.pop();
+        }
+    }
+
 }
