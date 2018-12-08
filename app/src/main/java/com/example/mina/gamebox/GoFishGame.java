@@ -45,7 +45,6 @@ public class GoFishGame extends AppCompatActivity {
 
         initializeRandom();
         initializeCardLayoutParams();
-
         initializeAllCards();
         distributeCards();
     }
@@ -105,7 +104,8 @@ public class GoFishGame extends AppCompatActivity {
         }
     }
 
-    private void initializeAllCards() {
+    private void initializeAllCards()
+    {
         allCards = new ArrayList<Card>();
         cardType = new ArrayList<String>();
         suitIdx = new HashMap<String, Integer>();
