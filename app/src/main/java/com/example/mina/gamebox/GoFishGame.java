@@ -9,6 +9,7 @@ import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +41,8 @@ public class GoFishGame extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_go_fish_game);
     }
+
+
     private void initializeGame() {
         allCards = new ArrayList<Card>(52);
 
@@ -54,45 +57,18 @@ public class GoFishGame extends AppCompatActivity {
     }
 
     private void distributeCards() {
-        fillPlayArea();
         fillDeck();
     }
 
-    private void fillPlayArea() {
-        for(int i = 1 ; i <= 7 ; i++){
-            while(playArea.get(i-1).size() < i){
-                int randPos = random.nextInt(allCards.size());
-                if(allCards.get(randPos).getNumber() > 10) continue;
-
-                Card card = allCards.get(randPos);
-                allCards.remove(randPos);
-
-                if(playArea.get(i-1).size() < i-1){
-                    card.hideCard();
-                    card.setFaceUp(false);
-                }
-
-                card.toPlayArea(i-1 , playArea.get(i-1).size() , new Pair<Float, Float>(playAreaPosition.get(i-1).first ,
-                        playAreaPosition.get(i-1).second + card.getLayoutParams().height / 4 * playArea.get(i-1).size()));
-                card.setLastPosition(card.getPosition());
-                playArea.get(i-1).add(card);
-
-                addCardToConstraint(card);
-            }
-        }
-    }
-
-    private void addCardToConstraint(Card card) {
-        constraintLayout.removeView(card);
-        constraintLayout.addView(card);
-    }
-
     private void fillDeck() {
+        ImageButton deckImage = (ImageButton) findViewById(R.id.allDeckCards);
+        deckPosition = new Pair<Float , Float>(deckImage.getX() , deckImage.getY());
         Card card = new Card(context , emptyDeckID , coverCardID , cardParams , onTouchListener , constraintLayout);
         card.toDeck(deckPosition);
         card.showCard();
         deck.add(card);
-        addCardToConstraint(card);
+
+        ConstraintLayout mainConstraint = (ConstraintLayout) findViewById(R.id.mainConstraint);
 
         while(!allCards.isEmpty()){
             int randPos = random.nextInt(allCards.size());
@@ -100,7 +76,7 @@ public class GoFishGame extends AppCompatActivity {
             allCards.remove(randPos);
             card.toDeck(deckPosition);
             deck.add(card);
-            addCardToConstraint(card);
+            mainConstraint.addView(card);
         }
     }
 
@@ -130,8 +106,9 @@ public class GoFishGame extends AppCompatActivity {
     }
 
     private void initializeCardLayoutParams() {
-        cardParams = constraintLayout.findViewById(R.id.deckCard).getLayoutParams();
+        cardParams = constraintLayout.findViewById(R.id.allDeckCards).getLayoutParams();
     }
+
     View.OnTouchListener onTouchListener = new View.OnTouchListener() {
 
         @Override
