@@ -76,6 +76,11 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
     public Boolean getFaceUp() {
         return isFaceUp;
     }
+    public void reSize(ViewGroup.LayoutParams layoutParams)
+    {
+        ViewGroup.LayoutParams newLayout = new ViewGroup.LayoutParams(layoutParams);
+        setLayoutParams(newLayout);
+    }
 
     public void setFaceUp(Boolean faceUp) {
         this.isFaceUp = faceUp;
@@ -156,6 +161,10 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
         lastPosition = getPosition();
         newState = "Hand";
         reAddToConstraint();
+    }
+    public void toUnDeck()
+    {
+        isDeck=false;
     }
 
     public void toDeck(Pair<Float , Float> newPos){

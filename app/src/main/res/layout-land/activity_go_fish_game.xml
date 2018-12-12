@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mainConstraint"
+    android:id="@+id/goFishConstrinat"
     android:background="@drawable/backofgofish"
     android:orientation="vertical"
     tools:context=".GoFishGame">
@@ -12,18 +12,17 @@
 
     <ImageButton
         android:id="@+id/allDeckCards"
-        android:layout_width="91dp"
-        android:layout_height="152dp"
+        android:layout_width="47dp"
+        android:layout_height="67dp"
         android:padding="2.9dp"
         android:scaleType="fitCenter"
         android:src="@drawable/cardcover"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.912"
+        app:layout_constraintHorizontal_bias="0.876"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.41" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/firstPlayerCards"
