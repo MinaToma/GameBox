@@ -10,7 +10,10 @@ import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -34,14 +37,14 @@ public class GoFishGame extends AppCompatActivity {
 
     private HashMap<String , Integer> suitIdx;
     private ArrayList<Card> allCards;
-    ArrayList<ArrayList<Card>> players ;
+    private ArrayList<ArrayList<Card>> players ;
     private int coverCardID , emptyDeckID;
     private ArrayList<String> cardType;
-    Float[] sizeOfFirstPlayerCard= new Float[4];
-    int currentPlayer= 0;
-    boolean goFishNow=false;
-    int selcteedCard =-1;
-
+    private Float[] sizeOfFirstPlayerCard= new Float[4];
+    private int currentPlayer= 0;
+    private boolean goFishNow=false;
+    private int selcteedCard =-1;
+    private ImageView goFishView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +79,7 @@ public class GoFishGame extends AppCompatActivity {
         initializeAllCards();
 
         distributeCards();
+        goFishView = (ImageView) findViewById(R.id.GoFishView);
     }
 
     private void initializeRandom() {
@@ -250,8 +254,12 @@ public class GoFishGame extends AppCompatActivity {
                     sizeOfFirstPlayerCard[currentPlayer]+=Float.valueOf(100);
                     players.get(currentPlayer).add(cardNow);
                     goFishNow = false ;
+                    calculateCardsToWin();
+
                     currentPlayer++;
                     currentPlayer%=4;
+
+                    goFishView.setVisibility(View.INVISIBLE);
                     if(currentPlayer==0)
                     {
                         currentPos=firstPos;
@@ -275,7 +283,80 @@ public class GoFishGame extends AppCompatActivity {
         }
 
     };
+    public void calculateCardsToWin()
+    {
+        int sum=0;
+        for(int cards=1 ; cards<=13 ; cards++)
+        {
+            ArrayList<Card> current= new ArrayList<Card>();
+            for(Card Now:players.get(currentPlayer))
+            {
+                if(Now.getNumber()==cards)
+                {
+                    current.add(Now);
+                }
+            }
+            if(current.size()==4)
+            {
+                sum++;
+                for(Card Now:current)
+                {
+                    if(Now.getNumber()==cards)
+                    {
+                        players.get(currentPlayer).remove(Now);
+                    }
+                }
+            }
+        }
+        if(currentPlayer==0)
+        {
 
+            TextView text= (TextView) findViewById(R.id.firstPlayerScore);
+            String tvValue = text.getText().toString();
+            int num=0;
+            if (!tvValue.equals("") ) {
+             num = Integer.parseInt(tvValue);
+            }
+            text.setText( String.valueOf(num + sum));
+
+        }
+        else if(currentPlayer==1)
+        {
+            TextView text= (TextView) findViewById(R.id.secondPlayerScore);
+            String tvValue = text.getText().toString();
+            int num=0;
+            if (!tvValue.equals("") ) {
+                num = Integer.parseInt(tvValue);
+            }
+            text.setText( String.valueOf(num + sum));
+        }
+        else if(currentPlayer==2)
+        {
+            TextView text= (TextView) findViewById(R.id.thirdPlayerScore);
+            String tvValue = text.getText().toString();
+            int num=0;
+            if (!tvValue.equals("") ) {
+                num = Integer.parseInt(tvValue);
+            }
+            text.setText( String.valueOf(num + sum));
+        }
+        else
+        {
+            TextView text= (TextView) findViewById(R.id.fourthPlayerScore);
+            String tvValue = text.getText().toString();
+            int num=0;
+            if (!tvValue.equals("") ) {
+                num = Integer.parseInt(tvValue);
+            }
+            text.setText( String.valueOf(num + sum));
+        }
+    }
+    public boolean GameOver()
+    {
+        if(deck.size()==0 && players.get(0).size()==0 && players.get(1).size()==0 && players.get(2).size()==0 && players.get(3).size()==0)
+            return true;
+        return false;
+    }
     public void firstPlayerClick(View view) {
         if( currentPlayer!=0 && goFishNow==false)
         {
@@ -307,10 +388,28 @@ public class GoFishGame extends AppCompatActivity {
                         cardNow.setPosition(firstPos.first+(sizeOfFirstPlayerCard[0]),firstPos.second);
                         sizeOfFirstPlayerCard[0]+=Float.valueOf(100);
                     }
+                    if(players.get(0).size()==0)
+                    {
+                        Card cardNow;
+
+                        cardNow = deck.lastElement();
+                        cardNow.toUnDeck();
+                        cardNow.showCard();
+                        cardNow.setPosition(firstPos.first+(sizeOfFirstPlayerCard[0]),firstPos.second);
+                        players.get(0).add(cardNow);
+                        sizeOfFirstPlayerCard[0]+=Float.valueOf(100);
+
+                        addCardToConstraint(cardNow);
+
+                        deck.pop();
+                    }
+                    calculateCardsToWin();
 
                 }
                 else
                 {
+                    goFishView.setVisibility(View.VISIBLE);
+
                     Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
                     goFishNow = true;
                 }
@@ -340,7 +439,9 @@ public class GoFishGame extends AppCompatActivity {
                     for (Card cardNow : currentCads) {
                         players.get(1).remove(cardNow);
 
-                        cardNow.hideCard();
+                        if(currentPlayer==0) {
+                            cardNow.showCard();
+                        }
                         cardNow.setPosition(currentPos.first+sizeOfFirstPlayerCard[currentPlayer],currentPos.second);
                         sizeOfFirstPlayerCard[currentPlayer]+=Float.valueOf(100);
                         players.get(currentPlayer).add(cardNow);
@@ -349,13 +450,31 @@ public class GoFishGame extends AppCompatActivity {
                     sizeOfFirstPlayerCard[1]=Float.valueOf(0);
                     for(Card cardNow : players.get(1))
                     {
-                        cardNow.setPosition(firstPos.first+(sizeOfFirstPlayerCard[1]),firstPos.second);
+                        cardNow.setPosition(secondPos.first+(sizeOfFirstPlayerCard[1]),secondPos.second);
                         sizeOfFirstPlayerCard[1]+=Float.valueOf(100);
                     }
+                    if(players.get(1).size()==0)
+                    {
+                        Card cardNow;
+
+                        cardNow = deck.lastElement();
+                        cardNow.toUnDeck();
+                        cardNow.showCard();
+                        cardNow.setPosition(secondPos.first+(sizeOfFirstPlayerCard[1]),secondPos.second);
+                        players.get(1).add(cardNow);
+                        sizeOfFirstPlayerCard[1]+=Float.valueOf(100);
+
+                        addCardToConstraint(cardNow);
+
+                        deck.pop();
+                    }
+                    calculateCardsToWin();
 
                 }
                 else
-                {Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
+                {
+                    goFishView.setVisibility(View.VISIBLE);
+                    Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
                     goFishNow=true;
                 }
             }
@@ -381,7 +500,9 @@ public class GoFishGame extends AppCompatActivity {
                     for (Card cardNow : currentCads) {
                         players.get(2).remove(cardNow);
 
-                        cardNow.hideCard();
+                        if(currentPlayer==0) {
+                            cardNow.showCard();
+                        }
                         cardNow.setPosition(currentPos.first+sizeOfFirstPlayerCard[currentPlayer],currentPos.second);
                         sizeOfFirstPlayerCard[currentPlayer]+=Float.valueOf(100);
                         players.get(currentPlayer).add(cardNow);
@@ -390,13 +511,30 @@ public class GoFishGame extends AppCompatActivity {
                     sizeOfFirstPlayerCard[2]=Float.valueOf(0);
                     for(Card cardNow : players.get(2))
                     {
-                        cardNow.setPosition(firstPos.first+(sizeOfFirstPlayerCard[2]),firstPos.second);
+                        cardNow.setPosition(thirdPos.first+(sizeOfFirstPlayerCard[2]),thirdPos.second);
                         sizeOfFirstPlayerCard[2]+=Float.valueOf(100);
                     }
+                    if(players.get(2).size()==0)
+                    {
+                        Card cardNow;
+
+                        cardNow = deck.lastElement();
+                        cardNow.toUnDeck();
+                        cardNow.showCard();
+                        cardNow.setPosition(thirdPos.first+(sizeOfFirstPlayerCard[2]),thirdPos.second);
+                        players.get(2).add(cardNow);
+                        sizeOfFirstPlayerCard[2]+=Float.valueOf(100);
+
+                        addCardToConstraint(cardNow);
+
+                        deck.pop();
+                    }
+                    calculateCardsToWin();
 
                 }
                 else
                 {
+                    goFishView.setVisibility(View.VISIBLE);
                     Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
                     goFishNow=true;
                 }
@@ -425,7 +563,9 @@ public class GoFishGame extends AppCompatActivity {
                     for (Card cardNow : currentCads) {
                         players.get(3).remove(cardNow);
 
-                        cardNow.hideCard();
+                        if(currentPlayer==0) {
+                            cardNow.showCard();
+                        }
                         cardNow.setPosition(currentPos.first+sizeOfFirstPlayerCard[currentPlayer],currentPos.second);
                         sizeOfFirstPlayerCard[currentPlayer]+=Float.valueOf(100);
                         players.get(currentPlayer).add(cardNow);
@@ -434,13 +574,30 @@ public class GoFishGame extends AppCompatActivity {
                     sizeOfFirstPlayerCard[3]=Float.valueOf(0);
                     for(Card cardNow : players.get(3))
                     {
-                        cardNow.setPosition(firstPos.first+(sizeOfFirstPlayerCard[3]),firstPos.second);
+                        cardNow.setPosition(fourthPos.first+(sizeOfFirstPlayerCard[3]),fourthPos.second);
                         sizeOfFirstPlayerCard[3]+=Float.valueOf(100);
                     }
+                    if(players.get(3).size()==0)
+                    {
+                        Card cardNow;
+
+                        cardNow = deck.lastElement();
+                        cardNow.toUnDeck();
+                        cardNow.showCard();
+                        cardNow.setPosition(fourthPos.first+(sizeOfFirstPlayerCard[3]),fourthPos.second);
+                        players.get(3).add(cardNow);
+                        sizeOfFirstPlayerCard[3]+=Float.valueOf(100);
+
+                        addCardToConstraint(cardNow);
+
+                        deck.pop();
+                    }
+                    calculateCardsToWin();
 
                 }
                 else
                 {
+                    goFishView.setVisibility(View.VISIBLE);
                     Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
                     goFishNow=true;
                 }
