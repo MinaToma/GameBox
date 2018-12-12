@@ -31,6 +31,8 @@
 
         </activity>
        <activity android:name=".FlappyBirdGame">
+
+
        </activity>
        <activity android:name=".startFlappyBirdGame" />
 

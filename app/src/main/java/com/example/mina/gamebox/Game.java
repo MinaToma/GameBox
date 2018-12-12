@@ -325,7 +325,6 @@ public class Game {
                             }
                             else{
                                 if(canLandToPlayArea(card , playArea.get(i).get(playArea.get(i).size()-1)) && checkIfInside(event.getRawX() ,
-
                                         event.getRawY() , playAreaPosition.get(i).first ,
                                         playAreaPosition.get(i).first + cardParams.width, playAreaPosition.get(i).second
                                         , playAreaPosition.get(i).second + cardParams.height + (playArea.get(i).size() - 1) * cardParams.height / 4)){
