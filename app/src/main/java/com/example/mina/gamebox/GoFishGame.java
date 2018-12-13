@@ -45,7 +45,7 @@ public class GoFishGame extends AppCompatActivity {
     private boolean goFishNow=false;
     private int selcteedCard =-1;
     private ImageView goFishView,firstPlayerArrow,secondPlayerArrow,thirdPlayerArrow,fourthPlayerArrow,gameOver;
-
+    private Float distBetweenDeckAndPlayersCard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -132,7 +132,7 @@ public class GoFishGame extends AppCompatActivity {
             cardNow.showCard();
             cardNow.setPosition(firstPos.first+(sizeOfFirstPlayerCard[0]),firstPos.second);
             players.get(0).add(cardNow);
-            sizeOfFirstPlayerCard[0]+=Float.valueOf(100);
+            sizeOfFirstPlayerCard[0]+=Float.valueOf(150);
 
             addCardToConstraint(cardNow);
 
@@ -152,7 +152,7 @@ public class GoFishGame extends AppCompatActivity {
             cardNow.toUnDeck();
             cardNow.setPosition(secondPos.first+(sizeOfFirstPlayerCard[1]),secondPos.second);
             players.get(1).add(cardNow);
-            sizeOfFirstPlayerCard[1]+=Float.valueOf(100);
+            sizeOfFirstPlayerCard[1]+=Float.valueOf(150);
             deck.pop();
         }
 
@@ -166,7 +166,7 @@ public class GoFishGame extends AppCompatActivity {
             cardNow.toUnDeck();
             cardNow.setPosition(thirdPos.first+(sizeOfFirstPlayerCard[2]),thirdPos.second);
             players.get(2).add(cardNow);
-            sizeOfFirstPlayerCard[2]+=Float.valueOf(100);
+            sizeOfFirstPlayerCard[2]+=Float.valueOf(150);
 
             addCardToConstraint(cardNow);
             deck.pop();
@@ -182,7 +182,7 @@ public class GoFishGame extends AppCompatActivity {
             cardNow.toUnDeck();
             cardNow.setPosition(fourthPos.first+(sizeOfFirstPlayerCard[3]),fourthPos.second);
             players.get(3).add(cardNow);
-            sizeOfFirstPlayerCard[3]+=Float.valueOf(100);
+            sizeOfFirstPlayerCard[3]+=Float.valueOf(150);
             deck.pop();
         }
     }
@@ -236,6 +236,7 @@ public class GoFishGame extends AppCompatActivity {
         fourthPos = new Pair<Float , Float>(constraintLayout.findViewById(R.id.thirdPlayerCards).getX() ,
                 constraintLayout.findViewById(R.id.fourthPlayerCards).getY());
         currentPos=firstPos;
+        distBetweenDeckAndPlayersCard=deckPosition.first-firstPos.first-100;
 
     }
 
@@ -401,11 +402,16 @@ public class GoFishGame extends AppCompatActivity {
     }
     public void resetCards(int player,Pair<Float,Float> pos)
     {
+        Float gap=Float.valueOf(distBetweenDeckAndPlayersCard/players.get(player).size());
+        if(gap>150)
+            gap=Float.valueOf(150);
+
+
             sizeOfFirstPlayerCard[player]=Float.valueOf(0);
             for(Card cardNow : players.get(player))
             {
                 cardNow.setPosition(pos.first+(sizeOfFirstPlayerCard[player]),pos.second);
-                sizeOfFirstPlayerCard[player]+=Float.valueOf(100);
+                sizeOfFirstPlayerCard[player]+=Float.valueOf(gap);
             }
     }
     public void firstPlayerClick(View view) {
@@ -485,6 +491,7 @@ public class GoFishGame extends AppCompatActivity {
             }
             currentCads.clear();
             resetCards(playerSelceted,pos);
+            resetCards(currentPlayer,currentPos);
             if(players.get(playerSelceted).size()==0 && deck.size()>0)
             {
                 Card cardNow;
