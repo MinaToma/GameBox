@@ -1,9 +1,7 @@
 package com.example.mina.gamebox;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.util.Pair;
 import android.view.ViewGroup;
