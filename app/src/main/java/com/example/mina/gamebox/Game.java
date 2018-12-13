@@ -2,7 +2,6 @@ package com.example.mina.gamebox;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.util.Pair;
 import android.view.MotionEvent;
@@ -28,7 +27,8 @@ public class Game {
     private ArrayList<ArrayList<Card>> playArea;
 
     private HashMap<String , Integer> suitIdx;
-    private ArrayList<Card> allCards ;
+    //private ArrayList<Card> allCards ;
+    private ArrayList<ArrayList<Card>> allCards;
     private int coverCardID , emptyDeckID;
     private ArrayList<String> cardType;
 
@@ -41,7 +41,6 @@ public class Game {
     }
 
     public void initializeGame() {
-        allCards = new ArrayList<Card>(52);
 
         initializeRandom();
         initializeCardLayoutParams();
@@ -61,11 +60,10 @@ public class Game {
         int emptyClubs = context.getResources().getIdentifier("clubsbg" , "drawable" ,  context.getPackageName());
         int emptyDiamonds = context.getResources().getIdentifier("diamondsbg" , "drawable" ,  context.getPackageName());
 
-        Card emptySpadesCard = new Card(context , emptySpades , coverCardID , cardParams , onTouchListener , constraintLayout);
-        Card emptyHeartsCard = new Card(context , emptyHearts , coverCardID , cardParams , onTouchListener , constraintLayout);
-        Card emptyClubsCard = new Card(context , emptyClubs , coverCardID , cardParams , onTouchListener , constraintLayout);
-        Card emptyDiamondsCard = new Card(context , emptyDiamonds , coverCardID , cardParams , onTouchListener , constraintLayout);
-
+        Card emptySpadesCard = new Card(context , emptySpades , coverCardID , cardParams , null , constraintLayout);
+        Card emptyHeartsCard = new Card(context , emptyHearts , coverCardID , cardParams , null, constraintLayout);
+        Card emptyClubsCard = new Card(context , emptyClubs , coverCardID , cardParams , null, constraintLayout);
+        Card emptyDiamondsCard = new Card(context , emptyDiamonds , coverCardID , cardParams , null , constraintLayout);
 
         emptySpadesCard.setPosition(suitsPosition.get(0));
         emptyHeartsCard.setPosition(suitsPosition.get(1));
@@ -76,8 +74,6 @@ public class Game {
         constraintLayout.addView(emptyHeartsCard);
         constraintLayout.addView(emptyClubsCard);
         constraintLayout.addView(emptyDiamondsCard);
-
-
     }
 
     private void initializeRandom() {
@@ -85,28 +81,48 @@ public class Game {
     }
 
     private void distributeCards() {
-        fillPlayArea();
-        fillDeck();
+        fillPlayAndDeck();
+        //fillPlayArea();
+        //fillDeck();
     }
 
-    private void fillPlayArea() {
-        for(int i = 1 ; i <= 7 ; i++){
-            while(playArea.get(i-1).size() < i){
-                int randPos = random.nextInt(allCards.size());
-                if(allCards.get(randPos).getNumber() > 10) continue;
+    private void fillPlayAndDeck() {
+        Card card = new Card(context , emptyDeckID , coverCardID , cardParams , onTouchListener , constraintLayout);
+        card.toDeck(deckPosition);
+        card.showCard();
+        deck.add(card);
+        addCardToConstraint(card);
 
-                Card card = allCards.get(randPos);
-                allCards.remove(randPos);
+        int assignedCard = 0;
+        for(int i = 1 ; i <= 13 ; i++){
+            for(int j = 0 ; j < 4 ; j++) {
 
-                if(playArea.get(i-1).size() < i-1){
-                    card.hideCard();
-                    card.setFaceUp(false);
+                if(assignedCard >= 28){
+                    card = allCards.get(i-1).get(j);
+                    card.toDeck(deckPosition);
+                    deck.add(card);
+                    continue;
                 }
 
-                card.toPlayArea(i-1 , playArea.get(i-1).size() , new Pair<Float, Float>(playAreaPosition.get(i-1).first ,
-                        playAreaPosition.get(i-1).second + card.getLayoutParams().height / 4 * playArea.get(i-1).size()));
-                card.setLastPosition(card.getPosition());
-                playArea.get(i-1).add(card);
+                int idx = random.nextInt(7);;
+                while(playArea.get(idx).size() == idx + 1)
+                   idx = random.nextInt(7);
+
+                if (idx < 7) {
+                    assignedCard++;
+
+                    card = allCards.get(i-1).get(j);
+
+                    if (playArea.get(idx).size() < idx) {
+                        card.hideCard();
+                        card.setFaceUp(false);
+                    }
+
+                    card.toPlayArea(idx, playArea.get(idx).size(), new Pair<Float, Float>(playAreaPosition.get(idx).first,
+                            playAreaPosition.get(idx).second + card.getLayoutParams().height / 4 * playArea.get(idx).size()));
+                    card.setLastPosition(card.getPosition());
+                    playArea.get(idx).add(card);
+                }
 
                 addCardToConstraint(card);
             }
@@ -118,25 +134,8 @@ public class Game {
         constraintLayout.addView(card);
     }
 
-    private void fillDeck() {
-        Card card = new Card(context , emptyDeckID , coverCardID , cardParams , onTouchListener , constraintLayout);
-        card.toDeck(deckPosition);
-        card.showCard();
-        deck.add(card);
-        addCardToConstraint(card);
-
-        while(!allCards.isEmpty()){
-            int randPos = random.nextInt(allCards.size());
-            card = allCards.get(randPos);
-            allCards.remove(randPos);
-            card.toDeck(deckPosition);
-            deck.add(card);
-            addCardToConstraint(card);
-        }
-    }
-
     private void initializeAllCards() {
-        allCards = new ArrayList<Card>();
+        allCards = new ArrayList<ArrayList<Card>>();
         storeForDelete = new Stack<Card>();
         cardType = new ArrayList<String>();
         suitIdx = new HashMap<String, Integer>();
@@ -147,17 +146,18 @@ public class Game {
         coverCardID = context.getResources().getIdentifier("cardcover" , "drawable" ,  context.getPackageName());
         emptyDeckID = context.getResources().getIdentifier("empty" , "drawable" ,  context.getPackageName());
 
-        for(int i = 0 ; i < 4 ; i++){
-            for(int j = 1 ; j <= 13 ; j++){
+        for(int j = 1 ; j <= 13 ; j++){
+            allCards.add(new ArrayList<Card>());
+            for(int i = 0 ; i < 4 ; i++){
                 String name = cardType.get(i) + Integer.toString(j);
                 int id = context.getResources().getIdentifier(name , "drawable" ,  context.getPackageName());
 
                 Card card = new Card(context , id , coverCardID , cardParams , onTouchListener , constraintLayout );
                 card.setPosition(deckPosition);
-                allCards.add(card);
+                allCards.get(j-1).add(card);
                 storeForDelete.add(card);
+                suitIdx.put(cardType.get(i) , i);
             }
-            suitIdx.put(cardType.get(i) , i);
         }
 
     }
@@ -226,70 +226,41 @@ public class Game {
         return  target.getRed() == dragged.getRed() && target.getNumber() + 1 == dragged.getNumber();
     }
 
+    public boolean isDragging(Card card , float currX , float currY){
+        float delteX = Math.abs(card.getX() - currX);
+        float deltaY = Math.abs(card.getY() - currY);
+        float acceptedDelta = 25;
+
+        return deltaY > acceptedDelta && delteX > acceptedDelta;
+    }
+
     View.OnTouchListener onTouchListener = new View.OnTouchListener() {
         public boolean onTouch(View view, MotionEvent event) {
-
             Card card = ((Card) view);
             float elevation = 1;
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN: {
 
-                    if (card.getHand()) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            card.setElevation(elevation);
-                        }
-                        int lastCardNumber = 0;
-                        if (!suitsCard.get(suitIdx.get(card.getName())).empty()) {
-                            lastCardNumber = suitsCard.get(suitIdx.get(card.getName())).peek().getNumber();
-                        }
-                        if (card.getNumber() == lastCardNumber + 1) {
-                            card.setNewState("Suit");
-                        }
-                    } else if (card.getDeck()) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            card.setElevation(elevation);
-                        }
-                        if (deck.size() == 1) {
-                            reFillDeck();
-                        } else {
-                            card.setNewState("Hand");
-                        }
-                    }
-                    else if(card.getPlay()){
-                        if(card.getInPlayIdx() == playArea.get(card.getPlayIdx()).size() - 1){
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_MOVE: {
+                    if(isDragging(card , event.getRawX() , event.getRawY())){
+                        if (card.getPlay()) {
+                            if (checkForPlayMotion(card.getPlayIdx(), card.getInPlayIdx())) {
+                                int mainCardIdx = card.getInPlayIdx();
+                                for (int i = card.getInPlayIdx(); i < playArea.get(card.getPlayIdx()).size(); i++) {
+                                    card = playArea.get(card.getPlayIdx()).get(i);
+                                    card.setPosition(event.getRawX() - card.getLayoutParams().width / 2,
+                                            event.getRawY() - card.getLayoutParams().height / 2 + card.getLayoutParams().height / 4 * (i - mainCardIdx));
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                        card.setElevation(elevation++);
+                                    }
+                                }
+                            }
+                        } else if (card.getFinished() || card.getHand()) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                                 card.setElevation(elevation);
                             }
-                            int lastCardNumber = 0;
-                            if (!suitsCard.get(suitIdx.get(card.getName())).empty()) {
-                                lastCardNumber = suitsCard.get(suitIdx.get(card.getName())).peek().getNumber();
-                            }
-                            if (card.getNumber() == lastCardNumber + 1) {
-                                card.setNewState("Suit");
-                            }
+                            card.setPosition(event.getRawX() - card.getLayoutParams().width / 2,
+                                    event.getRawY() - card.getLayoutParams().height / 2);
                         }
-                    }
-                    break;
-                }
-                case MotionEvent.ACTION_MOVE: {
-                    if (card.getPlay()) {
-                        if (checkForPlayMotion(card.getPlayIdx(), card.getInPlayIdx())) {
-                            int mainCardIdx = card.getInPlayIdx();
-                            for (int i = card.getInPlayIdx(); i < playArea.get(card.getPlayIdx()).size(); i++) {
-                                card = playArea.get(card.getPlayIdx()).get(i);
-                                card.setPosition(event.getRawX() - card.getLayoutParams().width / 2,
-                                        event.getRawY() - card.getLayoutParams().height / 2 + card.getLayoutParams().height / 4 * (i - mainCardIdx));
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                                    card.setElevation(elevation++);
-                                }
-                            }
-                        }
-                    } else if (card.getFinished() || card.getHand()) {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                            card.setElevation(elevation);
-                        }
-                        card.setPosition(event.getRawX() - card.getLayoutParams().width / 2,
-                                event.getRawY() - card.getLayoutParams().height / 2);
                     }
                     break;
                 }
@@ -298,16 +269,32 @@ public class Game {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             card.setElevation(0f);
                         }
-                        switch (card.getNewState()) {
-                            case "Hand":
-                            {
-                                cardToHand(card);
-                                break;
+
+                        if (card.getHand()) {
+                            int lastCardNumber = 0;
+                            if (!suitsCard.get(suitIdx.get(card.getName())).empty()) {
+                                lastCardNumber = suitsCard.get(suitIdx.get(card.getName())).peek().getNumber();
                             }
-                            case "Suit":
-                            {
+                            if (card.getNumber() == lastCardNumber + 1) {
                                 cardToSuits(suitIdx.get(card.getName()), card);
-                                break;
+                            }
+                        } else if (card.getDeck()) {
+
+                            if (deck.size() == 1) {
+                                reFillDeck();
+                            } else {
+                                cardToHand(card);
+                            }
+                        }
+                        else if(card.getPlay()){
+                            if(card.getInPlayIdx() == playArea.get(card.getPlayIdx()).size() - 1){
+                                int lastCardNumber = 0;
+                                if (!suitsCard.get(suitIdx.get(card.getName())).empty()) {
+                                    lastCardNumber = suitsCard.get(suitIdx.get(card.getName())).peek().getNumber();
+                                }
+                                if (card.getNumber() == lastCardNumber + 1) {
+                                    cardToSuits(suitIdx.get(card.getName()), card);
+                                }
                             }
                         }
                     }
@@ -318,7 +305,7 @@ public class Game {
                             if(playArea.get(i).isEmpty()){
                                 if(checkIfInside(event.getRawX() , event.getRawY() , playAreaPosition.get(i).first ,
                                         playAreaPosition.get(i).first + cardParams.width , playAreaPosition.get(i).second
-                                            , playAreaPosition.get(i).second + cardParams.height )){
+                                        , playAreaPosition.get(i).second + cardParams.height )){
                                     playIdx = i;
                                     break;
                                 }
@@ -334,23 +321,22 @@ public class Game {
                             }
                         }
 
-
                         if(!card.getPlay() || card.getInPlayIdx() == playArea.get(card.getPlayIdx()).size()-1){
-                            if(suitsCard.get(suitIdx.get(card.getName())).isEmpty()){
+                            if(suitsCard.get(suitIdx.get(card.getName())).isEmpty() ){
                                 if (checkIfInside(event.getRawX() ,
                                         event.getRawY() , suitsPosition.get(suitIdx.get(card.getName())).first ,
-                                             suitsPosition.get(suitIdx.get(card.getName())).first + cardParams.width ,
-                                                suitsPosition.get(suitIdx.get(card.getName())).second ,
-                                                suitsPosition.get(suitIdx.get(card.getName())).second + cardParams.height)) {
+                                        suitsPosition.get(suitIdx.get(card.getName())).first + cardParams.width ,
+                                        suitsPosition.get(suitIdx.get(card.getName())).second ,
+                                        suitsPosition.get(suitIdx.get(card.getName())).second + cardParams.height) && card.getNumber() == 1) {
                                     suitsIdx = suitIdx.get(card.getName());
                                 }
                             }
                             else{
                                 if(canLandToSuits(card , suitsCard.get(suitIdx.get(card.getName())).peek() ) && checkIfInside(event.getRawX() ,
                                         event.getRawY() , suitsPosition.get(suitIdx.get(card.getName())).first ,
-                                            suitsPosition.get(suitIdx.get(card.getName())).first + cardParams.width ,
-                                                suitsPosition.get(suitIdx.get(card.getName())).second ,
-                                                suitsPosition.get(suitIdx.get(card.getName())).second + cardParams.height) ){
+                                        suitsPosition.get(suitIdx.get(card.getName())).first + cardParams.width ,
+                                        suitsPosition.get(suitIdx.get(card.getName())).second ,
+                                        suitsPosition.get(suitIdx.get(card.getName())).second + cardParams.height) ){
                                     suitsIdx = suitIdx.get(card.getName());
                                 }
                             }
@@ -425,8 +411,8 @@ public class Game {
         if(isPlay){
             for(int i = cardInPlayIdx ; i < playArea.get(currIdx).size() ; i++){
                 card = playArea.get(currIdx).get(i);
-                 card.toPlayArea(targetIdx , playArea.get(targetIdx).size() , new Pair<Float, Float>(playAreaPosition.get(targetIdx).first ,
-                       playAreaPosition.get(targetIdx).second + playArea.get(targetIdx).size() * cardParams.height / 4));
+                card.toPlayArea(targetIdx , playArea.get(targetIdx).size() , new Pair<Float, Float>(playAreaPosition.get(targetIdx).first ,
+                        playAreaPosition.get(targetIdx).second + playArea.get(targetIdx).size() * cardParams.height / 4));
                 playArea.get(targetIdx).add(card);
             }
             for(int i = playArea.get(currIdx).size() - 1 ; i >= cardInPlayIdx ; i--){
@@ -452,7 +438,7 @@ public class Game {
         }
     }
 
-   private void cardToSuits(int idx  , Card card){
+    private void cardToSuits(int idx  , Card card){
         if(card.getPlay()){
             playArea.get(card.getPlayIdx()).remove(card.getInPlayIdx());
             if(!playArea.get(card.getPlayIdx()).isEmpty()){

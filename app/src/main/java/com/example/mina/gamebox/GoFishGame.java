@@ -61,8 +61,8 @@ public class GoFishGame extends AppCompatActivity {
     }
 
     private void fillDeck() {
-        ImageButton deckImage = (ImageButton) findViewById(R.id.allDeckCards);
-        deckPosition = new Pair<Float , Float>(deckImage.getX() , deckImage.getY());
+      //  ImageButton deckImage = (ImageButton) findViewById(R.id.allDeckCards);
+        //deckPosition = new Pair<Float , Float>(deckImage.getX() , deckImage.getY());
         Card card = new Card(context , emptyDeckID , coverCardID , cardParams , onTouchListener , constraintLayout);
         card.toDeck(deckPosition);
         card.showCard();
@@ -106,7 +106,7 @@ public class GoFishGame extends AppCompatActivity {
     }
 
     private void initializeCardLayoutParams() {
-        cardParams = constraintLayout.findViewById(R.id.allDeckCards).getLayoutParams();
+       // cardParams = constraintLayout.findViewById(R.id.allDeckCards).getLayoutParams();
     }
 
     View.OnTouchListener onTouchListener = new View.OnTouchListener() {

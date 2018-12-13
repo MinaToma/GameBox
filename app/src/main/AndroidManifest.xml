@@ -16,18 +16,19 @@
         <activity
             android:name=".SolitaireStartpage"
             android:screenOrientation="portrait">
-
-        </activity>
-
-
-        <activity android:name=".Klondike">
-
-        </activity>
-        <activity android:name=".GoFishGame" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+
+        <activity
+            android:name=".Klondike"
+            android:screenOrientation="portrait">
+
+        </activity>
+        <activity android:name=".GoFishGame" >
 
         </activity>
        <activity android:name=".FlappyBirdGame">
