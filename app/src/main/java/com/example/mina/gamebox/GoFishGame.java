@@ -46,6 +46,7 @@ public class GoFishGame extends AppCompatActivity {
     private int selcteedCard =-1;
     private ImageView goFishView,firstPlayerArrow,secondPlayerArrow,thirdPlayerArrow,fourthPlayerArrow,gameOver;
     private Float distBetweenDeckAndPlayersCard;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -247,7 +248,30 @@ public class GoFishGame extends AppCompatActivity {
 
             Card card = ((Card ) view);
 
-            selcteedCard=card.getNumber();
+            boolean ok=false;
+
+                Float gap=Float.valueOf(distBetweenDeckAndPlayersCard/players.get(currentPlayer).size());
+                if(gap>150)
+                    gap=Float.valueOf(150);
+
+                sizeOfFirstPlayerCard[currentPlayer]=Float.valueOf(0);
+                for(Card cardNow : players.get(currentPlayer))
+                {
+                    if(card==cardNow) {
+                        cardNow.setPosition(currentPos.first + (sizeOfFirstPlayerCard[currentPlayer]), currentPos.second - 25);
+                        selcteedCard=cardNow.getNumber();
+                        ok=true;
+                    }
+                    else
+                        cardNow.setPosition(currentPos.first+(sizeOfFirstPlayerCard[currentPlayer]),currentPos.second);
+                    sizeOfFirstPlayerCard[currentPlayer]+=Float.valueOf(gap);
+                }
+                if(ok==false)
+                {
+                    selcteedCard=-1;
+                }
+
+
 
             if(card.getDeck())
             {
@@ -406,7 +430,6 @@ public class GoFishGame extends AppCompatActivity {
         if(gap>150)
             gap=Float.valueOf(150);
 
-
             sizeOfFirstPlayerCard[player]=Float.valueOf(0);
             for(Card cardNow : players.get(player))
             {
@@ -422,8 +445,20 @@ public class GoFishGame extends AppCompatActivity {
             {
                 askPlayerForCards(0,firstPos);
             }
+            else
+            {
+                Toast.makeText(this, "Please select card", Toast.LENGTH_LONG).show();
+            }
 
 
+        }
+        else if(goFishNow==true)
+        {
+            Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(this, "Please select another player", Toast.LENGTH_LONG).show();
         }
     }
     public void secondPlayerClick(View view) {
@@ -436,8 +471,20 @@ public class GoFishGame extends AppCompatActivity {
                 {
                     askPlayerForCards(1,secondPos);
                 }
+                else
+                {
+                    Toast.makeText(this, "Please select card", Toast.LENGTH_LONG).show();
+                }
 
 
+        }
+        else if(goFishNow==true)
+        {
+            Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(this, "Please select another player", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -448,6 +495,20 @@ public class GoFishGame extends AppCompatActivity {
             {
                 askPlayerForCards(2,thirdPos);
             }
+            else
+            {
+                Toast.makeText(this, "Please select card", Toast.LENGTH_LONG).show();
+            }
+
+
+        }
+        else if(goFishNow==true)
+        {
+            Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(this, "Please select another player", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -458,6 +519,20 @@ public class GoFishGame extends AppCompatActivity {
             {
                askPlayerForCards(3,fourthPos);
             }
+            else
+            {
+                Toast.makeText(this, "Please select card", Toast.LENGTH_LONG).show();
+            }
+
+
+        }
+        else if(goFishNow==true)
+        {
+            Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Toast.makeText(this, "Please select another player", Toast.LENGTH_LONG).show();
         }
     }
     public  void askPlayerForCards(int playerSelceted,Pair<Float,Float> pos)
@@ -492,6 +567,7 @@ public class GoFishGame extends AppCompatActivity {
             currentCads.clear();
             resetCards(playerSelceted,pos);
             resetCards(currentPlayer,currentPos);
+            selcteedCard=-1;
             if(players.get(playerSelceted).size()==0 && deck.size()>0)
             {
                 Card cardNow;
@@ -512,7 +588,7 @@ public class GoFishGame extends AppCompatActivity {
         else
         {
             goFishView.setVisibility(View.VISIBLE);
-            Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
             goFishNow=true;
         }
     }
