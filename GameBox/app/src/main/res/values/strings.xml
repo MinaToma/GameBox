@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GameBox</string>
+
+    <string-array name="solitairDifficultyLevel">
+        <item>Easy</item>
+        <item>Meduim</item>
+        <item>Hard</item>
+    </string-array>
+</resources>
