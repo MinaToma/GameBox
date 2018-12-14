@@ -259,7 +259,7 @@ public class GoFishGame extends AppCompatActivity {
                 {
                     if(card==cardNow) {
                         cardNow.setPosition(currentPos.first + (sizeOfFirstPlayerCard[currentPlayer]), currentPos.second - 25);
-                        selcteedCard=cardNow.getNumber();
+                        selcteedCard=cardNow.getNumber(); 
                         ok=true;
                     }
                     else
@@ -277,18 +277,25 @@ public class GoFishGame extends AppCompatActivity {
             {
                 if(goFishNow)
                 {
-                    Card cardNow=deck.lastElement();
-                    deck.pop();
-                    cardNow.toUnDeck();
-                    if(currentPlayer==0) {
-                        cardNow.showCard();
+                    if(deck.size()>0) {
+                        Card cardNow = deck.lastElement();
+                        deck.pop();
+                        cardNow.toUnDeck();
+                        if (currentPlayer == 0) {
+                            cardNow.showCard();
+                        }
+                        cardNow.setPosition(currentPos.first + sizeOfFirstPlayerCard[currentPlayer], currentPos.second);
+                        sizeOfFirstPlayerCard[currentPlayer] += Float.valueOf(100);
+                        players.get(currentPlayer).add(cardNow);
+                        goFishNow = false;
+                        calculateCardsToWin();
+                        nextRound();
                     }
-                    cardNow.setPosition(currentPos.first+sizeOfFirstPlayerCard[currentPlayer],currentPos.second);
-                    sizeOfFirstPlayerCard[currentPlayer]+=Float.valueOf(100);
-                    players.get(currentPlayer).add(cardNow);
-                    goFishNow = false ;
-                    calculateCardsToWin();
-                    nextRound();
+                    else
+                    {
+                        goFishNow = false;
+                        nextRound();
+                    }
 
                 }
             }
