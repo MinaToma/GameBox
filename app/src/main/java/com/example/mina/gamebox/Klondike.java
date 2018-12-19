@@ -29,7 +29,6 @@ public class Klondike extends AppCompatActivity {
             }
         });
 
-
         ImageButton newGame = (ImageButton) findViewById(R.id.newGame);
         newGame.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +37,14 @@ public class Klondike extends AppCompatActivity {
                 game.initializeGame();
             }
 
+        });
+
+        ImageButton undo = (ImageButton) findViewById(R.id.undoButton);
+        undo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                game.undo();
+            }
         });
     }
 

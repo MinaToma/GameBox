@@ -3,6 +3,7 @@ package com.example.mina.gamebox;
 import android.content.Context;
 import android.os.Build;
 import android.support.constraint.ConstraintLayout;
+import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
@@ -23,14 +24,24 @@ public class Game {
     private Pair<Float , Float> deckPosition , handPosition;
 
     private ArrayList<Pair<Float , Float>> suitsPosition , playAreaPosition;
+    //list of stacks of all 4 suits
     private ArrayList<Stack<Card>> suitsCard ;
     private ArrayList<ArrayList<Card>> playArea;
-
+    //holds index value of which suit stack in suitsCard
     private HashMap<String , Integer> suitIdx;
     //private ArrayList<Card> allCards ;
     private ArrayList<ArrayList<Card>> allCards;
     private int coverCardID , emptyDeckID;
     private ArrayList<String> cardType;
+
+    //undo stack of pair( operation, pair(card, index) )
+    private Stack<Pair<Integer, Pair<Card, Integer>>> undoStack;
+
+    //const int values to hold operation number
+    private static final int deckToHand = 0, handToSuits = 1, handToPlay = 2,
+            playToSuits = 3, suitsToPlay = 4, playToPlay = 5,
+            flipCard = 6 , handToDeck = 7;
+
 
     public Game(Context context , ConstraintLayout constraintLayout)
     {
@@ -135,6 +146,7 @@ public class Game {
     }
 
     private void initializeAllCards() {
+        undoStack = new Stack<>();
         allCards = new ArrayList<ArrayList<Card>>();
         storeForDelete = new Stack<Card>();
         cardType = new ArrayList<String>();
@@ -226,12 +238,13 @@ public class Game {
         return  target.getRed() == dragged.getRed() && target.getNumber() + 1 == dragged.getNumber();
     }
 
-    public boolean isDragging(Card card , float currX , float currY){
-        float delteX = Math.abs(card.getX() - currX);
-        float deltaY = Math.abs(card.getY() - currY);
-        float acceptedDelta = 25;
+    public boolean isDragging(float lastX , float lastY, float currX , float currY){
+        float deltaX = Math.abs(lastX-currX);
+        float deltaY = Math.abs(lastY-currY);
 
-        return deltaY > acceptedDelta && delteX > acceptedDelta;
+         float acceptedDelta = cardParams.height/2;
+
+        return deltaY > acceptedDelta || deltaX > acceptedDelta;
     }
 
     View.OnTouchListener onTouchListener = new View.OnTouchListener() {
@@ -241,8 +254,7 @@ public class Game {
 
             switch (event.getAction()) {
                 case MotionEvent.ACTION_MOVE: {
-                    if(isDragging(card , event.getRawX() , event.getRawY())){
-                        if (card.getPlay()) {
+                    if (card.getPlay()) {
                             if (checkForPlayMotion(card.getPlayIdx(), card.getInPlayIdx())) {
                                 int mainCardIdx = card.getInPlayIdx();
                                 for (int i = card.getInPlayIdx(); i < playArea.get(card.getPlayIdx()).size(); i++) {
@@ -261,14 +273,16 @@ public class Game {
                             card.setPosition(event.getRawX() - card.getLayoutParams().width / 2,
                                     event.getRawY() - card.getLayoutParams().height / 2);
                         }
-                    }
                     break;
                 }
                 case MotionEvent.ACTION_UP: {
-                    if (card.getPosition().equals(card.getLastPosition())) {
+                    //Click On card from hand or play tio suits
+                    if (!isDragging(card.getLastPosition().first , card.getLastPosition().second , card.getPosition().first , card.getPosition().second)) {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             card.setElevation(0f);
                         }
+
+                        card.setPosition(card.getLastPosition());
 
                         if (card.getHand()) {
                             int lastCardNumber = 0;
@@ -298,8 +312,9 @@ public class Game {
                             }
                         }
                     }
-                    else
+                    else //check if card is dragged and landed on play or suit
                     {
+                        //check landing on play
                         int playIdx = -1 , suitsIdx = -1;
                         for(int i = 0 ; i < 7 ; i++){
                             if(playArea.get(i).isEmpty()){
@@ -310,7 +325,7 @@ public class Game {
                                     break;
                                 }
                             }
-                            else{
+                            else {
                                 if(canLandToPlayArea(card , playArea.get(i).get(playArea.get(i).size()-1)) && checkIfInside(event.getRawX() ,
                                         event.getRawY() , playAreaPosition.get(i).first ,
                                         playAreaPosition.get(i).first + cardParams.width, playAreaPosition.get(i).second
@@ -321,6 +336,7 @@ public class Game {
                             }
                         }
 
+                        //check landing on suit
                         if(!card.getPlay() || card.getInPlayIdx() == playArea.get(card.getPlayIdx()).size()-1){
                             if(suitsCard.get(suitIdx.get(card.getName())).isEmpty() ){
                                 if (checkIfInside(event.getRawX() ,
@@ -342,6 +358,7 @@ public class Game {
                             }
                         }
 
+                        //check if landed successfully
                         if (playIdx == -1 && suitsIdx == -1){
                             if(card.getPlay()){
                                 for(int i = card.getInPlayIdx() ; i < playArea.get(card.getPlayIdx()).size() ; i++){
@@ -349,14 +366,14 @@ public class Game {
                                     card.setPosition(card.getLastPosition());
                                 }
                             }
-                            else {
+                            else { //back to normal position if not correct land
                                 card.setPosition(card.getLastPosition());
                             }
                         }
-                        else if(playIdx != -1){
-                            cardToPlay(playIdx , card);
+                        else if(playIdx != -1){ //to play Area (undo play/hand/suit to play)
+                            cardToPlay(playIdx , card , false);
                         }
-                        else {
+                        else { //to suit (undo hand/play to suit)
                             cardToSuits(suitsIdx , card);
                         }
                     }
@@ -372,6 +389,7 @@ public class Game {
     }
 
     private void reFillDeck(){
+        undoStack.push(new Pair<Integer, Pair<Card, Integer>> (handToDeck, new Pair<Card, Integer> (hand.peek(), -1)));
         while(!hand.empty()){
             Card card = hand.peek();
             hand.pop();
@@ -381,12 +399,13 @@ public class Game {
     }
 
     private void cardToHand(Card card){
+        undoStack.push(new Pair<Integer, Pair<Card, Integer>> (deckToHand, new Pair<Card, Integer> (card, -1)));
         deck.pop();
         card.toHand(handPosition);
         hand.push(card);
     }
 
-    private void cardToPlay(int targetIdx , Card card) {
+    private void cardToPlay(int targetIdx , Card card , boolean fromUndo) {
 
         int currIdx = card.getPlayIdx();
         int cardInPlayIdx = card.getInPlayIdx();
@@ -394,7 +413,7 @@ public class Game {
         Boolean isFinish = card.getFinished();
         Boolean isHand = card.getHand();
 
-        if(playArea.get(targetIdx).size() == 0 && card.getNumber() != 13){
+        if(playArea.get(targetIdx).size() == 0 && card.getNumber() != 13 && !fromUndo){
             if(isPlay) {
                 for (int i = cardInPlayIdx; i < playArea.get(currIdx).size(); i++) {
                     card = playArea.get(currIdx).get(i);
@@ -408,7 +427,8 @@ public class Game {
             return;
         }
 
-        if(isPlay){
+        if(isPlay){ //play to play
+            undoStack.push(new Pair<Integer, Pair<Card, Integer>>(playToPlay, new Pair<Card, Integer>(card,currIdx)));
             for(int i = cardInPlayIdx ; i < playArea.get(currIdx).size() ; i++){
                 card = playArea.get(currIdx).get(i);
                 card.toPlayArea(targetIdx , playArea.get(targetIdx).size() , new Pair<Float, Float>(playAreaPosition.get(targetIdx).first ,
@@ -421,16 +441,23 @@ public class Game {
             if(!playArea.get(currIdx).isEmpty()){
                 if(!playArea.get(currIdx).get(playArea.get(currIdx).size()-1).getFaceUp()){
                     playArea.get(currIdx).get(playArea.get(currIdx).size()-1).showCard();
+                    Pair<Integer , Pair<Card , Integer> > temp = undoStack.peek();
+                    undoStack.pop();
+                    undoStack.push(new Pair<Integer, Pair<Card, Integer>>(flipCard, new Pair<Card, Integer>(
+                            playArea.get(currIdx).get(playArea.get(currIdx).size()-1), -1)));
+                    undoStack.push(temp);
                 }
             }
         }
-        else if(isHand){
+        else if(isHand){ //hand to play
+            undoStack.push(new Pair<Integer, Pair<Card, Integer>>(handToPlay, new Pair<Card, Integer>(card, -1)));
             card.toPlayArea(targetIdx , playArea.get(targetIdx).size() , new Pair<Float, Float>(playAreaPosition.get(targetIdx).first ,
                     playAreaPosition.get(targetIdx).second + playArea.get(targetIdx).size() * cardParams.height / 4));
             playArea.get(targetIdx).add(card);
             hand.pop();
         }
-        else if(isFinish){
+        else if(isFinish){ //suits to play
+            undoStack.push(new Pair<Integer, Pair<Card, Integer>>(suitsToPlay, new Pair<Card, Integer>(card, -1)));
             card.toPlayArea(targetIdx , playArea.get(targetIdx).size() , new Pair<Float, Float>(playAreaPosition.get(targetIdx).first ,
                     playAreaPosition.get(targetIdx).second + playArea.get(targetIdx).size() * cardParams.height / 4));
             playArea.get(targetIdx).add(card);
@@ -441,11 +468,15 @@ public class Game {
     private void cardToSuits(int idx  , Card card){
         if(card.getPlay()){
             playArea.get(card.getPlayIdx()).remove(card.getInPlayIdx());
-            if(!playArea.get(card.getPlayIdx()).isEmpty()){
+            if(!playArea.get(card.getPlayIdx()).isEmpty() && !playArea.get(card.getPlayIdx()).get(playArea.get(card.getPlayIdx()).size() - 1).getFaceUp()){
                 playArea.get(card.getPlayIdx()).get(playArea.get(card.getPlayIdx()).size() - 1).showCard();
+                undoStack.push(new Pair<>(flipCard, new Pair<>(playArea.get(card.getPlayIdx()).get(playArea.get(card.getPlayIdx()).size() - 1) , -1)));
             }
+
+            undoStack.push(new Pair<>(playToSuits, new Pair<>(card, card.getPlayIdx())));
         }
         else if(card.getHand()){
+            undoStack.push(new Pair<>(handToSuits, new Pair<>(card, -1)));
             hand.pop();
         }
         card.toSuits(idx , suitsPosition.get(idx));
@@ -457,6 +488,70 @@ public class Game {
         while(!storeForDelete.isEmpty()){
             constraintLayout.removeView(storeForDelete.peek());
             storeForDelete.pop();
+        }
+
+        while (!undoStack.empty())
+            undoStack.pop();
+    }
+
+    public void undo()
+    {
+        if(undoStack.empty()) return;
+
+        Integer operation = undoStack.peek().first;
+        Card card = undoStack.peek().second.first;
+        Integer playAreaIdx = undoStack.peek().second.second;
+
+        undoStack.pop();
+
+        if(!undoStack.empty() && undoStack.peek().first == flipCard) undo();
+        Log.i("tag", card.getName() + Integer.toString(card.getNumber()) + " " + Integer.toString(operation)) ;
+        switch(operation)
+        {
+            case deckToHand: //move card from hand to deck
+                card.toDeck(deckPosition);
+                deck.push(card);
+                hand.pop();
+                break;
+            case handToSuits: //move card from suits to hand
+                hand.push(card);
+                suitsCard.get(suitIdx.get(card.getName())).pop();
+                card.toHand(handPosition);
+                break;
+            case playToSuits: //move card from suits to play area
+                suitsCard.get(suitIdx.get(card.getName())).pop();
+                card.toPlayArea(playAreaIdx, playArea.get(playAreaIdx).size(), new Pair<>(playAreaPosition.get(playAreaIdx).first,
+                        playAreaPosition.get(playAreaIdx).second + card.getLayoutParams().height / 4 * playArea.get(playAreaIdx).size()));
+                playArea.get(playAreaIdx).add(card);
+                break;
+            case suitsToPlay: //move card from play area to suits
+                cardToSuits(suitIdx.get(card.getName()), card);
+                undoStack.pop();
+                if(!undoStack.empty() && undoStack.peek().first == flipCard) undoStack.pop();
+                break;
+            case handToPlay: //move card from play area to hand
+                hand.push(card);
+                //remove card from play *** here ***
+                playArea.get(card.getPlayIdx()).remove(playArea.get(card.getPlayIdx()).size()-1);
+                card.toHand(handPosition);
+                break;
+            case playToPlay: //move card from play area to play area
+                cardToPlay(playAreaIdx, card , true);
+                undoStack.pop();
+                if(!undoStack.empty() && undoStack.peek().first == flipCard) undo();
+                break;
+            case handToDeck: //move cards from deck to hand (undo refill)
+               while(deck.size() > 1)
+               {
+                   Card deckTop = deck.peek();
+                   deckTop.toHand(handPosition);
+                   deck.pop();
+                   hand.push(deckTop);
+               }
+                break;
+            case flipCard: //flips card down
+                card.hideCard();
+                break;
         }
     }
 
