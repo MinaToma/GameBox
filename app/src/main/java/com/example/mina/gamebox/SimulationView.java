@@ -4,32 +4,35 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.hardware.display.DisplayManager;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Pair;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.Stack;
 
 public class SimulationView extends View {
 
-    ArrayList<Node> BBST;
-    Paint mPaint;
-    float width , height , startHorizontal , startVertical , bottomVertical , radius , prevX , prevY;
-    Stack<Integer> st;
-    boolean isStack , isBBST;
-    
+    private ArrayList<Pair<Node , Node>> drawArray;
+    private Node toDraw , parent , BSTRoot;
+    private Paint circlePaint , textPaint , linePaint;
+    private float width , height , startHorizontal , startVertical , bottomVertical , radius , prevX , prevY , vShift , hShift;
+    private Stack<Integer> st;
+    boolean isStack , isBST , isqQueue;
+
     public SimulationView(Context context) {
         super(context);
+
+        isBST = isqQueue = isStack = false;
     }
 
     public SimulationView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+
+        isBST = isqQueue = isStack = false;
     }
 
     public void setWidth(float width) {
@@ -41,26 +44,46 @@ public class SimulationView extends View {
     }
 
     public void initialize(Display display){
-        BBST = new ArrayList<>();
-        this.mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.mPaint.setColor(Color.RED);
+        circlePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        circlePaint.setColor(Color.RED);
+        textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        textPaint.setColor(Color.BLACK);
+        linePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+        linePaint.setColor(Color.BLUE);
 
+        drawArray = new ArrayList<>();
         this.setOnTouchListener(onTouchListener);
         prevX = prevY = 0f;
-        Log.i("MIN" , Float.toString(width));
         width = display.getWidth();
         height = display.getHeight();
-        Log.i("MIN" , Float.toString(width));
         startHorizontal = width / 2;
         startVertical = height * 0.05f;
         bottomVertical = height - startHorizontal;
         radius = width * 0.05f;
+
+        textPaint.setTextSize(radius / 2);
+
+        vShift = radius * 2 + width * 0.01f;
+        hShift = radius * 2 + width * 0.01f;
     }
 
-    public void simulateBBST(ArrayList<Node> BBST)
+    public void simulateBST(Node root)
     {
-        this.BBST = BBST;
-        invalidate();
+        drawArray.clear();
+        BSTRoot = root;
+        drawBST(root , null);
+        postInvalidate();
+    }
+
+    private void drawBST(Node currNode , Node parent) {
+        if(currNode == null) return;
+
+        toDraw = currNode;
+        this.parent = parent;
+        drawArray.add(new Pair<Node, Node>(toDraw , this.parent));
+
+        drawBST(currNode.right , currNode);
+        drawBST(currNode.left , currNode);
     }
 
     OnTouchListener onTouchListener = new OnTouchListener() {
@@ -79,7 +102,9 @@ public class SimulationView extends View {
                     prevX = currX;
                     prevY = currY;
 
-                    postInvalidate();
+                    if(isBST){
+                        simulateBST(BSTRoot);
+                    }
 
                     break;
             }
@@ -92,17 +117,36 @@ public class SimulationView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
+        if(isBST && toDraw != null){
 
-        if(isBBST){
-            for (Node node : BBST) {
-                canvas.drawCircle(node.x + startHorizontal , node.y + startVertical , radius , mPaint);
+            if(drawArray.size() == 1){
+                canvas.drawCircle(startHorizontal + BSTRoot.HOrder * hShift ,startVertical + BSTRoot.VOrder * vShift , radius , circlePaint);
+
+                canvas.drawText(Integer.toString(BSTRoot.value) , startHorizontal + BSTRoot.HOrder * hShift ,
+                        startVertical + BSTRoot.VOrder * vShift, textPaint);
+            }
+            else{
+                for (Pair<Node , Node> p : drawArray) {
+                    toDraw = p.first;
+                    parent = p.second;
+
+                    if(parent == null) continue;
+
+                    canvas.drawLine(startHorizontal + parent.HOrder * hShift , startVertical + parent.VOrder * vShift  ,
+                            startHorizontal + toDraw.HOrder * hShift , startVertical + toDraw.VOrder * vShift , linePaint);
+
+                    canvas.drawCircle(startHorizontal + parent.HOrder * hShift ,startVertical + parent.VOrder * vShift , radius , circlePaint);
+
+                    canvas.drawCircle(startHorizontal + toDraw.HOrder * hShift ,startVertical + toDraw.VOrder * vShift , radius , circlePaint);
+
+                    canvas.drawText(Integer.toString(parent.value) , startHorizontal + parent.HOrder * hShift ,
+                            startVertical + parent.VOrder * vShift, textPaint);
+
+                    canvas.drawText(Integer.toString(toDraw.value) , startHorizontal + toDraw.HOrder * hShift ,
+                            startVertical + toDraw.VOrder * vShift, textPaint);
+                }
             }
         }
 
-        Log.i("MIN" , "hori " + Float.toString(startHorizontal));
-        for(int i = 0 ; i < 10 ; i++)
-        {
-            canvas.drawCircle(startHorizontal + ( (i % 2 == 1) ?  i * 50 : i * 50 * -1 ) , startVertical  + i * 50  , radius, mPaint);
-        }
     }
 }

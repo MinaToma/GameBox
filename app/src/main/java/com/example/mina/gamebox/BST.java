@@ -1,10 +1,12 @@
 package com.example.mina.gamebox;
 
+import java.text.CollationElementIterator;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class BST{
 
-    private ArrayList<Node> tree;
+    private ArrayList<Integer> tree;
 
     Node root;
 
@@ -15,13 +17,14 @@ public class BST{
     public BST()
     {
         root = null;
-        tree = new ArrayList<Node>();
+        tree = new ArrayList<Integer>();
     }
 
     public void insert(int value)
     {
        if(find(value) != null) return;
-       insertKey(root, value);
+       tree.add(value);
+       root = insertKey(root, value);
     }
 
     private Node insertKey(Node start, int key)
@@ -143,9 +146,11 @@ public class BST{
         if(currNode == null) return 0;
 
         if(isRight){
-            prevHPos += setNodePosition(isRight , level + 1 ,  currNode.left , prevHPos - 1 , pivot);
 
-            int re = 0;
+            int re = setNodePosition(isRight , level + 1 ,  currNode.left , prevHPos - 1 , pivot);
+
+            prevHPos += re;
+
             if(prevHPos <= pivot){
                 re = pivot - prevHPos + 1;
                 prevHPos = pivot + 1;
@@ -159,15 +164,17 @@ public class BST{
             return re;
         }
         else{
-            prevHPos += setNodePosition(isRight , level + 1 , currNode.right , prevHPos + 1 , prevHPos);
 
-            int re = 0;
+            int re = setNodePosition(isRight , level + 1 , currNode.right , prevHPos + 1 , pivot);
+
+            prevHPos += re;
+
             if(prevHPos >= pivot){
                 re = pivot - prevHPos - 1;
                 prevHPos = pivot - 1;
             }
 
-            setNodePosition(isRight , level + 1 ,  currNode.left , prevHPos - 1 , pivot);
+            setNodePosition(isRight , level + 1 ,  currNode.left , prevHPos - 1 , prevHPos);
 
             currNode.setHOrder(prevHPos);
             currNode.setVOrder(level);
@@ -177,12 +184,29 @@ public class BST{
     }
 
     public void setTree(){
-        root.setHOrder(0);
-        root.setVOrder(0);
-        setNodePosition(true , 1 , root.right , 1 , 0);
-        setNodePosition(false , 1 , root.left , -1 , 0);
+        if(root != null){
+            root.setVOrder(0);
+            root.setHOrder(0);
+            setNodePosition(true , 1 , root.right , 1 , 0);
+            setNodePosition(false , 1 , root.left , -1 , 0);
+        }
     }
 
+    private Node makeBalanced(int l , int r){
+        if(l > r) return null;
 
+        int mid = (l + r) / 2;
+        Node node = new Node(tree.get(mid));
+        node.left = makeBalanced(l , mid - 1);
+        node.right = makeBalanced(mid + 1 , r);
 
+        return  node;
+    }
+
+    public void balance()
+    {
+        Collections.sort(tree);
+
+        root = makeBalanced(0 , tree.size() - 1);
+    }
 }
