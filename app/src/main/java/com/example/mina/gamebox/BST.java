@@ -1,5 +1,8 @@
 package com.example.mina.gamebox;
 
+import android.content.Context;
+import android.widget.Toast;
+
 import java.text.CollationElementIterator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,22 +10,26 @@ import java.util.Collections;
 public class BST{
 
     private ArrayList<Integer> tree;
-
     Node root;
+    Context context;
 
     public Node getRoot() {
         return root;
     }
 
-    public BST()
+    public BST(Context context)
     {
+        this.context = context;
         root = null;
         tree = new ArrayList<Integer>();
     }
 
     public void insert(int value)
     {
-       if(find(value) != null) return;
+       if(find(value) != null) {
+           Toast.makeText(context.getApplicationContext() , "Node Already Exists" , Toast.LENGTH_SHORT).show();
+           return;
+       }
        tree.add(value);
        root = insertKey(root, value);
     }

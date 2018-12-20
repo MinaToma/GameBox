@@ -29,9 +29,14 @@ public class SimualtionActivity extends AppCompatActivity {
         addDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bst.insert(Integer.parseInt(nodeValue.getText().toString()));
-                bst.setTree();
-                simulationView.simulateBST(bst.root);
+                try{
+                    bst.insert(Integer.parseInt(nodeValue.getText().toString()));
+                    bst.setTree();
+                    simulationView.simulateBST(bst.root);
+                }
+                catch(NumberFormatException e) {
+                    Toast.makeText(getBaseContext() , "Wrong Input" , Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -58,7 +63,7 @@ public class SimualtionActivity extends AppCompatActivity {
             simulationView.initialize(display);
 
             simulationView.isBST = true;
-            bst = new BST();
+            bst = new BST(getBaseContext());
         }
     }
 }
