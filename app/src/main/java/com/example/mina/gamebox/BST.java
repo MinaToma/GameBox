@@ -20,6 +20,7 @@ public class BST{
 
     public void insert(int value)
     {
+       if(find(value) != null) return;
        insertKey(root, value);
     }
 
@@ -124,12 +125,25 @@ public class BST{
         return node;
     }
 
+    private Node find(int value)
+    {
+        Node node = root;
+        while(node != null && node.value != value)
+        {
+            if (value < node.value)
+                node = node.left;
+            else
+                node = node.right;
+        }
+        return node;
+    }
 
-    private int setNodePositoin(boolean isRight , int level , Node currNode , int prevHPos , int pivot){
+
+    private int setNodePosition(boolean isRight , int level , Node currNode , int prevHPos , int pivot){
         if(currNode == null) return 0;
 
         if(isRight){
-            prevHPos += setNodePositoin(isRight , level + 1 ,  currNode.left , prevHPos - 1 , pivot);
+            prevHPos += setNodePosition(isRight , level + 1 ,  currNode.left , prevHPos - 1 , pivot);
 
             int re = 0;
             if(prevHPos <= pivot){
@@ -137,7 +151,7 @@ public class BST{
                 prevHPos = pivot + 1;
             }
 
-            setNodePositoin(isRight , level + 1 , currNode.right , prevHPos + 1 , prevHPos);
+            setNodePosition(isRight , level + 1 , currNode.right , prevHPos + 1 , prevHPos);
 
             currNode.setHOrder(prevHPos);
             currNode.setVOrder(level);
@@ -145,7 +159,7 @@ public class BST{
             return re;
         }
         else{
-            prevHPos += setNodePositoin(isRight , level + 1 , currNode.right , prevHPos + 1 , prevHPos);
+            prevHPos += setNodePosition(isRight , level + 1 , currNode.right , prevHPos + 1 , prevHPos);
 
             int re = 0;
             if(prevHPos >= pivot){
@@ -153,7 +167,7 @@ public class BST{
                 prevHPos = pivot - 1;
             }
 
-            setNodePositoin(isRight , level + 1 ,  currNode.left , prevHPos - 1 , pivot);
+            setNodePosition(isRight , level + 1 ,  currNode.left , prevHPos - 1 , pivot);
 
             currNode.setHOrder(prevHPos);
             currNode.setVOrder(level);
@@ -165,8 +179,8 @@ public class BST{
     public void setTree(){
         root.setHOrder(0);
         root.setVOrder(0);
-        setNodePositoin(true , 1 , root.right , 1 , 0);
-        setNodePositoin(false , 1 , root.left , -1 , 0);
+        setNodePosition(true , 1 , root.right , 1 , 0);
+        setNodePosition(false , 1 , root.left , -1 , 0);
     }
 
 
