@@ -23,17 +23,19 @@
             android:screenOrientation="portrait"></activity>
         <activity
             android:name=".GoFishGame"
-            android:screenOrientation="landscape"></activity>
-        <activity android:name=".FlappyBirdGame"></activity>
-        <activity android:name=".startFlappyBirdGame" />
-        <activity
-            android:name=".SimualtionActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".FlappyBirdGame"></activity>
+        <activity android:name=".startFlappyBirdGame" />
+        <activity
+            android:name=".SimualtionActivity"
+            android:screenOrientation="portrait">
+
         </activity>
     </application>
 
