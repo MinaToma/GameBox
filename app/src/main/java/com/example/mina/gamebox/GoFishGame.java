@@ -294,11 +294,7 @@ public class GoFishGame extends AppCompatActivity {
 
 
                 }
-                else
-                {
-                    goFishNow = false;
-                    nextRound();
-                }
+
             }
 
         }
@@ -463,6 +459,11 @@ public class GoFishGame extends AppCompatActivity {
         else if(goFishNow==true)
         {
             Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
+            if(deck.size()==0)
+        {
+            goFishNow = false;
+            nextRound();
+        }
         }
         else
         {
@@ -489,6 +490,11 @@ public class GoFishGame extends AppCompatActivity {
         else if(goFishNow==true)
         {
             Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
+            if(deck.size()==0)
+            {
+                goFishNow = false;
+                nextRound();
+            }
         }
         else
         {
@@ -513,6 +519,11 @@ public class GoFishGame extends AppCompatActivity {
         else if(goFishNow==true)
         {
             Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
+            if(deck.size()==0)
+            {
+                goFishNow = false;
+                nextRound();
+            }
         }
         else
         {
@@ -537,6 +548,11 @@ public class GoFishGame extends AppCompatActivity {
         else if(goFishNow==true)
         {
             Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
+            if(deck.size()==0)
+            {
+                goFishNow = false;
+                nextRound();
+            }
         }
         else
         {
