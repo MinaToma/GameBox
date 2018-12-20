@@ -3,7 +3,7 @@ package com.example.mina.gamebox;
 import android.util.Pair;
 
 public class Node{
-    int value , HOrder , VOrder;
+    int value , HOrder , VOrder , leftNodes , rightNodes;
     public Node right , left;
 
     public Node(int value)

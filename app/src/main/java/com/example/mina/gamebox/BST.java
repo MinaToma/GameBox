@@ -141,45 +141,37 @@ public class BST{
         return node;
     }
 
-
     private int setNodePosition(boolean isRight , int level , Node currNode , int prevHPos , int pivot){
         if(currNode == null) return 0;
 
         if(isRight){
 
-            int re = setNodePosition(isRight , level + 1 ,  currNode.left , prevHPos - 1 , pivot);
-
-            prevHPos += re;
+            prevHPos = setNodePosition(isRight , level + 1 ,  currNode.left , prevHPos - 1 , pivot) + 1;
 
             if(prevHPos <= pivot){
-                re = pivot - prevHPos + 1;
                 prevHPos = pivot + 1;
             }
 
-            setNodePosition(isRight , level + 1 , currNode.right , prevHPos + 1 , prevHPos);
-
             currNode.setHOrder(prevHPos);
             currNode.setVOrder(level);
 
-            return re;
+            prevHPos = Math.max(setNodePosition(isRight , level + 1 , currNode.right , prevHPos + 1 , prevHPos) , prevHPos);
+
+            return prevHPos;
         }
         else{
 
-            int re = setNodePosition(isRight , level + 1 , currNode.right , prevHPos + 1 , pivot);
-
-            prevHPos += re;
+            prevHPos = setNodePosition(isRight , level + 1 , currNode.right , prevHPos + 1 , pivot) - 1;
 
             if(prevHPos >= pivot){
-                re = pivot - prevHPos - 1;
                 prevHPos = pivot - 1;
             }
-
-            setNodePosition(isRight , level + 1 ,  currNode.left , prevHPos - 1 , prevHPos);
-
             currNode.setHOrder(prevHPos);
             currNode.setVOrder(level);
 
-            return re;
+            prevHPos = Math.min(setNodePosition(isRight , level + 1 ,  currNode.left , prevHPos - 1 , prevHPos) , prevHPos);
+
+            return prevHPos;
         }
     }
 
