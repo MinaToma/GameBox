@@ -1,7 +1,9 @@
 package com.example.mina.gamebox;
 
+import android.hardware.display.DisplayManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.Button;
@@ -19,17 +21,17 @@ public class SimualtionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_simualtion);
 
-        simulationView = (SimulationView) findViewById(R.id.simulateView);
+    }
 
-        node = new ArrayList<>();
-        node.add(new Node(10 , 10 , 100));
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
 
-        addDel = (Button) findViewById(R.id.addDelButton);
-        addDel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                simulationView.simulate(node);
-            }
-        });
+        super.onWindowFocusChanged(hasFocus);
+
+        if(hasFocus && simulationView == null) {
+            simulationView = (SimulationView) findViewById(R.id.simulateView);
+            Display display = getWindowManager().getDefaultDisplay();
+            simulationView.initialize(display);
+        }
     }
 }

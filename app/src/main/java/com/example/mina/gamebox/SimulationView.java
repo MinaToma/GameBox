@@ -4,69 +4,105 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.hardware.display.DisplayManager;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Display;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+
 import java.util.ArrayList;
+import java.util.Stack;
 
 public class SimulationView extends View {
 
-    ArrayList<Node> nodes;
+    ArrayList<Node> BBST;
     Paint mPaint;
-    float width , height , startHorizontal , startVertical;
-
+    float width , height , startHorizontal , startVertical , bottomVertical , radius , prevX , prevY;
+    Stack<Integer> st;
+    boolean isStack , isBBST;
+    
     public SimulationView(Context context) {
         super(context);
-
-        nodes = new ArrayList<>();
-        this.mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-        this.mPaint.setColor(Color.RED);
-
-        width = this.getLayoutParams().width;
-        height = this.getLayoutParams().height;
-        startHorizontal = width / 2;
-        startVertical = height * 0.5f;
     }
 
     public SimulationView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+    }
 
-        nodes = new ArrayList<>();
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
+    public void initialize(Display display){
+        BBST = new ArrayList<>();
         this.mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         this.mPaint.setColor(Color.RED);
 
-        width = this.getLayoutParams().width;
-        height = this.getLayoutParams().height;
+        this.setOnTouchListener(onTouchListener);
+        prevX = prevY = 0f;
+        Log.i("MIN" , Float.toString(width));
+        width = display.getWidth();
+        height = display.getHeight();
+        Log.i("MIN" , Float.toString(width));
         startHorizontal = width / 2;
-        startVertical = height * 0.5f;
+        startVertical = height * 0.05f;
+        bottomVertical = height - startHorizontal;
+        radius = width * 0.05f;
     }
 
-    public void simulate(ArrayList<Node> nodes)
+    public void simulateBBST(ArrayList<Node> BBST)
     {
-
+        this.BBST = BBST;
         invalidate();
     }
 
+    OnTouchListener onTouchListener = new OnTouchListener() {
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            switch (event.getAction()){
+                case MotionEvent.ACTION_MOVE:
+                    float currX = event.getRawX();
+                    float currY = event.getRawY();
+
+                    if(Math.abs(currX - prevX) < width * 0.1f && Math.abs(currY - prevY) < width * 0.1f){
+                        startHorizontal += currX - prevX;
+                        startVertical += currY - prevY;
+                    }
+
+                    prevX = currX;
+                    prevY = currY;
+
+                    postInvalidate();
+
+                    break;
+            }
+
+            return true;
+        }
+    };
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        canvas.drawCircle(100 , 100 , 100 , mPaint);
-        Log.i("tag", "ho");
-        for (Node node : nodes) {
-            canvas.drawCircle(node.x  , node.y , node.radius , mPaint);
+
+        if(isBBST){
+            for (Node node : BBST) {
+                canvas.drawCircle(node.x + startHorizontal , node.y + startVertical , radius , mPaint);
+            }
         }
 
+        Log.i("MIN" , "hori " + Float.toString(startHorizontal));
         for(int i = 0 ; i < 10 ; i++)
         {
-            canvas.drawCircle(i * 100 , i * 200 , 100 , mPaint);
+            canvas.drawCircle(startHorizontal + ( (i % 2 == 1) ?  i * 50 : i * 50 * -1 ) , startVertical  + i * 50  , radius, mPaint);
         }
-
-
-        canvas.save();
-        canvas.scale(100,100 , 0 , 0 );
-        canvas.restore();
     }
 }
