@@ -36,7 +36,7 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
 
         if(Character.isDigit(name.codePointAt(name.length()-2))){
             number = name.charAt(name.length()-2) - '0';
-            number *=10;
+            number *= 10;
             number += name.charAt(name.length()-1) - '0';
         }
         else{
@@ -160,6 +160,7 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
         newState = "Hand";
         reAddToConstraint();
     }
+
     public void toUnDeck()
     {
         isDeck=false;

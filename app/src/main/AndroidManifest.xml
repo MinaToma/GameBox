@@ -6,9 +6,9 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:largeHeap="true"
         android:theme="@style/AppTheme">
         <activity
             android:name=".SolitaireDifficultyActivity"
@@ -18,26 +18,23 @@
             android:screenOrientation="portrait">
 
         </activity>
-
-
         <activity
             android:name=".Klondike"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".GoFishGame"
+            android:screenOrientation="landscape"></activity>
+        <activity android:name=".FlappyBirdGame"></activity>
+        <activity android:name=".startFlappyBirdGame" />
+        <activity
+            android:name=".SimualtionActivity"
             android:screenOrientation="portrait">
-
-        </activity>
-        <activity android:name=".GoFishGame"
-            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-       <activity android:name=".FlappyBirdGame">
-
-
-       </activity>
-       <activity android:name=".startFlappyBirdGame" />
-
     </application>
 
 </manifest>
