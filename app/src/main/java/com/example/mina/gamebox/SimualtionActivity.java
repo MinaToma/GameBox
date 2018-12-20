@@ -15,7 +15,7 @@ import java.util.ArrayList;
 public class SimualtionActivity extends AppCompatActivity {
 
     SimulationView simulationView;
-    Button addDel , balance;
+    Button addDel , balance, delete;
     BST bst;
     EditText nodeValue;
 
@@ -37,6 +37,16 @@ public class SimualtionActivity extends AppCompatActivity {
                 catch(NumberFormatException e) {
                     Toast.makeText(getBaseContext() , "Wrong Input" , Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        delete = (Button) findViewById(R.id.deleteNodeButton);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bst.delete(Integer.parseInt(nodeValue.getText().toString()));
+                bst.setTree();
+                simulationView.simulateBST(bst.root);
             }
         });
 

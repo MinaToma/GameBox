@@ -60,7 +60,7 @@ public class BST{
 
         Node parent = null, node = root;
 
-        while(node != null || node.value == key)
+        while(node != null && node.value != key)
         {
             parent = node;
             if(key < node.value)
@@ -74,6 +74,25 @@ public class BST{
         }
 
         if(node == null) return; //value doesn't exist
+
+        if(root == node){
+            if(root.left == null && root.right == null){
+                root= null;
+            }
+            else{
+                Node minNode = findMin(root.right);
+                parent = findParent(minNode.value);
+
+                node.value = minNode.value;
+                if(parent == node){
+                    node.right = minNode.right;
+                }
+                else{
+                    parent.left = minNode.right;
+                }
+            }
+            return;
+        }
 
         if(node.right == null && node.left == null) //leaf node
         {
@@ -102,7 +121,6 @@ public class BST{
             parent = findParent(minNode.value);
 
             node.value = minNode.value;
-
             if(parent == node) //if the parent of the minimum node is the current node
             {
                 parent.right = minNode.right; //min node doesn't have any left children, shift up right tree
@@ -120,8 +138,15 @@ public class BST{
         while(node != null)
         {
             if(node.value == value) break;
+
             parent = node;
-            node = node.left;
+
+            if(value < node.value) {
+                node = node.left;
+            }
+            else {
+                node = node.right;
+            }
         }
         return parent;
     }
