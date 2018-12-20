@@ -2,47 +2,33 @@ package com.example.mina.gamebox;
 
 import android.util.Pair;
 
-public class Node {
-    float x ,  y , radius;
-    Pair<Float , Float> position;
+public class Node{
+    int value , HOrder , VOrder;
+    public Node right , left;
 
-    public Node(float x , float y , float radius)
+    public Node(int value)
     {
-        this.x = x;
-        this.y = y;
-        position = new Pair<>( x , y);
+        this.value = value;
+        right = left = null;
     }
 
-    public void setRadius(float radius) {
-        this.radius = radius;
+    public int getValue() {
+        return value;
     }
 
-    public float getRadius() {
-
-        return radius;
+    public int getHOrder() {
+        return HOrder;
     }
 
-    public void setX(float x) {
-        this.x = x;
+    public int getVOrder() {
+        return VOrder;
     }
 
-    public void setY(float y) {
-        this.y = y;
+    public void setHOrder(int HOrder) {
+        this.HOrder = HOrder;
     }
 
-    public void setPosition(Pair<Float, Float> position) {
-        this.position = position;
-    }
-
-    public float getX() {
-        return x;
-    }
-
-    public float getY() {
-        return y;
-    }
-
-    public Pair<Float, Float> getPosition() {
-        return position;
+    public void setVOrder(int VOrder) {
+        this.VOrder = VOrder;
     }
 }
