@@ -275,9 +275,9 @@ public class GoFishGame extends AppCompatActivity {
 
             if(card.getDeck())
             {
-                if(goFishNow)
+                if(goFishNow && deck.size()>0)
                 {
-                    if(deck.size()>0) {
+
                         Card cardNow = deck.lastElement();
                         deck.pop();
                         cardNow.toUnDeck();
@@ -290,13 +290,14 @@ public class GoFishGame extends AppCompatActivity {
                         goFishNow = false;
                         calculateCardsToWin();
                         nextRound();
-                    }
-                    else
-                    {
-                        goFishNow = false;
-                        nextRound();
-                    }
 
+
+
+                }
+                else
+                {
+                    goFishNow = false;
+                    nextRound();
                 }
             }
 
