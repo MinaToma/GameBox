@@ -10,6 +10,7 @@ import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -34,7 +35,7 @@ public class GoFishGame extends AppCompatActivity {
     private ArrayList<Pair<Float , Float>> suitsPosition , playAreaPosition;
     private ArrayList<Stack<Card>> suitsCard ;
     private ArrayList<ArrayList<Card>> playArea;
-
+    private Button nextPlayer;
     private HashMap<String , Integer> suitIdx;
     private ArrayList<Card> allCards;
     private ArrayList<ArrayList<Card>> players ;
@@ -238,6 +239,7 @@ public class GoFishGame extends AppCompatActivity {
                 constraintLayout.findViewById(R.id.fourthPlayerCards).getY());
         currentPos=firstPos;
         distBetweenDeckAndPlayersCard=deckPosition.first-firstPos.first-100;
+        nextPlayer = (Button) findViewById(R.id.nextPlayer);
 
     }
 
@@ -247,52 +249,34 @@ public class GoFishGame extends AppCompatActivity {
         public void onClick(View view) {
 
             Card card = ((Card ) view);
+            if(currentPlayer==0) {
+                boolean ok = false;
 
-            boolean ok=false;
+                Float gap = Float.valueOf(distBetweenDeckAndPlayersCard / players.get(currentPlayer).size());
+                if (gap > 150)
+                    gap = Float.valueOf(150);
 
-                Float gap=Float.valueOf(distBetweenDeckAndPlayersCard/players.get(currentPlayer).size());
-                if(gap>150)
-                    gap=Float.valueOf(150);
-
-                sizeOfFirstPlayerCard[currentPlayer]=Float.valueOf(0);
-                for(Card cardNow : players.get(currentPlayer))
-                {
-                    if(card==cardNow) {
+                sizeOfFirstPlayerCard[currentPlayer] = Float.valueOf(0);
+                for (Card cardNow : players.get(currentPlayer)) {
+                    if (card == cardNow) {
                         cardNow.setPosition(currentPos.first + (sizeOfFirstPlayerCard[currentPlayer]), currentPos.second - 25);
-                        selcteedCard=cardNow.getNumber(); 
-                        ok=true;
-                    }
-                    else
-                        cardNow.setPosition(currentPos.first+(sizeOfFirstPlayerCard[currentPlayer]),currentPos.second);
-                    sizeOfFirstPlayerCard[currentPlayer]+=Float.valueOf(gap);
+                        selcteedCard = cardNow.getNumber();
+                        ok = true;
+                    } else
+                        cardNow.setPosition(currentPos.first + (sizeOfFirstPlayerCard[currentPlayer]), currentPos.second);
+                    sizeOfFirstPlayerCard[currentPlayer] += Float.valueOf(gap);
                 }
-                if(ok==false)
-                {
-                    selcteedCard=-1;
+                if (ok == false) {
+                    selcteedCard = -1;
                 }
-
+            }
 
 
             if(card.getDeck())
             {
-                if(goFishNow && deck.size()>0)
+                if(goFishNow && deck.size()>0 && currentPlayer==0)
                 {
-
-                        Card cardNow = deck.lastElement();
-                        deck.pop();
-                        cardNow.toUnDeck();
-                        if (currentPlayer == 0) {
-                            cardNow.showCard();
-                        }
-                        cardNow.setPosition(currentPos.first + sizeOfFirstPlayerCard[currentPlayer], currentPos.second);
-                        sizeOfFirstPlayerCard[currentPlayer] += Float.valueOf(100);
-                        players.get(currentPlayer).add(cardNow);
-                        goFishNow = false;
-                        calculateCardsToWin();
-                        nextRound();
-
-
-
+                    GoFish();
                 }
 
             }
@@ -300,6 +284,21 @@ public class GoFishGame extends AppCompatActivity {
         }
 
     };
+    public void GoFish()
+    {
+        Card cardNow = deck.lastElement();
+        deck.pop();
+        cardNow.toUnDeck();
+        if (currentPlayer == 0) {
+            cardNow.showCard();
+        }
+        cardNow.setPosition(currentPos.first + sizeOfFirstPlayerCard[currentPlayer], currentPos.second);
+        sizeOfFirstPlayerCard[currentPlayer] += Float.valueOf(100);
+        players.get(currentPlayer).add(cardNow);
+        goFishNow = false;
+        calculateCardsToWin();
+        nextRound();
+    }
     public void calculateCardsToWin()
     {
         int sum=0;
@@ -391,6 +390,7 @@ public class GoFishGame extends AppCompatActivity {
         {
             fourthPlayerArrow.setVisibility(View.INVISIBLE);
         }
+        resetCards(currentPlayer,currentPos);
         goFishView.setVisibility(View.INVISIBLE);
         if(GameOver())
         {
@@ -407,18 +407,23 @@ public class GoFishGame extends AppCompatActivity {
 
             if (currentPlayer == 0) {
                 firstPlayerArrow.setVisibility(View.VISIBLE);
+                nextPlayer.setVisibility(View.INVISIBLE);
                 currentPos = firstPos;
             } else if (currentPlayer == 1) {
                 secondPlayerArrow.setVisibility(View.VISIBLE);
+                nextPlayer.setVisibility(View.VISIBLE);
                 currentPos = secondPos;
 
             } else if (currentPlayer == 2) {
                 thirdPlayerArrow.setVisibility(View.VISIBLE);
+                nextPlayer.setVisibility(View.VISIBLE);
                 currentPos = thirdPos;
             } else {
                 fourthPlayerArrow.setVisibility(View.VISIBLE);
+                nextPlayer.setVisibility(View.VISIBLE);
                 currentPos = fourthPos;
             }
+            resetCards(currentPlayer,currentPos);
         }
 
     }
@@ -471,7 +476,7 @@ public class GoFishGame extends AppCompatActivity {
         }
     }
     public void secondPlayerClick(View view) {
-        if( currentPlayer!=1 && goFishNow==false && players.get(1).size()>0)
+        if( currentPlayer==0 && goFishNow==false && players.get(1).size()>0)
         {
 
 
@@ -503,7 +508,7 @@ public class GoFishGame extends AppCompatActivity {
     }
 
     public void thirdPlayerClick(View view) {
-        if( currentPlayer!=2 && goFishNow==false && players.get(2).size()>0)
+        if( currentPlayer==0 && goFishNow==false && players.get(2).size()>0)
         {
             if(selcteedCard>=0)
             {
@@ -532,7 +537,7 @@ public class GoFishGame extends AppCompatActivity {
     }
 
     public void fourthPlayerClick(View view) {
-        if( currentPlayer!=3 && goFishNow==false && players.get(3).size()>0)
+        if( currentPlayer==0 && goFishNow==false && players.get(3).size()>0)
         {
             if(selcteedCard>=0)
             {
@@ -567,7 +572,6 @@ public class GoFishGame extends AppCompatActivity {
             if(cardNow.getNumber()==selcteedCard)
             {
                 currentCads.add(cardNow);
-
             }
 
         }
@@ -598,6 +602,10 @@ public class GoFishGame extends AppCompatActivity {
 
                 cardNow = deck.lastElement();
                 cardNow.toUnDeck();
+                if(playerSelceted==0)
+                {
+                    cardNow.showCard();
+                }
                 cardNow.setPosition(pos.first+(sizeOfFirstPlayerCard[playerSelceted]),pos.second);
                 players.get(playerSelceted).add(cardNow);
                 sizeOfFirstPlayerCard[playerSelceted]+=Float.valueOf(100);
@@ -606,7 +614,12 @@ public class GoFishGame extends AppCompatActivity {
 
                 deck.pop();
             }
+
             calculateCardsToWin();
+            if(players.get(playerSelceted).size()==0 )
+            {
+                nextRound();
+            }
 
         }
         else
@@ -618,4 +631,81 @@ public class GoFishGame extends AppCompatActivity {
     }
 
 
+    public void nextPlayer(View view) {
+        int selectplayer = random.nextInt(4);
+        while (selectplayer==currentPlayer || players.get(selectplayer).size()==0)
+        {
+             selectplayer = random.nextInt(4);
+        }
+        int cardPos=random.nextInt(players.get(currentPlayer).size());
+        selcteedCard=players.get(currentPlayer).get(cardPos).getNumber();
+        String currentPlayerName=" ",selectedPlayerName=" " ,cardKind=" ";
+        Pair<Float,Float> nextPos;
+        if(currentPlayer==1)
+        {
+            currentPlayerName="Second Player ";
+        }
+        else if(currentPlayer==2)
+        {
+            currentPlayerName="Third Player ";
+        }
+        else if(currentPlayer==3)
+        {
+            currentPlayerName="Fourth Player ";
+        }
+        if(selectplayer==1)
+        {
+            selectedPlayerName="Second Player ";
+            nextPos=secondPos;
+        }
+        else if(selectplayer==2)
+        {
+            selectedPlayerName="Third Player ";
+            nextPos=thirdPos;
+        }
+        else if(selectplayer==3)
+        {
+            selectedPlayerName="Fourth Player ";
+            nextPos=fourthPos;
+        }
+        else
+        {
+            selectedPlayerName="You ";
+            nextPos=firstPos;
+        }
+        if(selcteedCard==11)
+        {
+            cardKind="Jack";
+        }
+        else if(selcteedCard==12)
+        {
+            cardKind="Queen";
+        }
+        else if(selcteedCard==13)
+        {
+            cardKind="King";
+        }
+        else
+        {
+            cardKind=String.valueOf( selcteedCard);
+        }
+        Toast.makeText(getApplicationContext(),"The " + currentPlayerName + " Wants " + cardKind + " From " + selectedPlayerName ,Toast.LENGTH_SHORT ).show();
+        askPlayerForCards(selectplayer,nextPos);
+        if(goFishNow && deck.size()>0)
+        {
+            GoFish();
+            Toast.makeText(getApplicationContext(),"The " + currentPlayerName + "Go Fish",Toast.LENGTH_SHORT).show();
+        }
+        else if(goFishNow)
+        {
+            goFishView.setVisibility(View.INVISIBLE);
+            nextRound();
+        }
+        else if(players.get(currentPlayer).size()==0)
+        {
+            nextRound();
+        }
+
+
+    }
 }
