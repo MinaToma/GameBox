@@ -17,6 +17,7 @@ public class SimualtionActivity extends AppCompatActivity {
     SimulationView simulationView;
     Button addDel , balance, delete;
     BST bst;
+    AVLTree avl;
     EditText nodeValue;
 
     @Override
@@ -30,9 +31,13 @@ public class SimualtionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try{
-                    bst.insert(Integer.parseInt(nodeValue.getText().toString()));
-                    bst.setTree();
-                    simulationView.simulateBST(bst.root);
+                    avl.insert(Integer.parseInt(nodeValue.getText().toString()));
+                    if(avl.root != null){
+                        Toast.makeText(getBaseContext() , Integer.toString(avl.root.value) , Toast.LENGTH_SHORT).show();
+                    }
+
+                    avl.setTree();
+                    simulationView.simulateAVL(avl.root);
                 }
                 catch(NumberFormatException e) {
                     Toast.makeText(getBaseContext() , "Wrong Input" , Toast.LENGTH_SHORT).show();
@@ -44,9 +49,14 @@ public class SimualtionActivity extends AppCompatActivity {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bst.delete(Integer.parseInt(nodeValue.getText().toString()));
-                bst.setTree();
-                simulationView.simulateBST(bst.root);
+                try {
+                    avl.delete(Integer.parseInt(nodeValue.getText().toString()));
+                    avl.setTree();
+                    simulationView.simulateAVL(avl.root);
+                }
+                catch (NumberFormatException e){
+                    Toast.makeText(getBaseContext() , "Wrong Input" , Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -68,12 +78,11 @@ public class SimualtionActivity extends AppCompatActivity {
 
         if(hasFocus && simulationView == null) {
             simulationView = (SimulationView) findViewById(R.id.simulateView);
-            Display display = getWindowManager(
-            ).getDefaultDisplay();
+            Display display = getWindowManager().getDefaultDisplay();
             simulationView.initialize(display);
 
-            simulationView.isBST = true;
             bst = new BST(getBaseContext());
+            avl = new AVLTree(getBaseContext());
         }
     }
 }
