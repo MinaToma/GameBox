@@ -24,7 +24,7 @@ public class Splash extends AppCompatActivity {
     }
 
     public void startFlappyBird(View view) {
-        Intent intent = new Intent(getBaseContext() , startFlappyBirdGame.class);
+        Intent intent = new Intent(getBaseContext() , FlappyBirdGame.class);
         startActivity(intent);
     }
     public void startSimulation(View view) {

@@ -180,8 +180,6 @@ public class flappyBirdGameView extends View {
         canvas.drawBitmap(score3rd, displayWidth /2-score3rd.getWidth(), (displayHeight/2)-(gameOverImage.getHeight()/2)+gameOverImage.getHeight()+20, null);
 
 
-
-
     }
 
     }
