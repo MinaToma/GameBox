@@ -19,7 +19,7 @@ public class Splash extends AppCompatActivity {
     }
 
     public void startGoFish(View view) {
-        Intent intent = new Intent(getBaseContext() , GoFishGame.class);
+        Intent intent = new Intent(getBaseContext() , startGoFish.class);
         startActivity(intent);
     }
 
