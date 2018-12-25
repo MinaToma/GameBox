@@ -87,7 +87,6 @@ public class flappyBirdGameView extends View {
         random = new Random();
         for(int i= 0 ;i<numberOfTube  ;  i++)
         {
-
             tubeX[i] = displayWidth + i*distanceBetweenTubes;
             topTubeY[i] = minTubeOffset + random.nextInt(maxTubeOffset - minTubeOffset + 1);
         }
@@ -101,73 +100,73 @@ public class flappyBirdGameView extends View {
         // draw the background on canvas
         //canvas.drawBitmap(background,0,0,null);
         canvas.drawBitmap(background,null,rect,null);
-    if(gameOver==false) {
-        if (birdFram == 0) {
-            birdFram = 1;
-        } else if (birdFram == 1) {
-            birdFram = 2;
-        } else {
-            birdFram = 0;
+        if(gameOver==false) {
+            if (birdFram == 0) {
+                birdFram = 1;
+            } else if (birdFram == 1) {
+                birdFram = 2;
+            } else {
+                birdFram = 0;
+            }
+            if (gameState) {
+                // the bird should be in the screen
+                if (birdY < displayHeight - birds[0].getHeight() || velocity < 0) {
+                    velocity += gravity; // As the bird falls, it gets faster and faster as the velocity value increments  by gravity each time
+                    birdY += velocity;
+                }
+                for (int i = 0; i < numberOfTube; i++) {
+
+                    tubeX[i] -= tubeVelocity;
+                    if (tubeX[i] < -topTube.getWidth()) {
+                        tubeX[i] += numberOfTube * distanceBetweenTubes;
+                        topTubeY[i] = minTubeOffset + random.nextInt(maxTubeOffset - minTubeOffset + 1);
+                    }
+                    canvas.drawBitmap(topTube, tubeX[i], topTubeY[i] - topTube.getHeight(), null);
+                    canvas.drawBitmap(bottomTube, tubeX[i], topTubeY[i] + gap, null);
+                    if (birdX+birds[0].getWidth() > tubeX[i] && birdX < tubeX[i] + topTube.getWidth() && birdY > topTubeY[i] && topTubeY[i] + gap > birdY+birds[0].getHeight())
+                    {
+                        isCalculated = true;
+                        meshBenAy7aga = true;
+                    }
+                    if(birdX+birds[0].getWidth() >= tubeX[i] && birdX <= tubeX[i] + topTube.getWidth() && (birdY <= topTubeY[i] || topTubeY[i] + gap <= birdY+birds[0].getHeight()) )
+                    {
+                        gameOver=true;
+                        hit.start();
+                        break;
+                    }
+                }
+                if (meshBenAy7aga == false && isCalculated == true) {
+                    score++;
+                    isCalculated = false;
+
+                    winPoint.start();
+                }
+                meshBenAy7aga = false;
+                calculateScore(score);
+                canvas.drawBitmap(score1st, displayWidth - score1st.getWidth()-5, 30, null);
+                canvas.drawBitmap(score2nd, displayWidth - score1st.getWidth() - score2nd.getWidth()-5, 30, null);
+                canvas.drawBitmap(score3rd, displayWidth - score1st.getWidth() - score2nd.getWidth() - score3rd.getWidth()-5, 30, null);
+            }
+
+            // we want to dispaly the bird in the center of the screen
+            // Both birds[0] and birds[1] has the same dimension
+            canvas.drawBitmap(birds[birdFram], birdX, birdY, null);
+            handler.postDelayed(runnable, updateMilles);
         }
-        if (gameState) {
-            // the bird should be in the screen
-            if (birdY < displayHeight - birds[0].getHeight() || velocity < 0) {
-                velocity += gravity; // As the bird falls, it gets faster and faster as the velocity value increments  by gravity each time
-                birdY += velocity;
-            }
-            for (int i = 0; i < numberOfTube; i++) {
-
-                tubeX[i] -= tubeVelocity;
-                if (tubeX[i] < -topTube.getWidth()) {
-                    tubeX[i] += numberOfTube * distanceBetweenTubes;
-                    topTubeY[i] = minTubeOffset + random.nextInt(maxTubeOffset - minTubeOffset + 1);
-                }
-                canvas.drawBitmap(topTube, tubeX[i], topTubeY[i] - topTube.getHeight(), null);
-                canvas.drawBitmap(bottomTube, tubeX[i], topTubeY[i] + gap, null);
-                if (birdX+birds[0].getWidth() > tubeX[i] && birdX < tubeX[i] + topTube.getWidth() && birdY > topTubeY[i] && topTubeY[i] + gap > birdY+birds[0].getHeight())
-                {
-                    isCalculated = true;
-                    meshBenAy7aga = true;
-                }
-                if(birdX+birds[0].getWidth() >= tubeX[i] && birdX <= tubeX[i] + topTube.getWidth() && (birdY <= topTubeY[i] || topTubeY[i] + gap <= birdY+birds[0].getHeight()) )
-                {
-                 gameOver=true;
-                 hit.start();
-                 break;
-                }
-            }
-            if (meshBenAy7aga == false && isCalculated == true) {
-                score++;
-                isCalculated = false;
-
-                winPoint.start();
-            }
-            meshBenAy7aga = false;
-            calculateScore(score);
-            canvas.drawBitmap(score1st, displayWidth - score1st.getWidth()-5, 30, null);
-            canvas.drawBitmap(score2nd, displayWidth - score1st.getWidth() - score2nd.getWidth()-5, 30, null);
-            canvas.drawBitmap(score3rd, displayWidth - score1st.getWidth() - score2nd.getWidth() - score3rd.getWidth()-5, 30, null);
-        }
-
-        // we want to dispaly the bird in the center of the screen
-        // Both birds[0] and birds[1] has the same dimension
-        canvas.drawBitmap(birds[birdFram], birdX, birdY, null);
-        handler.postDelayed(runnable, updateMilles);
-    }
-    else
-    {
-        openNewGame++;
-        if(openNewGame==1)
+        else
         {
-            die.start();
+            openNewGame++;
+            if(openNewGame==1)
+            {
+                die.start();
+            }
+            canvas.drawBitmap(gameOverImage,(displayWidth/2)-(gameOverImage.getWidth()/2),(displayHeight/2)-(gameOverImage.getHeight()/2),null);
+            canvas.drawBitmap(score1st, displayWidth/2 + score2nd.getWidth(),(displayHeight/2)-(gameOverImage.getHeight()/2)+gameOverImage.getHeight()+20 , null);
+            canvas.drawBitmap(score2nd, displayWidth /2, (displayHeight/2)-(gameOverImage.getHeight()/2)+gameOverImage.getHeight()+20, null);
+            canvas.drawBitmap(score3rd, displayWidth /2-score3rd.getWidth(), (displayHeight/2)-(gameOverImage.getHeight()/2)+gameOverImage.getHeight()+20, null);
+
+
         }
-        canvas.drawBitmap(gameOverImage,(displayWidth/2)-(gameOverImage.getWidth()/2),(displayHeight/2)-(gameOverImage.getHeight()/2),null);
-        canvas.drawBitmap(score1st, displayWidth/2 + score2nd.getWidth(),(displayHeight/2)-(gameOverImage.getHeight()/2)+gameOverImage.getHeight()+20 , null);
-        canvas.drawBitmap(score2nd, displayWidth /2, (displayHeight/2)-(gameOverImage.getHeight()/2)+gameOverImage.getHeight()+20, null);
-        canvas.drawBitmap(score3rd, displayWidth /2-score3rd.getWidth(), (displayHeight/2)-(gameOverImage.getHeight()/2)+gameOverImage.getHeight()+20, null);
-
-
-    }
 
     }
 
