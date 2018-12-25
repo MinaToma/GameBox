@@ -38,26 +38,6 @@ public class Klondike extends AppCompatActivity {
             }
 
         });
-
-        ImageButton undo = (ImageButton) findViewById(R.id.undoButton);
-        undo.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                game.undo();
-            }
-        });
-
-        ImageButton hint = (ImageButton) findViewById(R.id.hintButton);
-        hint.setOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                //  long futuretime =System.currentTimeMillis()+3000;
-                // while (System.currentTimeMillis()<futuretime)
-
-                game.hint();
-            }
-        });
     }
 
     @Override

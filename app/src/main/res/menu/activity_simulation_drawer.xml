@@ -6,19 +6,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/BST"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/bst"
             android:title="Binary Search Tree" />
         <item
             android:id="@+id/AVL"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/avl"
             android:title="AVL Tree" />
         <item
             android:id="@+id/stack"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/stack"
             android:title="Stack" />
         <item
             android:id="@+id/queue"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/queue"
             android:title="Queue" />
     </group>
 

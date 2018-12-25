@@ -586,36 +586,4 @@ public class Game {
                 break;
         }
     }
-
-    @SuppressLint("NewApi")
-    public void hint() {
-
-        Card card1,card2;
-        Toast toast= new Toast(context);
-        boolean moves = false;
-
-        for (int i = 0; i <= 12; i++) {
-            for (int x = 0; x < (allCards.get(i).size()); x++) {
-                if (i < 12) {
-                    for (int y = 0; y < (allCards.get(i + 1).size()); y++) {
-                        if (allCards.get(i).get(x).getRed() != allCards.get(i + 1).get(y).getRed()) {
-                            card1 = allCards.get(i).get(x);
-                            card2 = allCards.get(i + 1).get(y);
-
-                            if ((playArea.get(card1.getPlayIdx()).size() - 1 == card2.getInPlayIdx())) {
-
-                                moves = true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (moves == false) {
-
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.makeText(context ,"Game Over!", Toast.LENGTH_LONG).show();
-        }
-    }
 }
