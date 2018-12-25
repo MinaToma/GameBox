@@ -23,6 +23,8 @@ public class SimulationActivity extends AppCompatActivity
     AVLTree avl;
     EditText nodeValue;
     boolean BST , AVL , STACK , QUEUE;
+    Stack mStack;
+    Queue mQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,11 +68,23 @@ public class SimulationActivity extends AppCompatActivity
                         Toast.makeText(getBaseContext() , "Wrong Input" , Toast.LENGTH_SHORT).show();
                     }
                 }
-                else if(QUEUE){
-
-                }
                 else if(STACK){
-
+                    try{
+                        mStack.push(Integer.parseInt(nodeValue.getText().toString()));
+                        simulationView.drawStack(mStack.nodes);
+                    }
+                    catch(NumberFormatException e) {
+                        Toast.makeText(getBaseContext() , "Wrong Input" , Toast.LENGTH_SHORT).show();
+                    }
+                }
+                else if(QUEUE){
+                    try{
+                        mQueue.enqueue(Integer.parseInt(nodeValue.getText().toString()));
+                        simulationView.drawQueue(mQueue.nodes);
+                    }
+                    catch(NumberFormatException e) {
+                        Toast.makeText(getBaseContext() , "Wrong Input" , Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else {
                     Toast.makeText(getBaseContext() , "Please Choose A Data Structure to simulate" , Toast.LENGTH_SHORT).show();
@@ -103,10 +117,12 @@ public class SimulationActivity extends AppCompatActivity
                     }
                 }
                 else if(STACK){
-
+                    mStack.pop();
+                    simulationView.drawStack(mStack.nodes);
                 }
                 else if(QUEUE){
-
+                    mQueue.dequeue();
+                    simulationView.drawQueue(mQueue.nodes);
                 }
                 else {
                     Toast.makeText(getBaseContext() , "Please Choose A Data Structure to simulate" , Toast.LENGTH_SHORT).show();
@@ -137,8 +153,8 @@ public class SimulationActivity extends AppCompatActivity
 
             bst = new BST(getBaseContext());
             avl = new AVLTree(getBaseContext());
-            //new stack
-            //new queue
+            mQueue = new Queue();
+            mStack = new Stack();
         }
     }
 

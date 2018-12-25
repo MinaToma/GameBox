@@ -1,7 +1,5 @@
 package com.example.mina.gamebox;
 
-import android.util.Pair;
-
 public class Node{
     int value , HOrder , VOrder , height;
     public Node right , left;
@@ -9,7 +7,7 @@ public class Node{
     public Node(int value)
     {
         this.value = value;
-        height = 1;
+        height = HOrder = VOrder = 0;
         right = left = null;
     }
 
