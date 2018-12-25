@@ -12,8 +12,7 @@ public class startFlappyBirdGame extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_flappy_bird_game);
-        gameView =new flappyBirdGameView(this);
+        gameView = new flappyBirdGameView(this);
         setContentView(gameView);
-
     }
 }

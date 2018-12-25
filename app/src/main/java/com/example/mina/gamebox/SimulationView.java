@@ -136,32 +136,34 @@ public class SimulationView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if(drawArray.size() == 1){
-            canvas.drawCircle(startHorizontal + root.HOrder * hShift ,startVertical + root.VOrder * vShift , radius , circlePaint);
+        if(drawArray != null){
+            if(drawArray.size() == 1){
+                canvas.drawCircle(startHorizontal + root.HOrder * hShift ,startVertical + root.VOrder * vShift , radius , circlePaint);
 
-            canvas.drawText(Integer.toString(root.value) , startHorizontal + root.HOrder * hShift ,
-                    startVertical + root.VOrder * vShift, textPaint);
-        }
-        else{
+                canvas.drawText(Integer.toString(root.value) , startHorizontal + root.HOrder * hShift ,
+                        startVertical + root.VOrder * vShift, textPaint);
+            }
+            else{
 
-            for (Pair<Node , Node> p : drawArray) {
-                toDraw = p.first;
-                parent = p.second;
+                for (Pair<Node , Node> p : drawArray) {
+                    toDraw = p.first;
+                    parent = p.second;
 
-                if(parent == null) continue;
+                    if(parent == null) continue;
 
-                canvas.drawLine(startHorizontal + parent.HOrder * hShift , startVertical + parent.VOrder * vShift  ,
-                        startHorizontal + toDraw.HOrder * hShift , startVertical + toDraw.VOrder * vShift , linePaint);
+                    canvas.drawLine(startHorizontal + parent.HOrder * hShift , startVertical + parent.VOrder * vShift  ,
+                            startHorizontal + toDraw.HOrder * hShift , startVertical + toDraw.VOrder * vShift , linePaint);
 
-                canvas.drawCircle(startHorizontal + parent.HOrder * hShift ,startVertical + parent.VOrder * vShift , radius , circlePaint);
+                    canvas.drawCircle(startHorizontal + parent.HOrder * hShift ,startVertical + parent.VOrder * vShift , radius , circlePaint);
 
-                canvas.drawCircle(startHorizontal + toDraw.HOrder * hShift ,startVertical + toDraw.VOrder * vShift , radius , circlePaint);
+                    canvas.drawCircle(startHorizontal + toDraw.HOrder * hShift ,startVertical + toDraw.VOrder * vShift , radius , circlePaint);
 
-                canvas.drawText(Integer.toString(parent.value) , startHorizontal + parent.HOrder * hShift ,
-                        startVertical + parent.VOrder * vShift, textPaint);
+                    canvas.drawText(Integer.toString(parent.value) , startHorizontal + parent.HOrder * hShift ,
+                            startVertical + parent.VOrder * vShift, textPaint);
 
-                canvas.drawText(Integer.toString(toDraw.value) , startHorizontal + toDraw.HOrder * hShift ,
-                        startVertical + toDraw.VOrder * vShift, textPaint);
+                    canvas.drawText(Integer.toString(toDraw.value) , startHorizontal + toDraw.HOrder * hShift ,
+                            startVertical + toDraw.VOrder * vShift, textPaint);
+                }
             }
         }
     }

@@ -34,7 +34,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="106dp"
         android:fontFamily="sans-serif-condensed"
-        android:text="FlappY BirD"
+        android:text="Flappy Bird"
         android:textAlignment="center"
         android:textColor="?attr/colorBackgroundFloating"
         android:textSize="50sp"

@@ -602,6 +602,7 @@ public class Game {
                 }
             }
         }
+
         if (moves == false) {
 
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
