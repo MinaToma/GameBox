@@ -22,4 +22,9 @@ public class SolitaireStartpage extends AppCompatActivity {
             }
         });
     }
+
+    public void back(View view) {
+        Intent intent = new Intent(getBaseContext() , Splash.class);
+        startActivity(intent);
+    }
 }

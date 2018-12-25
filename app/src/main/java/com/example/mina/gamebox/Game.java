@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Stack;
@@ -112,7 +113,14 @@ public class Game {
         deck.add(card);
         addCardToConstraint(card);
 
-        for(int i = 13 ; i >= 1 ; i--){
+        ArrayList<Integer> numbers = new ArrayList();
+
+        for(int i = 1 ; i <= 13 ; i++)
+            numbers.add(i);
+
+        Collections.shuffle(numbers);
+
+        for (Integer i : numbers) {
             for(int j = 0 ; j < 4 ; j++) {
 
                 boolean ok = false;
@@ -484,17 +492,29 @@ public class Game {
             playArea.get(card.getPlayIdx()).remove(card.getInPlayIdx());
             if(!playArea.get(card.getPlayIdx()).isEmpty() && !playArea.get(card.getPlayIdx()).get(playArea.get(card.getPlayIdx()).size() - 1).getFaceUp()){
                 playArea.get(card.getPlayIdx()).get(playArea.get(card.getPlayIdx()).size() - 1).showCard();
-                undoStack.push(new Pair<>(flipCard, new Pair<>(playArea.get(card.getPlayIdx()).get(playArea.get(card.getPlayIdx()).size() - 1) , -1)));
+                undoStack.push(new Pair<Integer, Pair<Card, Integer>>(flipCard, new Pair<Card, Integer>(playArea.get(card.getPlayIdx()).get(playArea.get(card.getPlayIdx()).size() - 1) , -1)));
             }
 
-            undoStack.push(new Pair<>(playToSuits, new Pair<>(card, card.getPlayIdx())));
+            undoStack.push(new Pair<Integer, Pair<Card, Integer>>(playToSuits, new Pair<Card, Integer>(card, card.getPlayIdx())));
         }
         else if(card.getHand()){
-            undoStack.push(new Pair<>(handToSuits, new Pair<>(card, -1)));
+            undoStack.push(new Pair<Integer, Pair<Card, Integer>>(handToSuits, new Pair<Card, Integer>(card, -1)));
             hand.pop();
         }
         card.toSuits(idx , suitsPosition.get(idx));
         suitsCard.get(idx).add(card);
+
+        if(!suitsCard.get(0).empty() && !suitsCard.get(1).empty() && !suitsCard.get(2).empty() && !suitsCard.get(3).empty())
+        {
+            if(suitsCard.get(0).peek().getNumber() == 13
+            && suitsCard.get(1).peek().getNumber() == 13
+            && suitsCard.get(2).peek().getNumber() == 13
+            && suitsCard.get(3).peek().getNumber() == 13)
+            {
+                Toast youWon = new Toast(context);
+                youWon.makeText(context ,"You Won!", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     public void disposeGame()
