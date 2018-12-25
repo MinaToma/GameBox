@@ -10,6 +10,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class Game {
     private ArrayList<ArrayList<Card>> allCards;
     private int coverCardID , emptyDeckID;
     private ArrayList<String> cardType;
-
+    private ImageView bigWin;
     //undo stack of pair( operation, pair(card, index) )
     private Stack<Pair<Integer, Pair<Card, Integer>>> undoStack;
 
@@ -108,7 +109,7 @@ public class Game {
 
         ArrayList<Integer> numbers = new ArrayList();
 
-        for(int i = 1 ; i <= 13 ; i++)
+        for(int i = 1 ; i <= 13; i++)
             numbers.add(i);
 
         Collections.shuffle(numbers);
@@ -502,11 +503,16 @@ public class Game {
             {
                 Toast youWon = new Toast(context);
                 youWon.makeText(context ,"You Won!", Toast.LENGTH_LONG).show();
+
+                bigWin=(ImageView) constraintLayout.findViewById(R.id.bigWinn);
+                bigWin.setVisibility(View.VISIBLE);
             }
+
         }
 
         if(suitsCard.get(0).size() == 13 && suitsCard.get(1).size() == 13 && suitsCard.get(1).size() == 13 && suitsCard.get(1).size() == 13){
-            //you won
+
+
 
             suitsCard.get(0).get(suitsCard.get(0).size()-1).setOnTouchListener(null);
             suitsCard.get(1).get(suitsCard.get(1).size()-1).setOnTouchListener(null);
@@ -612,7 +618,8 @@ public class Game {
             }
         }
 
-        if (moves == false) {
+        if (moves == false)
+        {
 
             toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
             toast.makeText(context ,"Game Over!", Toast.LENGTH_LONG).show();
