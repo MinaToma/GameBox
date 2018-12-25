@@ -627,6 +627,10 @@ public class GoFishGame extends AppCompatActivity {
             goFishView.setVisibility(View.VISIBLE);
             //Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
             goFishNow=true;
+            if(deck.size()==0)
+            {
+                nextRound();
+            }
         }
     }
 
