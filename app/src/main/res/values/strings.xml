@@ -6,4 +6,5 @@
         <item>Meduim</item>
         <item>Hard</item>
     </string-array>
+    <string name="title_activity_flappy_bird_game_over">flappyBirdGameOver</string>
 </resources>

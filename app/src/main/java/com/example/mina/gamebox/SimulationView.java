@@ -17,22 +17,18 @@ import java.util.Stack;
 public class SimulationView extends View {
 
     private ArrayList<Pair<Node , Node>> drawArray;
-    private Node toDraw , parent , BSTRoot;
+    private Node toDraw , parent , root;
     private Paint circlePaint , textPaint , linePaint;
     private float width , height , startHorizontal , startVertical , bottomVertical , radius , prevX , prevY , vShift , hShift;
     private Stack<Integer> st;
-    boolean isStack , isBST , isqQueue;
 
     public SimulationView(Context context) {
         super(context);
-
-        isBST = isqQueue = isStack = false;
     }
 
     public SimulationView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        isBST = isqQueue = isStack = false;
     }
 
     public void setWidth(float width) {
@@ -70,7 +66,7 @@ public class SimulationView extends View {
     public void simulateBST(Node root)
     {
         drawArray.clear();
-        BSTRoot = root;
+        this.root = root;
         drawBST(root , null);
         postInvalidate();
     }
@@ -86,6 +82,26 @@ public class SimulationView extends View {
         drawBST(currNode.left , currNode);
     }
 
+    public void simulateAVL(Node root)
+    {
+        drawArray.clear();
+        this.root = root;
+        drawAVL(root , null);
+        postInvalidate();
+    }
+
+    private void drawAVL(Node currNode , Node parent) {
+        if(currNode == null) return;
+
+        toDraw = currNode;
+        this.parent = parent;
+        drawArray.add(new Pair<Node, Node>(toDraw , this.parent));
+
+        drawAVL(currNode.right , currNode);
+        drawAVL
+                (currNode.left , currNode);
+    }
+    
     OnTouchListener onTouchListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
@@ -102,9 +118,7 @@ public class SimulationView extends View {
                     prevX = currX;
                     prevY = currY;
 
-                    if(isBST){
-                        simulateBST(BSTRoot);
-                    }
+                    postInvalidate();
 
                     break;
             }
@@ -113,40 +127,42 @@ public class SimulationView extends View {
         }
     };
 
+    public void clear(){
+        drawArray.clear();
+        postInvalidate();
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
-        if(isBST && toDraw != null){
+        if(drawArray.size() == 1){
+            canvas.drawCircle(startHorizontal + root.HOrder * hShift ,startVertical + root.VOrder * vShift , radius , circlePaint);
 
-            if(drawArray.size() == 1){
-                canvas.drawCircle(startHorizontal + BSTRoot.HOrder * hShift ,startVertical + BSTRoot.VOrder * vShift , radius , circlePaint);
+            canvas.drawText(Integer.toString(root.value) , startHorizontal + root.HOrder * hShift ,
+                    startVertical + root.VOrder * vShift, textPaint);
+        }
+        else{
 
-                canvas.drawText(Integer.toString(BSTRoot.value) , startHorizontal + BSTRoot.HOrder * hShift ,
-                        startVertical + BSTRoot.VOrder * vShift, textPaint);
-            }
-            else{
-                for (Pair<Node , Node> p : drawArray) {
-                    toDraw = p.first;
-                    parent = p.second;
+            for (Pair<Node , Node> p : drawArray) {
+                toDraw = p.first;
+                parent = p.second;
 
-                    if(parent == null) continue;
+                if(parent == null) continue;
 
-                    canvas.drawLine(startHorizontal + parent.HOrder * hShift , startVertical + parent.VOrder * vShift  ,
-                            startHorizontal + toDraw.HOrder * hShift , startVertical + toDraw.VOrder * vShift , linePaint);
+                canvas.drawLine(startHorizontal + parent.HOrder * hShift , startVertical + parent.VOrder * vShift  ,
+                        startHorizontal + toDraw.HOrder * hShift , startVertical + toDraw.VOrder * vShift , linePaint);
 
-                    canvas.drawCircle(startHorizontal + parent.HOrder * hShift ,startVertical + parent.VOrder * vShift , radius , circlePaint);
+                canvas.drawCircle(startHorizontal + parent.HOrder * hShift ,startVertical + parent.VOrder * vShift , radius , circlePaint);
 
-                    canvas.drawCircle(startHorizontal + toDraw.HOrder * hShift ,startVertical + toDraw.VOrder * vShift , radius , circlePaint);
+                canvas.drawCircle(startHorizontal + toDraw.HOrder * hShift ,startVertical + toDraw.VOrder * vShift , radius , circlePaint);
 
-                    canvas.drawText(Integer.toString(parent.value) , startHorizontal + parent.HOrder * hShift ,
-                            startVertical + parent.VOrder * vShift, textPaint);
+                canvas.drawText(Integer.toString(parent.value) , startHorizontal + parent.HOrder * hShift ,
+                        startVertical + parent.VOrder * vShift, textPaint);
 
-                    canvas.drawText(Integer.toString(toDraw.value) , startHorizontal + toDraw.HOrder * hShift ,
-                            startVertical + toDraw.VOrder * vShift, textPaint);
-                }
+                canvas.drawText(Integer.toString(toDraw.value) , startHorizontal + toDraw.HOrder * hShift ,
+                        startVertical + toDraw.VOrder * vShift, textPaint);
             }
         }
-
     }
 }

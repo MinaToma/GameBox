@@ -3,7 +3,6 @@ package com.example.mina.gamebox;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.util.Pair;
@@ -12,15 +11,11 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Random;
 import java.util.Stack;
-
-import static java.lang.Thread.sleep;
 
 public class Game {
 
@@ -102,8 +97,6 @@ public class Game {
 
     private void distributeCards() {
         fillPlayAndDeck();
-        //fillPlayArea();
-        //fillDeck();
     }
 
     private void fillPlayAndDeck() {
@@ -161,10 +154,6 @@ public class Game {
 
     private void addCardToConstraint(Card card) {
         card.reAddToConstraint();
-        /*
-        constraintLayout.removeView(card);
-        constraintLayout.addView(card);
-        */
     }
 
     private void initializeAllCards() {
