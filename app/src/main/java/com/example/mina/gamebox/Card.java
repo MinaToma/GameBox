@@ -14,7 +14,6 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
     private Boolean isPlay , isFinished , isDeck , isHand , isFaceUp , isRed;
     ConstraintLayout constraintLayout;
     private String newState;
-    private Thread mThread;
 
     public Card(Context context) {
         super(context);
@@ -70,7 +69,6 @@ public class Card extends android.support.v7.widget.AppCompatImageButton {
         ViewGroup.LayoutParams newLayout = new ViewGroup.LayoutParams(layoutParams);
         setLayoutParams(newLayout);
         setOnTouchListener(onTouchListener);
-
     }
 
     public Boolean getFaceUp() {

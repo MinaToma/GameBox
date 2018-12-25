@@ -12,28 +12,29 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".SolitaireStartpage"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".Klondike"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".GoFishGame"
-            android:screenOrientation="landscape"></activity>
-        <activity android:name=".FlappyBirdGame">
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+        <activity
+            android:name=".Klondike"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".GoFishGame"
+            android:screenOrientation="landscape">
+
+        </activity>
+        <activity android:name=".FlappyBirdGame"></activity>
         <activity android:name=".startFlappyBirdGame" />
         <activity
             android:name=".SimualtionActivity"
-            android:screenOrientation="portrait"></activity>
-        <activity
-            android:name=".flappyBirdGameOver"
-            android:label="@string/title_activity_flappy_bird_game_over"
-            android:theme="@style/AppTheme"></activity>
+            android:screenOrientation="portrait">
+
+        </activity>
     </application>
 
 </manifest>
