@@ -29,7 +29,7 @@ public class Splash extends AppCompatActivity {
     }
 
     public void startSimulation(View view) {
-        Intent intent = new Intent(getBaseContext() , SimualtionActivity.class);
+        Intent intent = new Intent(getBaseContext() , SimulationActivity.class);
         startActivity(intent);
     }
 }
