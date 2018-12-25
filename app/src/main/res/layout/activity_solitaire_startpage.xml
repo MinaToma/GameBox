@@ -5,31 +5,93 @@
     android:id="@+id/Solitare"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/back1"
+    style="@style/Theme.AppCompat.NoActionBar"
+    android:background="@drawable/bg"
     tools:context=".SolitaireStartpage">
 
     <Button
         android:id="@+id/startButton"
-        style="@style/Widget.AppCompat.Button.Colored"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="326dp"
         android:layout_height="77dp"
-        android:layout_marginStart="29dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="74dp"
-        android:background="@android:color/background_light"
-        android:fontFamily="casual"
+        android:background="@android:color/transparent"
         android:text="Start"
         android:textAlignment="center"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textColorLink="@android:color/background_light"
         android:textSize="30sp"
-        android:textStyle="bold"
-        android:typeface="serif"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.958" />
+        app:layout_constraintVertical_bias="0.963" />
+
+    <ImageView
+        android:id="@+id/spadesAce"
+        android:layout_width="84dp"
+        android:layout_height="101dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.246"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.46"
+        app:srcCompat="@drawable/spades1" />
+
+    <ImageView
+        android:id="@+id/diamondsAce"
+        android:layout_width="76dp"
+        android:layout_height="99dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.41"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.429"
+        app:srcCompat="@drawable/diamonds1" />
+
+    <ImageView
+        android:id="@+id/clubsAce"
+        android:layout_width="75dp"
+        android:layout_height="95dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.549"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.392"
+        app:srcCompat="@drawable/clubs1" />
+
+    <ImageView
+        android:id="@+id/heartsAce"
+        android:layout_width="76dp"
+        android:layout_height="94dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.698"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.435"
+        app:srcCompat="@drawable/hearts1" />
+
 </android.support.constraint.ConstraintLayout>
