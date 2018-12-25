@@ -188,6 +188,10 @@ public class GoFishGame extends AppCompatActivity {
             sizeOfFirstPlayerCard[3]+=Float.valueOf(150);
             deck.pop();
         }
+        resetCards(0,firstPos);
+        resetCards(1,secondPos);
+        resetCards(2,thirdPos);
+        resetCards(3,fourthPos);
     }
     private void addCardToConstraint(Card card) {
         constraintLayout.removeView(card);
