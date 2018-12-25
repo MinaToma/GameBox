@@ -48,13 +48,13 @@ public class flappyBirdGameView extends View {
     int score =0,openNewGame=0;
     Bitmap score1st,score2nd,score3rd ,finalScore;
 
-    MediaPlayer winPoint,hit,die,wing;
+    MediaPlayer winPoint,hit,die,wing,gameOverSound;
 
     public flappyBirdGameView(Context context) {
         super(context);
         handler = new Handler();
 
-
+        gameOverSound=MediaPlayer.create(getContext(),R.raw.gameover);
         winPoint = MediaPlayer.create(getContext(),R.raw.winpoint);
         wing = MediaPlayer.create(getContext(),R.raw.wing);
         hit = MediaPlayer.create(getContext(),R.raw.hit);
@@ -160,6 +160,7 @@ public class flappyBirdGameView extends View {
             if(openNewGame==1)
             {
                 die.start();
+                gameOverSound.start();
             }
             canvas.drawBitmap(gameOverImage,(displayWidth/2)-(gameOverImage.getWidth()/2),(displayHeight/2)-(gameOverImage.getHeight()/2),null);
             canvas.drawBitmap(score1st, displayWidth/2 + score2nd.getWidth(),(displayHeight/2)-(gameOverImage.getHeight()/2)+gameOverImage.getHeight()+20 , null);

@@ -2,6 +2,7 @@ package com.example.mina.gamebox;
 
 import android.content.Context;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -47,7 +48,7 @@ public class GoFishGame extends AppCompatActivity {
     private int selcteedCard =-1;
     private ImageView goFishView,firstPlayerArrow,secondPlayerArrow,thirdPlayerArrow,fourthPlayerArrow,gameOver,bigWin;
     private Float distBetweenDeckAndPlayersCard;
-
+    private MediaPlayer gameOverSound,winSound,moveCard;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,7 +81,15 @@ public class GoFishGame extends AppCompatActivity {
         initializeDeck();
         initializeAllCards();
         initializeImage();
+        initializeSound();
         distributeCards();
+
+    }
+    private void initializeSound()
+    {
+        gameOverSound = MediaPlayer.create(this,R.raw.gameover);
+        winSound =MediaPlayer.create(this,R.raw.congratulations);
+        moveCard = MediaPlayer.create(this,R.raw.movecard);
 
     }
     private void initializeImage()
@@ -297,6 +306,7 @@ public class GoFishGame extends AppCompatActivity {
         if (currentPlayer == 0) {
             cardNow.showCard();
         }
+        moveCard.start();
         cardNow.setPosition(currentPos.first + sizeOfFirstPlayerCard[currentPlayer], currentPos.second);
         sizeOfFirstPlayerCard[currentPlayer] += Float.valueOf(100);
         players.get(currentPlayer).add(cardNow);
@@ -334,9 +344,10 @@ public class GoFishGame extends AppCompatActivity {
             if(win==true)
             {
                 bigWin.setVisibility(View.VISIBLE);
+                winSound.start();
             }
             else
-            {
+            {   gameOverSound.start();
                 gameOver.setVisibility(View.VISIBLE);
             }
         }
@@ -408,10 +419,12 @@ public class GoFishGame extends AppCompatActivity {
         {
             if(win==true)
             {
+                winSound.start();
                 bigWin.setVisibility(View.VISIBLE);
             }
             else
             {
+                gameOverSound.start();
                 gameOver.setVisibility(View.VISIBLE);
             }
         }
@@ -619,7 +632,7 @@ public class GoFishGame extends AppCompatActivity {
         }
         if(currentCads.size()>0)
         {
-
+            moveCard.start();
             for (Card cardNow : currentCads) {
                 players.get(playerSelceted).remove(cardNow);
 
