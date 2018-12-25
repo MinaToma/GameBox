@@ -2,6 +2,7 @@ package com.example.mina.gamebox;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.media.MediaPlayer;
 import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ public class Game {
     private ArrayList<ArrayList<Card>> allCards;
     private int coverCardID , emptyDeckID;
     private ArrayList<String> cardType;
-
+    private ImageView bigWin;
     //undo stack of pair( operation, pair(card, index) )
     private Stack<Pair<Integer, Pair<Card, Integer>>> undoStack;
 
@@ -45,7 +47,7 @@ public class Game {
     private static final int deckToHand = 0, handToSuits = 1, handToPlay = 2,
             playToSuits = 3, suitsToPlay = 4, playToPlay = 5,
             flipCard = 6 , handToDeck = 7;
-
+    private MediaPlayer winSound,moveCard;
 
     public Game(Context context , ConstraintLayout constraintLayout)
     {
@@ -66,6 +68,14 @@ public class Game {
         initializeAllCards();
         distributeCards();
         initializeEmptySuitCell();
+        initializeSound();
+    }
+    private void initializeSound()
+    {
+
+        winSound =MediaPlayer.create(context,R.raw.congratulations);
+        moveCard = MediaPlayer.create(context,R.raw.movecard);
+
     }
 
     private void initializeEmptySuitCell() {
@@ -412,6 +422,7 @@ public class Game {
     private void cardToHand(Card card){
         undoStack.push(new Pair<Integer, Pair<Card, Integer>> (deckToHand, new Pair<Card, Integer> (card, -1)));
         deck.pop();
+        moveCard.start();
         card.toHand(handPosition);
         hand.push(card);
     }
@@ -500,6 +511,10 @@ public class Game {
             && suitsCard.get(2).peek().getNumber() == 13
             && suitsCard.get(3).peek().getNumber() == 13)
             {
+                winSound.start();
+
+                bigWin=(ImageView) constraintLayout.findViewById(R.id.bigWinn);
+                bigWin.setVisibility(View.VISIBLE);
                 Toast youWon = new Toast(context);
                 youWon.makeText(context ,"You Won!", Toast.LENGTH_LONG).show();
             }
