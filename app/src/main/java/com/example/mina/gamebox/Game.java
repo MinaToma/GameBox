@@ -1,21 +1,29 @@
 package com.example.mina.gamebox;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Stack;
 
+import static java.lang.Thread.sleep;
+
 public class Game {
 
-    private Random random;
+    private SecureRandom random;
     private Context context;
     private ViewGroup.LayoutParams cardParams;
     private ConstraintLayout constraintLayout;
@@ -88,7 +96,7 @@ public class Game {
     }
 
     private void initializeRandom() {
-        random = new Random(System.currentTimeMillis());
+        random = new SecureRandom();
     }
 
     private void distributeCards() {
@@ -104,35 +112,38 @@ public class Game {
         deck.add(card);
         addCardToConstraint(card);
 
-        int assignedCard = 0;
-        for(int i = 1 ; i <= 13 ; i++){
+        for(int i = 13 ; i >= 1 ; i--){
             for(int j = 0 ; j < 4 ; j++) {
 
-                if(assignedCard >= 28){
-                    card = allCards.get(i-1).get(j);
-                    card.toDeck(deckPosition);
-                    deck.add(card);
-                    continue;
-                }
+                boolean ok = false;
+                while(!ok){
 
-                int idx = random.nextInt(7);;
-                while(playArea.get(idx).size() == idx + 1)
-                   idx = random.nextInt(7);
+                    int idx = random.nextInt(14);
 
-                if (idx < 7) {
-                    assignedCard++;
-
-                    card = allCards.get(i-1).get(j);
-
-                    if (playArea.get(idx).size() < idx) {
-                        card.hideCard();
-                        card.setFaceUp(false);
+                    if(idx >= 7 && deck.size() < 25 ){
+                        card = allCards.get(i-1).get(j);
+                        card.toDeck(deckPosition);
+                        deck.add(card);
+                        ok = true;
                     }
+                    else if(idx < 7){
 
-                    card.toPlayArea(idx, playArea.get(idx).size(), new Pair<Float, Float>(playAreaPosition.get(idx).first,
-                            playAreaPosition.get(idx).second + card.getLayoutParams().height / 4 * playArea.get(idx).size()));
-                    card.setLastPosition(card.getPosition());
-                    playArea.get(idx).add(card);
+                        if(playArea.get(idx).size() == idx + 1) continue;
+
+                        card = allCards.get(i-1).get(j);
+
+                        if (playArea.get(idx).size() < idx) {
+                            card.hideCard();
+                            card.setFaceUp(false);
+                        }
+
+                        card.toPlayArea(idx, playArea.get(idx).size(), new Pair<Float, Float>(playAreaPosition.get(idx).first,
+                                playAreaPosition.get(idx).second + card.getLayoutParams().height / 4 * playArea.get(idx).size()));
+                        card.setLastPosition(card.getPosition());
+                        playArea.get(idx).add(card);
+
+                        ok = true;
+                    }
                 }
 
                 addCardToConstraint(card);
@@ -141,8 +152,11 @@ public class Game {
     }
 
     private void addCardToConstraint(Card card) {
+        card.reAddToConstraint();
+        /*
         constraintLayout.removeView(card);
         constraintLayout.addView(card);
+        */
     }
 
     private void initializeAllCards() {
@@ -552,6 +566,37 @@ public class Game {
             case flipCard: //flips card down
                 card.hideCard();
                 break;
+        }
+    }
+
+    @SuppressLint("NewApi")
+    public void hint() {
+
+        Card card1,card2;
+        Toast toast= new Toast(context);
+        boolean moves = false;
+
+        for (int i = 0; i <= 12; i++) {
+            for (int x = 0; x < (allCards.get(i).size()); x++) {
+                if (i < 12) {
+                    for (int y = 0; y < (allCards.get(i + 1).size()); y++) {
+                        if (allCards.get(i).get(x).getRed() != allCards.get(i + 1).get(y).getRed()) {
+                            card1 = allCards.get(i).get(x);
+                            card2 = allCards.get(i + 1).get(y);
+
+                            if ((playArea.get(card1.getPlayIdx()).size() - 1 == card2.getInPlayIdx())) {
+
+                                moves = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (moves == false) {
+
+            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+            toast.makeText(context ,"Game Over!", Toast.LENGTH_LONG).show();
         }
     }
 }

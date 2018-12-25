@@ -11,9 +11,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SolitaireDifficultyActivity"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".SolitaireStartpage"
             android:screenOrientation="portrait">
             <intent-filter>
