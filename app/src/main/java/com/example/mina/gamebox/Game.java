@@ -2,7 +2,6 @@ package com.example.mina.gamebox;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.media.MediaPlayer;
 import android.os.Build;
 import android.support.constraint.ConstraintLayout;
 import android.util.Log;
@@ -11,7 +10,6 @@ import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.Toast;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -39,10 +37,10 @@ public class Game {
     private ArrayList<ArrayList<Card>> allCards;
     private int coverCardID , emptyDeckID;
     private ArrayList<String> cardType;
-    private ImageView bigWin;
+
     //undo stack of pair( operation, pair(card, index) )
     private Stack<Pair<Integer, Pair<Card, Integer>>> undoStack;
-    private MediaPlayer winSound,moveCard;
+
     //const int values to hold operation number
     private static final int deckToHand = 0, handToSuits = 1, handToPlay = 2,
             playToSuits = 3, suitsToPlay = 4, playToPlay = 5,
@@ -68,7 +66,6 @@ public class Game {
         initializeAllCards();
         distributeCards();
         initializeEmptySuitCell();
-        initializeSound();
     }
 
     private void initializeEmptySuitCell() {
@@ -111,7 +108,7 @@ public class Game {
 
         ArrayList<Integer> numbers = new ArrayList();
 
-        for(int i = 1 ; i <= 13; i++)
+        for(int i = 1 ; i <= 13 ; i++)
             numbers.add(i);
 
         Collections.shuffle(numbers);
@@ -227,13 +224,6 @@ public class Game {
         hand = new Stack<Card>();
         handPosition = new Pair<Float , Float>(constraintLayout.findViewById(R.id.handCard).getX() ,
                 constraintLayout.findViewById(R.id.handCard).getY());
-    }
-    private void initializeSound()
-    {
-
-        winSound =MediaPlayer.create(context,R.raw.congratulations);
-        moveCard = MediaPlayer.create(context,R.raw.movecard);
-
     }
 
     private void initializeDeck() {
@@ -422,7 +412,6 @@ public class Game {
     private void cardToHand(Card card){
         undoStack.push(new Pair<Integer, Pair<Card, Integer>> (deckToHand, new Pair<Card, Integer> (card, -1)));
         deck.pop();
-        moveCard.start();
         card.toHand(handPosition);
         hand.push(card);
     }
@@ -513,16 +502,11 @@ public class Game {
             {
                 Toast youWon = new Toast(context);
                 youWon.makeText(context ,"You Won!", Toast.LENGTH_LONG).show();
-                winSound.start();
-                bigWin=(ImageView) constraintLayout.findViewById(R.id.bigWinn);
-                bigWin.setVisibility(View.VISIBLE);
             }
-
         }
 
         if(suitsCard.get(0).size() == 13 && suitsCard.get(1).size() == 13 && suitsCard.get(1).size() == 13 && suitsCard.get(1).size() == 13){
-
-
+            //you won
 
             suitsCard.get(0).get(suitsCard.get(0).size()-1).setOnTouchListener(null);
             suitsCard.get(1).get(suitsCard.get(1).size()-1).setOnTouchListener(null);
@@ -600,39 +584,6 @@ public class Game {
             case flipCard: //flips card down
                 card.hideCard();
                 break;
-        }
-    }
-
-    @SuppressLint("NewApi")
-    public void hint() {
-
-        Card card1,card2;
-        Toast toast= new Toast(context);
-        boolean moves = false;
-
-        for (int i = 0; i <= 12; i++) {
-            for (int x = 0; x < (allCards.get(i).size()); x++) {
-                if (i < 12) {
-                    for (int y = 0; y < (allCards.get(i + 1).size()); y++) {
-                        if (allCards.get(i).get(x).getRed() != allCards.get(i + 1).get(y).getRed()) {
-                            card1 = allCards.get(i).get(x);
-                            card2 = allCards.get(i + 1).get(y);
-
-                            if ((playArea.get(card1.getPlayIdx()).size() - 1 == card2.getInPlayIdx())) {
-
-                                moves = true;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        if (moves == false)
-        {
-
-            toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
-            toast.makeText(context ,"Game Over!", Toast.LENGTH_LONG).show();
         }
     }
 }
