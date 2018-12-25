@@ -3,10 +3,6 @@ package com.example.mina.gamebox;
 import android.content.Context;
 import android.widget.Toast;
 
-import java.text.CollationElementIterator;
-import java.util.ArrayList;
-import java.util.Collections;
-
 public class AVLTree{
 
     Node root;
@@ -34,8 +30,6 @@ public class AVLTree{
         }
 
         root = insertKey(root, value);
-        if(value == 3)
-            Toast.makeText(context.getApplicationContext() , "Node Already Exists" , Toast.LENGTH_SHORT).show();;
         root = reBalance(root);
     }
 

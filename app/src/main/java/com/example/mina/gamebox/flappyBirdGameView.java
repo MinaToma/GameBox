@@ -2,24 +2,16 @@ package com.example.mina.gamebox;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Point;
 import android.graphics.Rect;
-import android.media.Image;
 import android.media.MediaPlayer;
 import android.os.Handler;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
-
 import java.util.Random;
 
 public class flappyBirdGameView extends View {
@@ -99,9 +91,6 @@ public class flappyBirdGameView extends View {
             tubeX[i] = displayWidth + i*distanceBetweenTubes;
             topTubeY[i] = minTubeOffset + random.nextInt(maxTubeOffset - minTubeOffset + 1);
         }
-
-
-
     }
 
     @Override
@@ -146,8 +135,6 @@ public class flappyBirdGameView extends View {
                  hit.start();
                  break;
                 }
-
-
             }
             if (meshBenAy7aga == false && isCalculated == true) {
                 score++;
@@ -255,8 +242,6 @@ public class flappyBirdGameView extends View {
         {
             return R.drawable.score9;
         }
-
-
 
         return 0;
     }

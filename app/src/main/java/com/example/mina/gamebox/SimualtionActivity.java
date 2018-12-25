@@ -32,10 +32,6 @@ public class SimualtionActivity extends AppCompatActivity {
             public void onClick(View v) {
                 try{
                     avl.insert(Integer.parseInt(nodeValue.getText().toString()));
-                    if(avl.root != null){
-                        Toast.makeText(getBaseContext() , Integer.toString(avl.root.value) , Toast.LENGTH_SHORT).show();
-                    }
-
                     avl.setTree();
                     simulationView.simulateAVL(avl.root);
                 }
