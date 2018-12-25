@@ -18,8 +18,4 @@ public class startGoFish extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void back(View view){
-        finish();
-    }
-
 }

@@ -23,7 +23,4 @@ public class SolitaireStartpage extends AppCompatActivity {
         });
     }
 
-    public void back(View view) {
-        finish();
-    }
 }
