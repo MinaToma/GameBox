@@ -616,7 +616,7 @@ public class GoFishGame extends AppCompatActivity {
             }
 
             calculateCardsToWin();
-            if(players.get(playerSelceted).size()==0 )
+            if(players.get(currentPlayer).size()==0 )
             {
                 nextRound();
             }
