@@ -43,9 +43,9 @@ public class GoFishGame extends AppCompatActivity {
     private ArrayList<String> cardType;
     private Float[] sizeOfFirstPlayerCard= new Float[4];
     private int currentPlayer= 0;
-    private boolean goFishNow=false;
+    private boolean goFishNow=false,win=false;
     private int selcteedCard =-1;
-    private ImageView goFishView,firstPlayerArrow,secondPlayerArrow,thirdPlayerArrow,fourthPlayerArrow,gameOver;
+    private ImageView goFishView,firstPlayerArrow,secondPlayerArrow,thirdPlayerArrow,fourthPlayerArrow,gameOver,bigWin;
     private Float distBetweenDeckAndPlayersCard;
 
     @Override
@@ -91,6 +91,7 @@ public class GoFishGame extends AppCompatActivity {
         thirdPlayerArrow = (ImageView) findViewById(R.id.arrowThirdPlayer);
         fourthPlayerArrow = (ImageView) findViewById(R.id.arrowFourthPlayer);
         gameOver = (ImageView) findViewById(R.id.gameOverImage);
+        bigWin=(ImageView) findViewById(R.id.winImage);
     }
     private void initializeRandom() {
         random = new Random(System.currentTimeMillis());
@@ -326,7 +327,14 @@ public class GoFishGame extends AppCompatActivity {
         }
         if(GameOver())
         {
-            gameOver.setVisibility(View.VISIBLE);
+            if(win==true)
+            {
+                bigWin.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                gameOver.setVisibility(View.VISIBLE);
+            }
         }
         if(currentPlayer==0)
         {
@@ -430,7 +438,30 @@ public class GoFishGame extends AppCompatActivity {
     public boolean GameOver()
     {
         if(deck.size()==0 && players.get(0).size()==0 && players.get(1).size()==0 && players.get(2).size()==0 && players.get(3).size()==0)
-            return true;
+        {
+            TextView text= (TextView) findViewById(R.id.firstPlayerScore);
+            String tvValue = text.getText().toString();
+            int maxFirstPlayer=Integer.valueOf(tvValue);
+            boolean ok=false;
+            text= (TextView) findViewById(R.id.secondPlayerScore);
+            tvValue = text.getText().toString();
+            if(maxFirstPlayer<=Integer.valueOf(tvValue))
+                ok=true;
+            text= (TextView) findViewById(R.id.thirdPlayerScore);
+            tvValue = text.getText().toString();
+            if(maxFirstPlayer<=Integer.valueOf(tvValue))
+                ok=true;
+            text= (TextView) findViewById(R.id.fourthPlayerScore);
+            tvValue = text.getText().toString();
+            if(maxFirstPlayer<=Integer.valueOf(tvValue))
+                ok=true;
+            if(ok==false)
+            {
+                win=true;
+            }
+            return  true;
+
+        }
         return false;
     }
     public void resetCards(int player,Pair<Float,Float> pos)
