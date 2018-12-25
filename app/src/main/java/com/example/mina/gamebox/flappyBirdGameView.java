@@ -37,7 +37,7 @@ public class flappyBirdGameView extends View {
     int birdX , birdY;
     boolean gameState = false,isCalculated=false,meshBenAy7aga=false ,gameOver=false;
 
-    int gap = 400 ; // gap between top tube and bottom tube
+    int gap = displayHeight / 2 ; // gap between top tube and bottom tube
     int minTubeOffset , maxTubeOffset ;
     int numberOfTube=4;
     int distanceBetweenTubes ;
@@ -74,6 +74,7 @@ public class flappyBirdGameView extends View {
         display.getSize(point);
         displayWidth = point.x;
         displayHeight = point.y;
+        gap = displayHeight / 3;
         rect = new Rect(0,0,displayWidth,displayHeight);
         birds = new Bitmap[3];
         birds[0]= BitmapFactory.decodeResource(getResources(),R.drawable.redbird1);
@@ -83,7 +84,7 @@ public class flappyBirdGameView extends View {
         birdY = displayHeight/2 - birds[0].getHeight()/2;
         distanceBetweenTubes =displayWidth*3/4 ; // Our assumption
         minTubeOffset =gap/2;
-        maxTubeOffset =displayHeight -minTubeOffset - gap;
+        maxTubeOffset =displayHeight - minTubeOffset - gap;
         random = new Random();
         for(int i= 0 ;i<numberOfTube  ;  i++)
         {

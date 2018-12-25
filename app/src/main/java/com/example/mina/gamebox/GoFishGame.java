@@ -498,14 +498,14 @@ public class GoFishGame extends AppCompatActivity {
             }
             else
             {
-                Toast.makeText(this, "Please select card", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Please select card", Toast.LENGTH_SHORT).show();
             }
 
 
         }
         else if(goFishNow==true)
         {
-            Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Go Fish", Toast.LENGTH_SHORT).show();
             if(deck.size()==0)
         {
             goFishNow = false;
@@ -514,7 +514,7 @@ public class GoFishGame extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(this, "Please select another player", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please select another player", Toast.LENGTH_SHORT).show();
         }
     }
     public void secondPlayerClick(View view) {
@@ -529,14 +529,14 @@ public class GoFishGame extends AppCompatActivity {
                 }
                 else
                 {
-                    Toast.makeText(this, "Please select card", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Please select card", Toast.LENGTH_SHORT).show();
                 }
 
 
         }
         else if(goFishNow==true)
         {
-            Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Go Fish", Toast.LENGTH_SHORT).show();
             if(deck.size()==0)
             {
                 goFishNow = false;
@@ -545,7 +545,7 @@ public class GoFishGame extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(this, "Please select another player", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please select another player", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -558,14 +558,14 @@ public class GoFishGame extends AppCompatActivity {
             }
             else
             {
-                Toast.makeText(this, "Please select card", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Please select card", Toast.LENGTH_SHORT).show();
             }
 
 
         }
         else if(goFishNow==true)
         {
-            Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Go Fish", Toast.LENGTH_SHORT).show();
             if(deck.size()==0)
             {
                 goFishNow = false;
@@ -574,7 +574,7 @@ public class GoFishGame extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(this, "Please select another player", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please select another player", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -587,14 +587,14 @@ public class GoFishGame extends AppCompatActivity {
             }
             else
             {
-                Toast.makeText(this, "Please select card", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Please select card", Toast.LENGTH_SHORT).show();
             }
 
 
         }
         else if(goFishNow==true)
         {
-            Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Go Fish", Toast.LENGTH_SHORT).show();
             if(deck.size()==0)
             {
                 goFishNow = false;
@@ -603,7 +603,7 @@ public class GoFishGame extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText(this, "Please select another player", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Please select another player", Toast.LENGTH_SHORT).show();
         }
     }
     public  void askPlayerForCards(int playerSelceted,Pair<Float,Float> pos)
@@ -667,7 +667,7 @@ public class GoFishGame extends AppCompatActivity {
         else
         {
             goFishView.setVisibility(View.VISIBLE);
-            //Toast.makeText(this, "Go Fish", Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, "Go Fish", Toast.LENGTH_SHORT).show();
             goFishNow=true;
             if(deck.size()==0)
             {
