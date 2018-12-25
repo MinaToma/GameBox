@@ -425,7 +425,7 @@ public class GoFishGame extends AppCompatActivity {
             }
             resetCards(currentPlayer,currentPos);
         }
-
+        goFishNow = false;
     }
     public boolean GameOver()
     {
