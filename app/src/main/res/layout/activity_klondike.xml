@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:id="@+id/mainConstraint"
-    android:background="@color/colorPrimaryDark"
+    android:background="@drawable/bg"
     android:layout_height="match_parent"
     tools:context=".Klondike">
 

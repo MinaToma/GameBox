@@ -24,7 +24,7 @@ public class Klondike extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext() , SolitaireDifficultyActivity.class);
+                Intent intent = new Intent(getBaseContext() , SolitaireStartpage.class);
                 startActivity(intent);
             }
         });
@@ -44,6 +44,18 @@ public class Klondike extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 game.undo();
+            }
+        });
+
+        ImageButton hint = (ImageButton) findViewById(R.id.hintButton);
+        hint.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                //  long futuretime =System.currentTimeMillis()+3000;
+                // while (System.currentTimeMillis()<futuretime)
+
+                game.hint();
             }
         });
     }

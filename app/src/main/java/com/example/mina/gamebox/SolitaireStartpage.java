@@ -17,11 +17,9 @@ public class SolitaireStartpage extends AppCompatActivity {
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext() , SolitaireDifficultyActivity.class);
+                Intent intent = new Intent(getBaseContext() , Klondike.class);
                 startActivity(intent);
             }
         });
     }
-
-
 }
