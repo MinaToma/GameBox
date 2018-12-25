@@ -504,6 +504,15 @@ public class Game {
                 youWon.makeText(context ,"You Won!", Toast.LENGTH_LONG).show();
             }
         }
+
+        if(suitsCard.get(0).size() == 13 && suitsCard.get(1).size() == 13 && suitsCard.get(1).size() == 13 && suitsCard.get(1).size() == 13){
+            //you won
+
+            suitsCard.get(0).get(suitsCard.get(0).size()-1).setOnTouchListener(null);
+            suitsCard.get(1).get(suitsCard.get(1).size()-1).setOnTouchListener(null);
+            suitsCard.get(2).get(suitsCard.get(2).size()-1).setOnTouchListener(null);
+            suitsCard.get(3).get(suitsCard.get(3).size()-1).setOnTouchListener(null);
+        }
     }
 
     public void disposeGame()
