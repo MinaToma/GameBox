@@ -402,7 +402,14 @@ public class GoFishGame extends AppCompatActivity {
         goFishView.setVisibility(View.INVISIBLE);
         if(GameOver())
         {
-            gameOver.setVisibility(View.VISIBLE);
+            if(win==true)
+            {
+                bigWin.setVisibility(View.VISIBLE);
+            }
+            else
+            {
+                gameOver.setVisibility(View.VISIBLE);
+            }
         }
         else {
             currentPlayer++;
@@ -738,8 +745,28 @@ public class GoFishGame extends AppCompatActivity {
         }
         else if(players.get(currentPlayer).size()==0)
         {
+            if(deck.size()>0)
+            {
+                Card cardNow;
+
+                cardNow = deck.lastElement();
+                cardNow.toUnDeck();
+                if(currentPlayer==0)
+                {
+                    cardNow.showCard();
+                }
+                cardNow.setPosition(currentPos.first+(sizeOfFirstPlayerCard[currentPlayer]),currentPos.second);
+                players.get(currentPlayer).add(cardNow);
+                sizeOfFirstPlayerCard[currentPlayer]+=Float.valueOf(100);
+
+                addCardToConstraint(cardNow);
+
+                deck.pop();
+            }
+
             nextRound();
         }
+
 
 
     }
