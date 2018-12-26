@@ -2,6 +2,7 @@ package com.example.mina.gamebox;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -93,6 +94,7 @@ public class flappyBirdGameView extends View {
         }
     }
 
+
     @Override
     protected  void onDraw(Canvas canvas)
     {
@@ -167,9 +169,7 @@ public class flappyBirdGameView extends View {
             canvas.drawBitmap(score2nd, displayWidth /2, (displayHeight/2)-(gameOverImage.getHeight()/2)+gameOverImage.getHeight()+20, null);
             canvas.drawBitmap(score3rd, displayWidth /2-score3rd.getWidth(), (displayHeight/2)-(gameOverImage.getHeight()/2)+gameOverImage.getHeight()+20, null);
 
-
         }
-
     }
 
     // Get the touch event

@@ -123,6 +123,7 @@ public class Game {
 
         Collections.shuffle(numbers);
 
+
         for (Integer i : numbers) {
             for(int j = 0 ; j < 4 ; j++) {
 

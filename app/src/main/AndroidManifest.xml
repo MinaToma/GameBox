@@ -31,8 +31,7 @@
         <activity android:name=".startFlappyBirdGame" />
 
         <activity
-            android:name=".SimulationActivity"
-            android:screenOrientation="portrait"></activity>
+            android:name=".SimulationActivity"></activity>
 
         <activity android:name=".Splash"
                   android:screenOrientation="portrait">

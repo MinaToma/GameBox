@@ -24,9 +24,17 @@ public class Klondike extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getBaseContext() , SolitaireStartpage.class);
-                startActivity(intent);
+                finish();
             }
+        });
+
+        ImageButton undoButton = (ImageButton) findViewById(R.id.undoButton);
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               game.undo();
+            }
+
         });
 
         ImageButton newGame = (ImageButton) findViewById(R.id.newGame);
