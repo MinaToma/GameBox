@@ -29,45 +29,7 @@ public class AVLTree{
             Toast.makeText(context.getApplicationContext() , "Node Already Exists" , Toast.LENGTH_SHORT).show();
         }
 
-        root = insertKey(root, value);
-        root = reBalance(root);
-    }
-
-    private Node reBalance(Node node){
-
-        if(node == null) return node;
-
-        node.left = reBalance(node.left);
-        node.right = reBalance(node.right);
-
-        node.height = 1 + Math.max(getHeight(node.left), getHeight(node.right));
-
-        int balance = getBalance(node);
-
-        //Left Left case
-        if (balance > 1 &&  getBalance(node.left) > 0 && node.left != null && node.left.left != null) {
-            node = rightRotate(node);
-        }
-
-        // Left Right Case
-        if (balance > 1 && getBalance(node.left) < 0 && node.right != null && node.left.right != null)
-        {
-            node.left =  leftRotate(node.left);
-            node = rightRotate(node);
-        }
-
-        // Right Right Case
-        if (balance < -1 && getBalance(node.right) < 0 && node.right != null && node.right.right != null)
-            node = leftRotate(node);
-
-        // Right Left Case
-        if (balance < -1 && getBalance(node.right) > 0 && node.right != null && node.right.left != null)
-        {
-            node.right = rightRotate(node.right);
-            node = leftRotate(node);
-        }
-
-        return node;
+        root = insertKey(root , value);
     }
 
     private int getBalance(Node node){
@@ -82,8 +44,8 @@ public class AVLTree{
         right.left = node;
         node.right = lChild;
 
-        node.height = Math.max(getHeight(node.right) , getHeight(node.left));
-        right.height = Math.max(getHeight(right.right) , getHeight(right.left));
+        node.height = 1 + Math.max(getHeight(node.right) , getHeight(node.left));
+        right.height = 1 + Math.max(getHeight(right.right) , getHeight(right.left));
 
         return right;
     }
@@ -95,8 +57,8 @@ public class AVLTree{
         left.right = node;
         node.left = rChild;
 
-        node.height = Math.max(getHeight(node.right) , getHeight(node.left));
-        left.height = Math.max(getHeight(left.right) , getHeight(left.left));
+        node.height = 1 + Math.max(getHeight(node.right) , getHeight(node.left));
+        left.height = 1 + Math.max(getHeight(left.right) , getHeight(left.left));
 
         return left;
     }
@@ -117,7 +79,33 @@ public class AVLTree{
         {
             start.right = insertKey(start.right, key);
         }
-        else return start;
+        else return  start;
+
+        start.height = 1 + Math.max(getHeight(start.left) , getHeight(start.right));
+
+        int balance = getBalance(start);
+
+        // Left Left Case
+        if (balance > 1 && key < start.left.value)
+            return rightRotate(start);
+
+        // Right Right Case
+        if (balance < -1 && key > start.right.value)
+            return leftRotate(start);
+
+        // Left Right Case
+        if (balance > 1 && key > start.left.value)
+        {
+            start.left =  leftRotate(start.left);
+            return rightRotate(start);
+        }
+
+        // Right Left Case
+        if (balance < -1 && key < start.right.value)
+        {
+            start.right = rightRotate(start.right);
+            return leftRotate(start);
+        }
 
         return start;
     }

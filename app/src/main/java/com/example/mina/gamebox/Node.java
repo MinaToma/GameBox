@@ -7,7 +7,8 @@ public class Node{
     public Node(int value)
     {
         this.value = value;
-        height = HOrder = VOrder = 0;
+        height = 1;
+        HOrder = VOrder = 0;
         right = left = null;
     }
 

@@ -21,5 +21,4 @@
             android:icon="@drawable/queue"
             android:title="Queue" />
     </group>
-
 </menu>

@@ -18,13 +18,13 @@ public class Queue {
         Node temp = new Node(value);
 
         temp.setVOrder(1);
+        nodes.add(temp);
         if (back == null)
         {
             front = back = temp;
             return;
         }
 
-        nodes.add(temp);
         temp.setVOrder(back.getVOrder() + 1);
         back.left = temp;
         back = temp;

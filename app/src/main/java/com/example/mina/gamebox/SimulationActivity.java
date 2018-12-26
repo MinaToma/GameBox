@@ -179,13 +179,16 @@ public class SimulationActivity extends AppCompatActivity
             balance.setVisibility(View.VISIBLE);
             simulationView.clear();
             BST = true;
+            bst.root = null;
             STACK = QUEUE = AVL = false;
         } else if (id == R.id.AVL) {
+            avl.root = null;
             balance.setVisibility(View.INVISIBLE);
             simulationView.clear();
             AVL = true;
             STACK = QUEUE = BST = false;
         } else if (id == R.id.stack) {
+            mStack.setHead(null);
             balance.setVisibility(View.INVISIBLE);
             simulationView.clear();
             STACK = true;
@@ -194,6 +197,7 @@ public class SimulationActivity extends AppCompatActivity
             balance.setVisibility(View.INVISIBLE);
             simulationView.clear();
             QUEUE = true;
+            mQueue.front = mQueue.back = null;
             STACK = BST = AVL = false;
         }
 

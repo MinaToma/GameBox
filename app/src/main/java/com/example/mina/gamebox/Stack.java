@@ -16,6 +16,10 @@ public class Stack {
         return head;
     }
 
+    public void setNodes(ArrayList<Node> nodes) {
+        this.nodes = nodes;
+    }
+
     public Stack() {
         head = null;
         nodes = new ArrayList<>();
