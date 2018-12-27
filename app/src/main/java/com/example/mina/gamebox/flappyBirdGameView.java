@@ -143,7 +143,17 @@ public class flappyBirdGameView extends View {
                     isCalculated = false;
 
                     winPoint.start();
+                    if(score%10==0)
+                    {
+                        tubeVelocity++;
+
+                    }
+                    if(birds[0].getHeight()*3>gap)
+                    {
+                        gap-=5;
+                    }
                 }
+
                 meshBenAy7aga = false;
                 calculateScore(score);
                 canvas.drawBitmap(score1st, displayWidth - score1st.getWidth()-5, 30, null);
