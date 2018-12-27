@@ -540,6 +540,9 @@ public class Game {
 
         while (!undoStack.empty())
             undoStack.pop();
+
+        bigWin=(ImageView) constraintLayout.findViewById(R.id.bigWinn);
+        bigWin.setVisibility(View.INVISIBLE);
     }
 
     public void undo()
