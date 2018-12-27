@@ -75,6 +75,8 @@ public class BST{
 
         if(node == null) return; //value doesn't exist
 
+        tree.remove(Integer.valueOf(key));
+
         if(root == node){
             if(root.left == null && root.right == null){
                 root= null;

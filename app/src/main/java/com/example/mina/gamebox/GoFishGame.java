@@ -628,7 +628,6 @@ public class GoFishGame extends AppCompatActivity {
             {
                 currentCads.add(cardNow);
             }
-
         }
         if(currentCads.size()>0)
         {
