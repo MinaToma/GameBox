@@ -18,14 +18,7 @@ public class flappyBirdGameOver extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flappy_bird_game_over);
 
-        ConstraintLayout cl = (ConstraintLayout) findViewById(R.id.finishFlappyID);
-        cl.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(getBaseContext() , FlappyBirdGame.class);
-                startActivity(i);
-            }
-        });
+
     }
 
 }
