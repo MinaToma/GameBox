@@ -13,12 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Stack;
-
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
 public class Game {
 
     private SecureRandom random;
@@ -48,6 +52,9 @@ public class Game {
             playToSuits = 3, suitsToPlay = 4, playToPlay = 5,
             flipCard = 6 , handToDeck = 7;
     private MediaPlayer winSound,moveCard;
+
+    private RewardedVideoAd mRewardedVideoAd;
+
 
     public Game(Context context , ConstraintLayout constraintLayout)
     {
@@ -518,6 +525,9 @@ public class Game {
                 bigWin.setVisibility(View.VISIBLE);
                 Toast youWon = new Toast(context);
                 youWon.makeText(context ,"You Won!", Toast.LENGTH_LONG).show();
+                ///
+                ////
+                ////
             }
         }
 
@@ -543,7 +553,9 @@ public class Game {
 
         bigWin=(ImageView) constraintLayout.findViewById(R.id.bigWinn);
         bigWin.setVisibility(View.INVISIBLE);
+
     }
+
 
     public void undo()
     {
@@ -605,4 +617,5 @@ public class Game {
                 break;
         }
     }
+
 }

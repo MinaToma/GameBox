@@ -18,6 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
@@ -49,11 +55,58 @@ public class GoFishGame extends AppCompatActivity {
     private ImageView goFishView,firstPlayerArrow,secondPlayerArrow,thirdPlayerArrow,fourthPlayerArrow,gameOver,bigWin;
     private Float distBetweenDeckAndPlayersCard;
     private MediaPlayer gameOverSound,winSound,moveCard;
+
+    private RewardedVideoAd rewardedVideoAd;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_go_fish_game);
+
+
+        rewardedVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        rewardedVideoAd.setRewardedVideoAdListener(new RewardedVideoAdListener() {
+            @Override
+            public void onRewardedVideoAdLoaded () {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdOpened () {
+
+            }
+
+            @Override
+            public void onRewardedVideoStarted () {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdClosed () {
+                loadRewardedVideoAd();
+            }
+
+            @Override
+            public void onRewarded (RewardItem rewardItem){
+                //Toast.makeText(getBaseContext(), "Ad triggered reward.", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onRewardedVideoAdLeftApplication () {
+
+            }
+
+            @Override
+            public void onRewardedVideoAdFailedToLoad ( int i){
+
+            }
+
+            @Override
+            public void onRewardedVideoCompleted () {
+
+            }
+        });
+        loadRewardedVideoAd();
 
     }
 
@@ -427,6 +480,7 @@ public class GoFishGame extends AppCompatActivity {
                 gameOverSound.start();
                 gameOver.setVisibility(View.VISIBLE);
             }
+            startVideo();
         }
         else {
             currentPlayer++;
@@ -785,5 +839,37 @@ public class GoFishGame extends AppCompatActivity {
 
 
 
+    }
+    private void loadRewardedVideoAd() {
+        if (!rewardedVideoAd.isLoaded()) {
+            rewardedVideoAd.loadAd("ca-app-pub-9180907491591852/5169239813", new AdRequest.Builder().build());
+            rewardedVideoAd.show();
+        }
+    }
+
+    public void startVideo()
+    {
+        if(rewardedVideoAd.isLoaded())
+        {
+            rewardedVideoAd.show();
+        }
+    }
+
+    @Override
+    public void onResume() {
+        rewardedVideoAd.resume(this);
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        rewardedVideoAd.pause(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        rewardedVideoAd.destroy(this);
+        super.onDestroy();
     }
 }

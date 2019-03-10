@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "116253864766",
+    "firebase_url": "https://game-box-8c756.firebaseio.com",
+    "project_id": "game-box-8c756",
+    "storage_bucket": "game-box-8c756.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116253864766:android:eaa529146a439132",
+        "android_client_info": {
+          "package_name": "com.example.mina.gamebox"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "116253864766-9clfk4ffac735hjeccb8hbt5gm4hcg47.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvubk5rWgm4ISLR80_IbShy3XkBMQtDN4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

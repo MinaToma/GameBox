@@ -75,12 +75,13 @@ public class flappyBirdGameView extends View {
         display.getSize(point);
         displayWidth = point.x;
         displayHeight = point.y;
-        gap = displayHeight / 3;
+
         rect = new Rect(0,0,displayWidth,displayHeight);
         birds = new Bitmap[3];
         birds[0]= BitmapFactory.decodeResource(getResources(),R.drawable.redbird1);
         birds[1]= BitmapFactory.decodeResource(getResources(),R.drawable.redbird2);
         birds[2]= BitmapFactory.decodeResource(getResources(),R.drawable.redbird3);
+        gap = birds[0].getHeight()*4;
         birdX = displayWidth/2 - birds[0].getWidth()/2; // initially bird will be center
         birdY = displayHeight/2 - birds[0].getHeight()/2;
         distanceBetweenTubes =displayWidth*3/4 ; // Our assumption
@@ -143,9 +144,9 @@ public class flappyBirdGameView extends View {
                     isCalculated = false;
 
                     winPoint.start();
-                    if(score%10==0)
+                    if(score%5==0)
                     {
-                        tubeVelocity++;
+                        tubeVelocity+=2;
 
                     }
                     if(birds[0].getHeight()*3>gap)
